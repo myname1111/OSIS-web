@@ -1,0 +1,157 @@
+/* Atomic css. Do not forget
+
+@use "sass:math"
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap')
+
+body
+    margin: 0px
+
+.white
+    color: white
+
+.inline-block
+    display: inline-block
+
+.banner
+    background-image: (linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("/data/banner.jpeg"))
+
+.width-100
+    width: 100%
+
+.height-100
+    height: 100%
+
+.height-15
+    height: 15%
+
+.width-15
+    width: 15%
+
+.cover-image
+    background-size: cover
+
+.grid
+    display: grid
+
+.vert-split-4-3
+    grid-template-columns: 4fr 3fr
+
+.vert-split-3-4
+    grid-template-columns: 3fr 4fr
+
+.hor-split-3-1
+    grid-template-rows: 3fr 1fr
+
+.hor-split-1-1-auto
+    grid-template-rows: 1fr 1fr auto
+
+.hor-split-aaa
+    grid-template-rows: auto auto auto
+
+.ver-split-5x1
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+
+.center-vert
+    align-items: center
+
+.center-horz
+    justify-items: center
+
+.center-text
+    text-align: center
+
+.bottom-vert
+    align-items: end
+
+.margin-base
+    margin: 100px
+
+.margin-large
+    margin: 150px
+
+html
+    font-family: Roboto
+
+.font-large
+    font-size: 50px
+
+.font-xl
+    font-size: 100px
+
+.font-medium
+    font-size: 30px
+
+img
+    width: 100%
+    height: auto
+
+.column-gap-med
+    column-gap: 75px
+
+.row-gap-xl
+    row-gap: 200px
+
+.row-gap-med
+    row-gap: 75px
+
+.flex
+    display: flex
+
+.wrap
+    flex-wrap: wrap
+
+.space-around
+    justify-content: space-around
+
+.max-width-fit
+    max-width: fit-content
+
+.hover:hover
+    cursor: pointer
+
+.back-dark-green
+    background-color: #316603
+
+.back-white
+    background-color: white
+
+.white-blue
+    color: e4e7ea
+
+.osis-info
+    grid-template-areas: "img par" "img but"
+
+.img
+    grid-area: img
+
+.par
+    grid-area: par
+
+.but
+    grid-area: but
+
+.margin-smallest
+    margin: auto
+
+.width-50
+    width: 50%
+
+.min-width-300
+    min-width: 300px
+
+.min-width-400
+    min-width: 400px
+
+.min-width-200
+    min-width: 200px
+
+.width-1-5
+    width: math.div(100%, 5)
+
+#info-button div
+    display: flex
+    width: 100%
+    height: 20%
+    align-content: center
+    justify-content: center
+    
