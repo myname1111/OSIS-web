@@ -21,8 +21,11 @@ body
 .height-100
     height: 100%
 
-.height-15
-    height: 15%
+.height-75
+    height: 75%
+
+.list-vert
+    flex-direction: column
 
 .width-15
     width: 15%
@@ -45,11 +48,11 @@ body
 .hor-split-1-1-auto
     grid-template-rows: 1fr 1fr auto
 
-.hor-split-aaa
-    grid-template-rows: auto auto auto
-
 .ver-split-5x1
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+
+.ver-split-1-3
+    grid-template-columns: 1fr 3fr
 
 .center-vert
     align-items: center
@@ -148,10 +151,29 @@ img
 .width-1-5
     width: math.div(100%, 5)
 
+.gap
+    gap: 50px
+
+#banner-text
+    margin-bottom: 0px
+
 #info-button div
     display: flex
     width: 100%
     height: 20%
     align-content: center
     justify-content: center
-    
+
+#testimony
+    grid-template-areas: "title title" "img text"
+    width: 100%
+    column-gap: 20px
+
+#testimony > h1
+    grid-area: title
+
+#testimony > img
+    grid-area: img
+
+#testimony > div
+    grid-area: text

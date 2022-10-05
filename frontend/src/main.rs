@@ -11,9 +11,9 @@ fn main_page() -> Html {
     html! {
         <div>
             <Banner />
+            <Testimonies />
             <WhyOsis />
             <WhatIsOsis />
-            <ProgramListMain />
         </div>
     }
 }
@@ -21,8 +21,8 @@ fn main_page() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner cover-image center-vert center-horz center-text height-100">
-            <div class="grid center-horz height-100 row-gap-med">
+        <div class="banner cover-image center-vert center-horz center-text height-75 flex">
+            <div class="grid center-horz row-gap-med">
                 <BannerText />
                 <SignUpButton />
             </div>
@@ -33,20 +33,23 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="height-100 bottom-vert flex">
+        <div class="flex list-vert margin-base" id="banner-text">
             <h1 class="white font-large">
-                <span>
-                    {"Empowerment"}
-                </span>
+                <span>{"Empowerment"}</span>
                 {", "}
-                <span>
-                    {"team work"}
-                </span>
+                <span>{"team work"}</span>
                 {", and "}
-                <span>
-                    {"experience"}
-                </span>
+                <span>{"experience"}</span>
             </h1>
+            <h2 class="white font-medium">
+                { "Osis will make you more " }
+                <span class="font-large">{"confident"}</span>
+                {", give you "}
+                <span class="font-large">{ "control" } </span>
+                {" over school program and events. And the best thing, your "}
+                <span class="font-large">{ "friends" } </span>
+                { " will help you along the way" }
+            </h2>
         </div>
     }
 }
@@ -54,10 +57,53 @@ fn banner_text() -> Html {
 #[function_component(SignUpButton)]
 fn sign_up_button() -> Html {
     html! {
-        <div class="hover back-white width-15 height-15 flex center-vert center-horz">
+        <div class="hover back-white width-15 flex center-vert center-horz">
             <h1 class="font-medium width-100">{ "Sign up Today" }</h1>
         </div>
     }
+}
+
+#[function_component(Testimonies)]
+fn testimonies() -> Html {
+    html! {
+        <div class="margin-base">
+            <h1 class="font-xl center-text">{ "Testimonies" }</h1>
+            <div class="flex wrap space-around gap">
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+            </div>
+        </div>
+    }
+}
+
+#[function_component(Testimony)]
+fn testimony(props: &TestimonyProp) -> Html {
+    html! {
+        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3" id="testimony">
+            <h1 class="font-large center-text">{ props.header.clone() }</h1>
+            <img src={ props.image_path.clone() } />
+            <div>
+                { for props.children.iter() }
+            </div>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct TestimonyProp {
+    header: String,
+    children: Children,
+    image_path: String,
 }
 
 // struct SignUp {
@@ -207,62 +253,62 @@ fn learn_more_button() -> Html {
     }
 }
 
-#[function_component(ProgramListMain)]
-fn program_list_main() -> Html {
-    html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Our best programs" }</h1>
-            <div class="flex space-around wrap">
-                <ProgramEvent />
-                <ProgramEvent />
-                <ProgramEvent />
-                <ProgramEvent />
-            </div>
-        </div>
-    }
-}
-
-// enum ProgramEventType {
-//     Program,
-//     Event,
-// }
-//
-// #[derive(Properties, PartialEq)]
-// struct ProgramEventProp {
-//     pe_type: ProgramEventType
+// #[function_component(ProgramListMain)]
+// fn program_list_main() -> Html {
+//     html! {
+//         <div class="margin-base">
+//             <h1 class="font-xl center-text">{ "Our best programs" }</h1>
+//             <div class="flex space-around wrap">
+//                 <ProgramEvent />
+//                 <ProgramEvent />
+//                 <ProgramEvent />
+//                 <ProgramEvent />
+//             </div>
+//         </div>
+//     }
 // }
 
-#[function_component(ProgramEvent)]
-fn program_events() -> Html {
-    html! {
-        <div class="grid hor-split-aaa width-1-5 min-width-200 center-vert">
-            <div>
-                <h1 class="font-large center-text">{ "Lorem ipsum" }</h1>
-            </div>
-            <div class="height-100">
-                <img src="data/program.jpeg" class="height-100" />
-            </div>
-            <div class="height-100">
-                <Rating />
-            </div>
-        </div>
-    }
-}
+// // enum ProgramEventType {
+// //     Program,
+// //     Event,
+// // }
+// //
+// // #[derive(Properties, PartialEq)]
+// // struct ProgramEventProp {
+// //     pe_type: ProgramEventType
+// // }
 
-// #[derive(Properties)]
-// struct RatingProp {
-//     rating: u8
+// #[function_component(ProgramEvent)]
+// fn program_events() -> Html {
+//     html! {
+//         <div class="grid hor-split-aaa width-1-5 min-width-200 center-vert">
+//             <div>
+//                 <h1 class="font-large center-text">{ "Lorem ipsum" }</h1>
+//             </div>
+//             <div class="height-100">
+//                 <img src="data/program.jpeg" class="height-100" />
+//             </div>
+//             <div class="height-100">
+//                 <Rating />
+//             </div>
+//         </div>
+//     }
 // }
 
-#[function_component(Rating)]
-fn rating() -> Html {
-    html! {
-        <div class="grid ver-split-5x1">
-            <img class="height-100" src="data/star.png" />
-            <img class="height-100" src="data/star.png" />
-            <img class="height-100" src="data/star.png" />
-            <img class="height-100" src="data/star.png" />
-            <img class="height-100" src="data/star.png" />
-        </div>
-    }
-}
+// // #[derive(Properties)]
+// // struct RatingProp {
+// //     rating: u8
+// // }
+
+// #[function_component(Rating)]
+// fn rating() -> Html {
+//     html! {
+//         <div class="grid ver-split-5x1">
+//             <img class="height-100" src="data/star.png" />
+//             <img class="height-100" src="data/star.png" />
+//             <img class="height-100" src="data/star.png" />
+//             <img class="height-100" src="data/star.png" />
+//             <img class="height-100" src="data/star.png" />
+//         </div>
+//     }
+// }
