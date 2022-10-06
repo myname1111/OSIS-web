@@ -341,29 +341,27 @@ fn faq() -> Html {
 
 #[function_component(FaqSection)]
 fn faq_section(props: &FaqSectionProp) -> Html {
-    let dropdown = Dropdown::Hidden;
+    let dropdown = Dropdown::Expanded;
 
-    /* psedocode
-    let img = match dropdown {
-        Dropdown::Hidden => "data/hidden.jpg" // We don't have this
-        Dropdown::Expanded => "data/expanded.jpg" // Or this
-    }
+    let header = match dropdown {
+        Dropdown::Hidden => "+ ",
+        Dropdown::Expanded => "- ",
+    };
 
-    html! {
-        <div class="...">
-            <h1 class="..."}
-                <img src={img} />
-                { props.question.clone() }
-            </h1>
-            ...
-        </div>
-    }
-    */
+    let paragraph = match dropdown {
+        Dropdown::Hidden => html! {
+            ""
+        },
+        Dropdown::Expanded => html! {
+            <p class="center-text font-medium">{ for props.children.iter() }</p>
+        },
+    };
 
+    // Create onclick logic
     html! {
         <div class="flex center-vert list-vert">
-            <h1 class="center-text font-large width-fit align-start">{ props.question.clone() }</h1>
-            <p class="center-text font-medium">{ for props.children.iter() }</p>
+            <h1 class="center-text font-large width-fit align-start">{ header }{ props.question.clone() }</h1>
+            { paragraph }
         </div>
     }
 }
