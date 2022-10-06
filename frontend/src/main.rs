@@ -11,8 +11,8 @@ fn main_page() -> Html {
     html! {
         <div>
             <Banner />
-            <Testimonies />
             <WhyOsis />
+            <Testimonies />
             <WhatIsOsis />
         </div>
     }
@@ -61,49 +61,6 @@ fn sign_up_button() -> Html {
             <h1 class="font-medium width-100">{ "Sign up Today" }</h1>
         </div>
     }
-}
-
-#[function_component(Testimonies)]
-fn testimonies() -> Html {
-    html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Testimonies" }</h1>
-            <div class="flex wrap space-around gap">
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-            </div>
-        </div>
-    }
-}
-
-#[function_component(Testimony)]
-fn testimony(props: &TestimonyProp) -> Html {
-    html! {
-        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3" id="testimony">
-            <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={ props.image_path.clone() } />
-            <div>
-                { for props.children.iter() }
-            </div>
-        </div>
-    }
-}
-
-#[derive(Properties, PartialEq)]
-struct TestimonyProp {
-    header: String,
-    children: Children,
-    image_path: String,
 }
 
 // struct SignUp {
@@ -170,25 +127,28 @@ struct TestimonyProp {
 //     // Submit; todo
 // }
 
+// update this with colors
+// #d98126
+// #267ed9
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
         <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Why osis" }</h1>
+            <h1 class="font-xl center-text">{ "Why should i join OSIS?" }</h1>
             <div class="flex wrap space-around">
-                <WhyOsisSection image_path="data/banner.jpeg" header="Experience">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Get a brighter future">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Collaboration">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Empower you to do more">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Empowerment">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Team work makes the dream work">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
@@ -220,6 +180,49 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
             </div>
         </div>
     }
+}
+
+#[function_component(Testimonies)]
+fn testimonies() -> Html {
+    html! {
+        <div class="margin-base">
+            <h1 class="font-xl center-text">{ "Testimonies" }</h1>
+            <div class="flex wrap space-around gap">
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+                <Testimony header="Lorem ipsum" image_path="data/person.png">
+                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                </Testimony>
+            </div>
+        </div>
+    }
+}
+
+#[function_component(Testimony)]
+fn testimony(props: &TestimonyProp) -> Html {
+    html! {
+        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3" id="testimony">
+            <h1 class="font-large center-text">{ props.header.clone() }</h1>
+            <img src={ props.image_path.clone() } />
+            <div>
+                { for props.children.iter() }
+            </div>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct TestimonyProp {
+    header: String,
+    children: Children,
+    image_path: String,
 }
 
 #[function_component(WhatIsOsis)]
