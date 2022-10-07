@@ -27,7 +27,7 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="flex list-vert margin-base" id="banner-text">
+        <div class="flex list-vert margin-base banner-text">
             <h1 class="white font-large">
                 <span>{"Empowerment"}</span>
                 {", "}
@@ -127,27 +127,59 @@ fn sign_up_button() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="margin-base">
+        <div class="margin-large margin-hor-0">
             <h1 class="font-xl center-text">{ "Why should i join OSIS?" }</h1>
-            <div class="flex wrap space-around">
-                <WhyOsisSection image_path="data/banner.jpeg" header="Get a brighter future">
-                    <p class="font-medium">{ "
+            <div class="flex wrap space-around list-vert gap-250">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Get a brighter future" align={WhyOsisAlign::Left} color="d98126">
+                    <p class="font-medium white">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Empower you to do more">
-                    <p class="font-medium">{ "
+                <WhyOsisSection image_path="data/banner.jpeg" header="Empower you to do more" align={WhyOsisAlign::Right} color="267ed9">
+                    <p class="font-medium white">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Team work makes the dream work">
-                    <p class="font-medium">{ "
+                <WhyOsisSection image_path="data/banner.jpeg" header="Team work makes the dream work" align={WhyOsisAlign::Left} color="d98126">
+                    <p class="font-medium white">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
+            </div>
+        </div>
+    }
+}
+
+#[function_component(WhyOsisSection)]
+fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
+    let alignment = match props.align {
+        WhyOsisAlign::Left => "align-right ver-split-2-1",
+        WhyOsisAlign::Right => "align-left ver-split-1-2",
+    };
+
+    let style = format!(
+        "
+        background-color: {};
+    ",
+        props.color.clone()
+    );
+
+    html! {
+        <div {style}>
+            <div class={format!("grid {} center-vert why-osis-section margin-hor-large", alignment)}>
+                <h1 class="font-large center-text white">{ props.header.clone() }</h1>
+                <img src={props.image_path.clone()} />
+                <div class="area-text flex list-vert">
+                    <div>
+                        { for props.children.iter() }
+                    </div>
+                    <div class="info-button">
+                        <LearnMoreButton />
+                    </div>
+                </div>
             </div>
         </div>
     }
@@ -158,22 +190,14 @@ struct WhyOsisSectionProp {
     children: Children,
     header: String,
     image_path: String,
+    align: WhyOsisAlign,
+    color: String,
 }
 
-#[function_component(WhyOsisSection)]
-fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
-    html! {
-        <div class="grid hor-split-1-1-auto width-1-5 min-width-400 center-vert">
-            <h1 class="font-large">{ props.header.clone() }</h1>
-            <img src={props.image_path.clone()} />
-            <div>
-                { for props.children.iter() }
-                <div id="info-button">
-                    <LearnMoreButton />
-                </div>
-            </div>
-        </div>
-    }
+#[derive(PartialEq)]
+enum WhyOsisAlign {
+    Left,
+    Right,
 }
 
 #[function_component(Testimonies)]
@@ -181,7 +205,7 @@ fn testimonies() -> Html {
     html! {
         <div class="margin-base">
             <h1 class="font-xl center-text">{ "Testimonies" }</h1>
-            <div class="flex wrap space-around gap">
+            <div class="flex wrap space-around gap-50">
                 <Testimony header="Lorem ipsum" image_path="data/person.png">
                     <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
@@ -202,10 +226,10 @@ fn testimonies() -> Html {
 #[function_component(Testimony)]
 fn testimony(props: &TestimonyProp) -> Html {
     html! {
-        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3" id="testimony">
+        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3 testimony">
             <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={ props.image_path.clone() } />
-            <div>
+            <img src={ props.image_path.clone() } class="" />
+            <div class="area-text">
                 { for props.children.iter() }
             </div>
         </div>
@@ -341,14 +365,18 @@ fn faq() -> Html {
 
 #[function_component(FaqSection)]
 fn faq_section(props: &FaqSectionProp) -> Html {
-    let dropdown = Dropdown::Expanded;
+    let dropdown = use_state(|| Dropdown::Hidden);
 
-    let header = match dropdown {
+    let dropdown_cl = dropdown.clone();
+
+    let header = move || match *dropdown_cl {
         Dropdown::Hidden => "+ ",
         Dropdown::Expanded => "- ",
     };
 
-    let paragraph = match dropdown {
+    let dropdown_cl = dropdown.clone();
+
+    let paragraph = move || match *dropdown_cl {
         Dropdown::Hidden => html! {
             ""
         },
@@ -357,11 +385,17 @@ fn faq_section(props: &FaqSectionProp) -> Html {
         },
     };
 
-    // Create onclick logic
+    let dropdown = dropdown.clone();
+
+    let onclick = {
+        let dropdown = dropdown.clone();
+        Callback::from(move |_| dropdown.set((*dropdown).switch()))
+    };
+
     html! {
         <div class="flex center-vert list-vert">
-            <h1 class="center-text font-large width-fit align-start">{ header }{ props.question.clone() }</h1>
-            { paragraph }
+            <h1 class="center-text font-large width-fit align-start hover" {onclick}>{ header() }{ props.question.clone() }</h1>
+            { paragraph() }
         </div>
     }
 }
@@ -372,7 +406,17 @@ struct FaqSectionProp {
     children: Children,
 }
 
+#[derive(Copy, Clone)]
 enum Dropdown {
     Expanded,
     Hidden,
+}
+
+impl Dropdown {
+    fn switch(&self) -> Self {
+        match self {
+            Dropdown::Expanded => Dropdown::Hidden,
+            Dropdown::Hidden => Dropdown::Expanded,
+        }
+    }
 }

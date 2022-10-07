@@ -6,6 +6,9 @@
 body
     margin: 0px
 
+h1
+    grid-area: title
+
 .white
     color: white
 
@@ -57,6 +60,12 @@ body
 .ver-split-1-3
     grid-template-columns: 1fr 3fr
 
+.ver-split-1-2
+    grid-template-columns: 1fr 3fr
+
+.ver-split-2-1
+    grid-template-columns: 3fr 1fr
+
 .center-vert
     align-items: center
 
@@ -75,6 +84,14 @@ body
 .margin-large
     margin: 150px
 
+.margin-hor-0
+    margin-left: 0px
+    margin-right: 0px
+
+.margin-hor-large
+    margin-left: 150px
+    margin-right: 150px
+
 html
     font-family: Roboto
 
@@ -90,6 +107,7 @@ html
 img
     width: 100%
     height: auto
+    grid-area: img
 
 .column-gap-med
     column-gap: 75px
@@ -154,32 +172,39 @@ img
 .width-1-5
     width: math.div(100%, 5)
 
-.gap
+.area-text
+    grid-area: text
+
+.gap-50
     gap: 50px
+
+.gap-250
+    gap: 250px
 
 .align-start
     align-self: flex-start
 
-#banner-text
+.banner-text
     margin-bottom: 0px
 
-#info-button div
+.info-button div
     display: flex
     width: 100%
     height: 20%
     align-content: center
     justify-content: center
 
-#testimony
+.testimony
     grid-template-areas: "title title" "img text"
     width: 100%
     column-gap: 20px
 
-#testimony > h1
-    grid-area: title
+.why-osis-section.align-right
+    grid-template-areas: "title title" "text img"
+    width: 100%
+    column-gap: 20px
 
-#testimony > img
-    grid-area: img
-
-#testimony > div
-    grid-area: text
+.why-osis-section.align-left
+    grid-template-areas: "title title" "img text"
+    width: 100%
+    column-gap: 20px
