@@ -1,5 +1,3 @@
-// use wasm_bindgen::JsCast;
-// use web_sys::HtmlTextAreaElement;
 mod home;
 
 use home::MainPage;
@@ -11,8 +9,8 @@ use yew_router::prelude::*;
 enum Route {
     #[at("/")]
     Home,
-    #[at("/faq")]
-    Faq,
+    #[at("/about")]
+    About,
 }
 
 fn switch(route: &Route) -> Html {
@@ -20,7 +18,7 @@ fn switch(route: &Route) -> Html {
         Route::Home => html! {
             <MainPage />
         },
-        Route::Faq => html! {
+        Route::About => html! {
             <Redirect<Route> to={Route::Home}/>
         },
     }

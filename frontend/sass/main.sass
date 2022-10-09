@@ -3,6 +3,8 @@
 @use "sass:math"
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap')
 
+$accent: #1f7be0
+
 body
     margin: 0px
 
@@ -26,6 +28,12 @@ h1
 
 .height-75
     height: 75%
+
+.height-20
+    height: 20%
+
+.height-50px
+    height: 50px
 
 .list-vert
     flex-direction: column
@@ -71,6 +79,9 @@ h1
 
 .center-horz
     justify-items: center
+
+.center-horz-flex
+    justify-content: center
 
 .center-text
     text-align: center
@@ -133,14 +144,14 @@ img
 .hover:hover
     cursor: pointer
 
-.back-dark-green
-    background-color: #316603
+.back-accent
+    background-color: #1f7be0
+
+.back-base
+    background-color: #dd6c22
 
 .back-white
     background-color: white
-
-.white-blue
-    color: e4e7ea
 
 .osis-info
     grid-template-areas: "img par" "img but"
@@ -178,8 +189,8 @@ img
 .gap-50
     gap: 50px
 
-.gap-250
-    gap: 250px
+.gap-150
+    gap: 150px
 
 .align-start
     align-self: flex-start
@@ -199,12 +210,16 @@ img
     width: 100%
     column-gap: 20px
 
+.why-osis-section
+    width: 60%
+    column-gap: 100px
+
 .why-osis-section.align-right
     grid-template-areas: "title title" "text img"
-    width: 100%
-    column-gap: 20px
 
 .why-osis-section.align-left
     grid-template-areas: "title title" "img text"
-    width: 100%
-    column-gap: 20px
+
+.sign-up-button > div
+    background-color: $accent
+    width: 75%
