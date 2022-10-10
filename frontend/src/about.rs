@@ -5,10 +5,10 @@ pub fn about() -> Html {
     html! {
         <div>
             <Sidebar>
-                <Bar header="Todo" />
-                <Bar header="Todo" />
-                <Bar header="Todo" />
-                <Bar header="Todo" />
+                <Bar header="Todo" content={0}/> // TODO: replace with json
+                <Bar header="Todo" content={1}/>
+                <Bar header="Todo" content={2}/>
+                <Bar header="Todo" content={3}/>
             </Sidebar>
             <ContentList>
                 <Content>
@@ -43,11 +43,14 @@ fn sidebar(props: &SideBarProp) -> Html {
 #[derive(Properties, PartialEq)]
 struct BarProp {
     header: String,
+    content: usize,
 }
 
 #[function_component(Bar)]
-fn bar(_: &BarProp) -> Html {
-    html! {}
+fn bar(props: &BarProp) -> Html {
+    html! {
+        <h1>{ props.header.clone() }</h1>
+    }
 }
 
 #[derive(Properties, PartialEq)]
