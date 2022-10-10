@@ -1,6 +1,8 @@
+mod about;
 mod home;
 
-use home::MainPage;
+use about::About;
+use home::Home;
 
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -16,10 +18,10 @@ enum Route {
 fn switch(route: &Route) -> Html {
     match route {
         Route::Home => html! {
-            <MainPage />
+            <Home />
         },
         Route::About => html! {
-            <Redirect<Route> to={Route::Home}/>
+            <About />
         },
     }
 }

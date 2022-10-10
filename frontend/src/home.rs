@@ -5,8 +5,8 @@
 use wasm_bindgen::JsCast;
 use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
-#[function_component(MainPage)]
-pub fn main_page() -> Html {
+#[function_component(Home)]
+pub fn home() -> Html {
     html! {
         <div>
             <Banner />
@@ -68,7 +68,7 @@ fn sign_up_button() -> Html {
 fn why_osis() -> Html {
     html! {
         <div class="margin-large margin-hor-0">
-            <h1 class="font-xl center-text">{ "Why should i join OSIS?" }</h1>
+            <h1 class="font-xl center-text">{ "Why should I join OSIS?" }</h1>
             <div class="flex wrap center-horz list-vert gap-150 center-vert">
                 <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126">
                     <p class="font-medium">{ "
