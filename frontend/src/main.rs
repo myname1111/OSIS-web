@@ -11,8 +11,8 @@ use yew_router::prelude::*;
 enum Route {
     #[at("/")]
     Home,
-    #[at("/about")]
-    About,
+    #[at("/about/:id")]
+    About { id: u8 },
 }
 
 fn switch(route: &Route) -> Html {
@@ -20,8 +20,8 @@ fn switch(route: &Route) -> Html {
         Route::Home => html! {
             <Home />
         },
-        Route::About => html! {
-            <About />
+        Route::About { id } => html! {
+            <About content_id={ *id }/>
         },
     }
 }
