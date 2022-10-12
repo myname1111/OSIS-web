@@ -3,7 +3,7 @@ use yew::prelude::*;
 #[function_component(About)]
 pub fn about(props: &AboutProp) -> Html {
     html! {
-        <div>
+        <div class="grid margin-base ver-split-15p-1">
             <Sidebar> // TODO: replace with json
                 <Bar header="Todo" content={0}/>
                 <Bar header="Todo" content={1}/>
@@ -62,7 +62,9 @@ struct SideBarProp {
 #[function_component(Sidebar)]
 fn sidebar(props: &SideBarProp) -> Html {
     html! {
-        { for props.children.iter() }
+        <div class="flex list-vert">
+            { for props.children.iter() }
+        </div>
     }
 }
 
@@ -75,7 +77,7 @@ struct BarProp {
 #[function_component(Bar)]
 fn bar(props: &BarProp) -> Html {
     html! {
-        <h1>{ props.header.clone() }</h1>
+        <a href={format!("/about/{}", props.content)}><h1>{ props.header.clone() }</h1></a>
     }
 }
 
@@ -89,8 +91,10 @@ struct ContentListProp {
 fn content_list(props: &ContentListProp) -> Html {
     let content = props.children.iter().nth(props.content.into()).unwrap();
     html! {
-        <div>
-            { content }
+        <div class="grid ver-split-1-3-1 hor-split-1-100px content-list">
+            <div class="content font-small">
+                { content }
+            </div>
         </div>
     }
 }

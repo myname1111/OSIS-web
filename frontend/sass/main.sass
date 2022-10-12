@@ -62,11 +62,20 @@ h1
 .hor-split-1-1-auto
     grid-template-rows: 1fr 1fr auto
 
+.hor-split-1-100px
+    grid-template-rows: 1fr 100px
+
 .ver-split-5x1
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr
 
 .ver-split-1-3
     grid-template-columns: 1fr 3fr
+
+.ver-split-15p-1
+    grid-template-columns: 15% 1fr
+
+.ver-split-1-3-1
+    grid-template-columns: 1fr 3fr 1fr
 
 .ver-split-1-2
     grid-template-columns: 1fr 3fr
@@ -114,6 +123,9 @@ html
 
 .font-medium
     font-size: 30px
+
+.font-small
+    font-size: 20px
 
 img
     width: 100%
@@ -223,3 +235,9 @@ img
 .sign-up-button > div
     background-color: $accent
     width: 75%
+
+.content-list
+    grid-template-areas: "content content content" "left . right"
+
+.content
+    grid-area: content
