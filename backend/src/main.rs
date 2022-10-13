@@ -1,6 +1,9 @@
 use actix_web::*;
 use actix_web_lab::web::spa;
 
+mod api;
+mod db;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
