@@ -52,7 +52,7 @@ diesel::table! {
     forums (id) {
         id -> Int4,
         title -> Varchar,
-        member_id -> Nullable<Int4>,
+        member_id -> Int4,
     }
 }
 

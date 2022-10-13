@@ -101,7 +101,7 @@ CREATE TABLE event_image (
 CREATE TABLE forums (
     id INTEGER PRIMARY KEY,
     title VARCHAR NOT NULL,
-    member_id INTEGER REFERENCES member
+    member_id INTEGER NOT NULL REFERENCES member
 );
 
 CREATE TABLE forum (
