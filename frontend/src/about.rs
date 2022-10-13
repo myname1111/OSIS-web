@@ -3,7 +3,7 @@ use yew::prelude::*;
 #[function_component(About)]
 pub fn about(props: &AboutProp) -> Html {
     html! {
-        <div class="grid margin-base ver-split-15p-1">
+        <div class="grid margin-base ver-split-15p-1 column-gap-large">
             <Sidebar> // TODO: replace with json
                 <Bar header="Lorem ipsum" content={0}/>
                 <Bar header="Dolor sit amet" content={1}/>
@@ -217,7 +217,7 @@ struct SideBarProp {
 #[function_component(Sidebar)]
 fn sidebar(props: &SideBarProp) -> Html {
     html! {
-        <div class="flex list-vert">
+        <div class="flex list-vert row-gap-xs">
             { for props.children.iter() }
         </div>
     }
@@ -232,7 +232,9 @@ struct BarProp {
 #[function_component(Bar)]
 fn bar(props: &BarProp) -> Html {
     html! {
-        <a href={format!("/about/{}", props.content)}><h2 class="font-medium">{ props.header.clone() }</h2></a>
+        <a href={format!("/about/{}", props.content)} class="back-lightgrey grid center-horz round-border-25 link-nochange">
+            <p class="font-medium">{ props.header.clone() }</p>
+        </a>
     }
 }
 
