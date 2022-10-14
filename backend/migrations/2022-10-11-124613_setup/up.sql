@@ -11,6 +11,7 @@ CREATE TABLE division (
 CREATE TABLE member (
     id SERIAL PRIMARY KEY,
     profile_id INTEGER NOT NULL REFERENCES images,
+    role VARCHAR NOT NUll,
     bio VARCHAR NOT NULL,
     joined DATE NOT NULL,
     reported INTEGER NOT NULL DEFAULT 1,

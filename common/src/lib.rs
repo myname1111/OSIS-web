@@ -1,5 +1,4 @@
-use diesel::pg::data_types::*;
-use diesel::prelude::*;
+use diesel::{data_types::PgInterval, Queryable};
 use time::Date;
 
 #[derive(Queryable)]
@@ -76,9 +75,10 @@ pub struct Improvement {
 pub struct Member {
     pub id: i32,
     pub profile: i32,
+    pub role: String,
     pub bio: String,
     pub joined: Date,
-    pub reportted: i32,
+    pub reported: i32,
     pub class: String,
     pub division: i32,
     pub head_of: Option<i32>,
