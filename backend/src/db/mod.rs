@@ -2,11 +2,15 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use diesel::r2d2::ConnectionManager;
 use diesel::r2d2::Pool;
+use diesel::r2d2::PooledConnection;
 use dotenvy::dotenv;
 use std::env;
 
-mod member;
+pub mod member;
 mod schema;
+
+pub type DbPool = Pool<ConnectionManager<PgConnection>>;
+type DbConnection = PooledConnection<ConnectionManager<PgConnection>>;
 
 fn database_url() -> String {
     dotenv().ok();
@@ -20,7 +24,7 @@ pub fn connect() -> PgConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-pub fn get_connection_pool() -> Pool<ConnectionManager<PgConnection>> {
+pub fn get_connection_pool() -> DbPool {
     let url = database_url();
     let manager = ConnectionManager::<PgConnection>::new(url);
 
