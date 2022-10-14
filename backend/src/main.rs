@@ -6,8 +6,10 @@ mod db;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
-        App::new().service(
+    let pool = db::get_connection_pool();
+
+    HttpServer::new(move || {
+        App::new().app_data(web::Data::new(pool.clone())).service(
             spa()
                 .index_file("../frontend/dist/index.html")
                 .static_resources_mount("/")
