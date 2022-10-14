@@ -70,19 +70,19 @@ fn why_osis() -> Html {
         <div class="margin-large margin-hor-0">
             <h1 class="font-xl center-text">{ "Why should I join OSIS?" }</h1>
             <div class="flex wrap center-horz list-vert gap-150 center-vert">
-                <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126">
+                <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126" link="/about/0">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Give you control" align={WhyOsisAlign::Right} color="267ed9">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Give you control" align={WhyOsisAlign::Right} color="267ed9" link="/about/1">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Dream big with team work" align={WhyOsisAlign::Left} color="d98126">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Dream big with team work" align={WhyOsisAlign::Left} color="d98126" link="/about/2">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
@@ -109,7 +109,7 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
                     { for props.children.iter() }
                 </div>
                 <div class="info-button">
-                    <LearnMoreButton />
+                    <LearnMoreButton link={props.link.clone()}/>
                 </div>
             </div>
         </div>
@@ -123,6 +123,7 @@ struct WhyOsisSectionProp {
     image_path: String,
     align: WhyOsisAlign,
     color: String,
+    link: String,
 }
 
 #[derive(PartialEq)]
@@ -191,17 +192,22 @@ fn osis_info() -> Html {
             <img src="data/banner.jpeg" class="img"/>
             <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-            <LearnMoreButton />
+            <LearnMoreButton link="/about/3"/>
         </div>
     }
 }
 
+#[derive(Properties, PartialEq)]
+struct LearnMoreButtonProp {
+    link: String,
+}
+
 #[function_component(LearnMoreButton)]
-fn learn_more_button() -> Html {
+fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     html! {
-        <div class="hover back-accent but center-text margin-smallest width-50">
+        <a href={props.link.clone()} class="back-accent but center-text margin-smallest width-50 link-nochange">
             <h1 class="font-medium white">{ "Learn more" }</h1>
-        </div>
+        </a>
     }
 }
 
