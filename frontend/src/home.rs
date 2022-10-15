@@ -5,12 +5,13 @@ use yew::prelude::*;
 #[function_component(Home)]
 pub fn home() -> Html {
     html! {
-        <div>
+        <>
             <Banner />
             <WhyOsis />
             <WhatIsOsis />
-            <ProgramListMain />
-        </div>
+            <ProgramEventList pro_event={ ProgramEventType::Program } />
+            <ProgramEventList pro_event={ ProgramEventType::Event } />
+        </>
     }
 }
 
@@ -108,10 +109,10 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
 #[function_component(WhatIsOsis)]
 fn what_is_osis() -> Html {
     html! {
-        <div>
+        <>
             <h1 class="font-xl center-text">{ "What is osis" }</h1>
             <OsisInfo />
-        </div>
+        </>
     }
 }
 
@@ -141,19 +142,47 @@ fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     }
 }
 
-#[function_component(ProgramListMain)]
-fn program_list_main() -> Html {
+#[function_component(ProgramEventList)]
+fn program_event_list(props: &ProgramEventListProp) -> Html {
+    let header = match props.pro_event {
+        ProgramEventType::Program => "Our best programs",
+        ProgramEventType::Event => "Our latest events",
+    };
+
+    let link = match props.pro_event {
+        ProgramEventType::Program => "/todo/program",
+        ProgramEventType::Event => "/todo/event",
+    };
+
+    let link_text = match props.pro_event {
+        ProgramEventType::Program => "Click here to see more programs",
+        ProgramEventType::Event => "Click here to see more event",
+    };
+
     html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Our best programs" }</h1>
+        <div class="margin-base flex center-horz list-vert">
+            <h1 class="font-xl center-text">{ header }</h1>
             <div class="flex space-around wrap">
                 <ProgramEvent />
                 <ProgramEvent />
                 <ProgramEvent />
                 <ProgramEvent />
             </div>
+            <a href={ link }><h2 class="center-text">{ link_text }</h2></a>
         </div>
     }
+}
+
+#[derive(Properties, PartialEq)]
+struct ProgramEventListProp {
+    // Program or events
+    pro_event: ProgramEventType,
+}
+
+#[derive(PartialEq)]
+enum ProgramEventType {
+    Program,
+    Event,
 }
 
 // enum ProgramEventType {
