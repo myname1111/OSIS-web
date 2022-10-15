@@ -9,6 +9,7 @@ pub fn home() -> Html {
             <Banner />
             <WhyOsis />
             <WhatIsOsis />
+            <Faq />
             <ProgramEventList pro_event={ ProgramEventType::Program } />
             <ProgramEventList pro_event={ ProgramEventType::Event } />
         </>
@@ -139,6 +140,93 @@ fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
         <a href={props.link.clone()} class="back-accent but center-text margin-smallest width-50 link-nochange">
             <h1 class="font-medium white">{ "Learn more" }</h1>
         </a>
+    }
+}
+
+#[function_component(Faq)]
+fn faq() -> Html {
+    html! {
+        <div>
+            <h1 class="font-xl center-text">{ "FAQ" }</h1>
+            <div class="flex list-vert margin-base gap-50">
+                <FaqSection question="lorem ipsum">
+                    {"
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    Libero justo laoreet sit amet. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. Amet nisl purus in mollis nunc sed id.
+                    "}
+                </FaqSection>
+                <FaqSection question="lorem ipsum">
+                    {"
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    Libero justo laoreet sit amet. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. Amet nisl purus in mollis nunc sed id.
+                    "}
+                </FaqSection>
+                <FaqSection question="lorem ipsum">
+                    {"
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    Libero justo laoreet sit amet. Ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. Amet nisl purus in mollis nunc sed id.
+                    "}
+                </FaqSection>
+            </div>
+        </div>
+    }
+}
+
+#[function_component(FaqSection)]
+fn faq_section(props: &FaqSectionProp) -> Html {
+    let dropdown = use_state(|| Dropdown::Hidden);
+
+    let dropdown_cl = dropdown.clone();
+
+    let header = move || match *dropdown_cl {
+        Dropdown::Hidden => "+ ",
+        Dropdown::Expanded => "- ",
+    };
+
+    let dropdown_cl = dropdown.clone();
+
+    let paragraph = move || match *dropdown_cl {
+        Dropdown::Hidden => html! {
+            ""
+        },
+        Dropdown::Expanded => html! {
+            <p class="center-text font-medium">{ for props.children.iter() }</p>
+        },
+    };
+
+    let dropdown = dropdown.clone();
+
+    let onclick = {
+        let dropdown = dropdown.clone();
+        Callback::from(move |_| dropdown.set((*dropdown).switch()))
+    };
+
+    html! {
+        <div class="flex center-vert list-vert">
+            <h1 class="center-text font-large width-fit align-start hover" {onclick}>{ header() }{ props.question.clone() }</h1>
+            { paragraph() }
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct FaqSectionProp {
+    question: String,
+    children: Children,
+}
+
+#[derive(Copy, Clone)]
+enum Dropdown {
+    Expanded,
+    Hidden,
+}
+
+impl Dropdown {
+    fn switch(&self) -> Self {
+        match self {
+            Dropdown::Expanded => Dropdown::Hidden,
+            Dropdown::Hidden => Dropdown::Expanded,
+        }
     }
 }
 
