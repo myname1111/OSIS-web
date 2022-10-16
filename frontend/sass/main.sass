@@ -1,7 +1,7 @@
 /* Atomic css. Do not forget
 
 @use "sass:math"
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap')
 
 $accent: #1f7be0
 
@@ -16,9 +16,17 @@ h2
 
 p
     font-size: 20px
+    font-weight: 100
+
+nav > h2
+    font-size: 35px
+    font-weight: 400
 
 .white
     color: white
+
+.top-0
+    top: 0%
 
 .inline-block
     display: inline-block
@@ -44,6 +52,9 @@ p
 
 .height-20
     height: 20%
+
+.height-10
+    height: 10%
 
 .height-50px
     height: 50px
@@ -139,6 +150,12 @@ p
 .margin-hor-large
     margin-left: 150px
     margin-right: 150px
+
+.margin-right-auto
+    margin-right: auto
+
+.margin-right-30
+    margin-right: 30px
 
 html
     font-family: Roboto
@@ -250,6 +267,9 @@ img
 .area-text
     grid-area: text
 
+.gap-20
+    gap: 20px
+
 .gap-50
     gap: 50px
 
@@ -258,6 +278,9 @@ img
 
 .align-base
     align-content: baseline
+
+.fixed
+    position: fixed
 
 .banner-text
     margin-bottom: 0px
