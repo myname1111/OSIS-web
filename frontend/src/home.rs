@@ -1,5 +1,3 @@
-// use wasm_bindgen::JsCast;
-// use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
 
 #[function_component(Home)]
@@ -12,6 +10,7 @@ pub fn home() -> Html {
             <Faq />
             <ProgramEventList pro_event={ ProgramEventType::Program } />
             <ProgramEventList pro_event={ ProgramEventType::Event } />
+            <ContactList />
         </>
     }
 }
@@ -316,4 +315,40 @@ fn rating() -> Html {
             <img src="data/star.png" />
         </div>
     }
+}
+
+#[function_component(ContactList)]
+fn contact_list() -> Html {
+    // <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+    // <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+    // <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+    html! {
+        <div class="margin-base">
+            <h2 class="center-text font-xl">{ "Contacts" }</h2>
+            <div class="flex wrap space-around gap-50 align-base">
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+            </div>
+        </div>
+    }
+}
+
+#[function_component(Contact)]
+fn contact(props: &ContactProp) -> Html {
+    html! {
+        <div class="flex max-width-fit height-150px">
+            <img src={ props.image.clone() } class="width-auto"/>
+            <h2>
+                { props.name.clone() }
+            </h2>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct ContactProp {
+    image: String,
+    name: String,
 }
