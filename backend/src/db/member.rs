@@ -2,7 +2,7 @@ use super::schema::member::dsl::*;
 use super::DbConnection;
 use common::Member;
 use diesel::prelude::*;
-use diesel::result::Error; // TODO: replace diesel::result::Error with custom error struct/enum
+use diesel::result::Error;
 
 type MemberId = i32;
 

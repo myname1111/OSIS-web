@@ -33,3 +33,7 @@ pub fn get_connection_pool() -> DbPool {
         .build(manager)
         .expect("Could not build connection pool")
 }
+
+pub fn get_conn_from_pool(pool: actix_web::web::Data<DbPool>) -> DbConnection {
+    pool.get().expect("couldn't get db connection from pool")
+}

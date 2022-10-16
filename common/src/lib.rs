@@ -155,3 +155,8 @@ pub struct WorkOnProgram {
     pub program: i32,
     pub division: i32,
 }
+
+pub enum Error {
+    DbError(diesel::result::Error),
+    ServerError(actix_web::Error),
+}
