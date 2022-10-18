@@ -12,3 +12,9 @@ mod images;
 mod member;
 /// Program, reviews and improvemens
 mod program;
+
+use actix_web::*;
+
+pub fn config(cfg: &mut web::ServiceConfig) {
+    cfg.service(web::scope("/api").configure(member::config));
+}

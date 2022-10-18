@@ -2,7 +2,7 @@ use crate::db::{get_conn_from_pool, member::*, DbPool};
 use actix_web::*;
 use web::Data;
 
-#[get("/")]
+#[get("/member")]
 async fn get_all_members(pool: Data<DbPool>) -> Result<HttpResponse, Error> {
     let mut conn = get_conn_from_pool(pool);
 
@@ -12,5 +12,5 @@ async fn get_all_members(pool: Data<DbPool>) -> Result<HttpResponse, Error> {
 }
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/member").service(get_all_members));
+    cfg.service(get_all_members);
 }

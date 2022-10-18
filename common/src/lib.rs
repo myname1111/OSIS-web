@@ -74,7 +74,7 @@ pub struct Improvement {
 #[derive(Queryable)]
 pub struct Member {
     pub id: i32,
-    pub profile: i32,
+    pub profile: Option<i32>,
     pub role: String,
     pub bio: String,
     pub joined: Date,

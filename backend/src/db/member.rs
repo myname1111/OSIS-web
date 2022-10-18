@@ -18,6 +18,6 @@ pub fn get_all_member_role(conn: &mut DbConnection) -> Result<Vec<String>, Error
     member.select(role).load::<String>(conn)
 }
 
-pub fn get_all_member_profile(conn: &mut DbConnection) -> Result<Vec<i32>, Error> {
-    member.select(profile_id).load::<i32>(conn)
+pub fn get_all_member_profile(conn: &mut DbConnection) -> Result<Vec<Option<i32>>, Error> {
+    member.select(profile_id).load::<Option<i32>>(conn)
 }
