@@ -71,7 +71,6 @@ pub struct Improvement {
     pub program: Option<i32>,
 }
 
-#[derive(Queryable)]
 pub struct Member {
     pub id: i32,
     pub profile: Option<i32>,
@@ -82,6 +81,51 @@ pub struct Member {
     pub class: String,
     pub division: i32,
     pub head_of: Option<i32>,
+}
+
+impl From<MemberSql> for Member {
+    fn from(other: MemberSql) -> Self {
+        Self {
+            id: other.id,
+            profile: other.profile,
+            role: other.role,
+            bio: other.bio,
+            joined: other.joined,
+            reported: other.reported,
+            class: other.class,
+            division: other.division,
+            head_of: other.head_of,
+        }
+    }
+}
+
+#[derive(Queryable)]
+pub struct MemberSql {
+    pub id: i32,
+    pub profile: Option<i32>,
+    pub role: String,
+    pub bio: String,
+    pub joined: Date,
+    pub reported: i32,
+    pub class: String,
+    pub division: i32,
+    pub head_of: Option<i32>,
+}
+
+impl From<Member> for MemberSql {
+    fn from(other: Member) -> Self {
+        Self {
+            id: other.id,
+            profile: other.profile,
+            role: other.role,
+            bio: other.bio,
+            joined: other.joined,
+            reported: other.reported,
+            class: other.class,
+            division: other.division,
+            head_of: other.head_of,
+        }
+    }
 }
 
 #[derive(Queryable)]
