@@ -78,7 +78,7 @@ diesel::table! {
 diesel::table! {
     member (id) {
         id -> Int4,
-        profile_id -> Int4,
+        profile_id -> Nullable<Int4>,
         role -> Varchar,
         bio -> Varchar,
         joined -> Date,
