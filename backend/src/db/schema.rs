@@ -17,6 +17,7 @@ diesel::table! {
 diesel::table! {
     division (id) {
         id -> Int4,
+        d_name -> Varchar,
     }
 }
 
@@ -78,14 +79,14 @@ diesel::table! {
 diesel::table! {
     member (id) {
         id -> Int4,
+        m_name -> Varchar,
         profile_id -> Nullable<Int4>,
         role -> Varchar,
         bio -> Varchar,
         joined -> Date,
         reported -> Int4,
         class -> Varchar,
-        division_id -> Int4,
-        head_of -> Nullable<Int4>,
+        division_id -> Nullable<Int4>,
     }
 }
 
@@ -172,6 +173,7 @@ diesel::joinable!(forum -> member (member_id));
 diesel::joinable!(forums -> member (member_id));
 diesel::joinable!(improvement -> event (event_id));
 diesel::joinable!(improvement -> program (program_id));
+diesel::joinable!(member -> division (division_id));
 diesel::joinable!(member -> images (profile_id));
 diesel::joinable!(president -> member (id));
 diesel::joinable!(program -> images (profile_id));

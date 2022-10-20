@@ -15,6 +15,8 @@ mod program;
 
 use actix_web::*;
 
+// TODO: make custom error response
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(web::scope("/api").configure(member::config));
 }
