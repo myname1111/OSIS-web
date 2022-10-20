@@ -1,4 +1,4 @@
 /target
 /frontend/dist
-/backend/.env
+/backend.env
 Cargo.lock
