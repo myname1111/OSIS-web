@@ -1,29 +1,60 @@
-// Base color is #dd6c22
-// Accent is #1f7be0
-// Background is white
-
-use wasm_bindgen::JsCast;
-use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
+
 #[function_component(Home)]
 pub fn home() -> Html {
     html! {
-        <div>
+        <>
+            <NavBar pos={ NavBarPos::Fixed } />
             <Banner />
             <WhyOsis />
-            <Testimonies />
             <WhatIsOsis />
             <Faq />
-            <SignUpToday />
-        </div>
+            <ProgramEventList pro_event={ ProgramEventType::Program } />
+            <ProgramEventList pro_event={ ProgramEventType::Event } />
+            <ContactList />
+            <NavBar pos={ NavBarPos::Static } />
+        </>
     }
+}
+
+#[function_component(NavBar)]
+pub fn nav_bar(props: &NavBarProp) -> Html {
+    let pos = match props.pos {
+        NavBarPos::Fixed => "fixed",
+        NavBarPos::Static => "",
+    };
+
+    html! {
+        <nav class={format!("{} back-base flex width-100 height-10 gap-20 top-0", pos)}>
+            <a href="/">
+                <img src="/data/OSIS.png" class="width-auto height-100" />
+            </a>
+            <h2>{ "Why" }</h2>
+            <h2>{ "About" }</h2>
+            <h2>{ "Members" }</h2>
+            <h2>{ "Programs" }</h2>
+            <h2 class="margin-right-auto">{ "Events" }</h2>
+            <h2 class="margin-right-30"> { "Sign in" }</h2>
+        </nav>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+pub struct NavBarProp {
+    pub pos: NavBarPos,
+}
+
+#[derive(PartialEq)]
+pub enum NavBarPos {
+    Fixed,
+    Static,
 }
 
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner cover-image center-vert center-horz-flex center-text height-75 flex">
-            <div class="grid center-horz row-gap-med">
+        <div class="banner cover-image center-vert center-horz center-text height-100">
+            <div class="grid center-horz height-100 row-gap-med">
                 <BannerText />
                 <SignUpButton />
             </div>
@@ -34,23 +65,20 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="flex list-vert margin-base banner-text">
+        <div class="height-100 bottom-vert flex">
             <h1 class="white font-large">
-                <span>{"Empowerment"}</span>
+                <span>
+                    {"Empowerment"}
+                </span>
                 {", "}
-                <span>{"team work"}</span>
+                <span>
+                    {"team work"}
+                </span>
                 {", and "}
-                <span>{"experience"}</span>
+                <span>
+                    {"experience"}
+                </span>
             </h1>
-            <h2 class="white font-medium">
-                { "Make you more " }
-                <span class="font-medium">{ "confident" }</span>
-                {", give you "}
-                <span class="font-medium">{ "control" }</span>
-                {". And your "}
-                <span class="font-medium">{ "friends" } </span>
-                { " will help you along the way" }
-            </h2>
         </div>
     }
 }
@@ -58,7 +86,7 @@ fn banner_text() -> Html {
 #[function_component(SignUpButton)]
 fn sign_up_button() -> Html {
     html! {
-        <div class="hover back-white width-15 flex center-vert center-horz">
+        <div class="hover back-white width-30 height-30 flex center-vert center-horz">
             <h1 class="font-medium width-100">{ "Sign up for a better future" }</h1>
         </div>
     }
@@ -67,50 +95,27 @@ fn sign_up_button() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="margin-large margin-hor-0">
-            <h1 class="font-xl center-text">{ "Why should I join OSIS?" }</h1>
-            <div class="flex wrap center-horz list-vert gap-150 center-vert">
-                <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126">
+        <div class="margin-base">
+            <h1 class="font-xl center-text">{ "Why osis" }</h1>
+            <div class="flex wrap space-around">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Experience" link="/about/0">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Give you control" align={WhyOsisAlign::Right} color="267ed9">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Collaboration" link="/about/1">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-                <WhyOsisSection image_path="data/banner.jpeg" header="Dream big with team work" align={WhyOsisAlign::Left} color="d98126">
+                <WhyOsisSection image_path="data/banner.jpeg" header="Empowerment" link="/about/2">
                     <p class="font-medium">{ "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
                     "}</p>
                 </WhyOsisSection>
-            </div>
-        </div>
-    }
-}
-
-#[function_component(WhyOsisSection)]
-fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
-    let alignment = match props.align {
-        WhyOsisAlign::Left => "align-right ver-split-2-1",
-        WhyOsisAlign::Right => "align-left ver-split-1-2",
-    };
-
-    html! {
-        <div class={format!("grid {} center-vert why-osis-section", alignment)}>
-            <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={props.image_path.clone()} />
-            <div class="area-text flex list-vert">
-                <div>
-                    { for props.children.iter() }
-                </div>
-                <div class="info-button">
-                    <LearnMoreButton />
-                </div>
             </div>
         </div>
     }
@@ -121,66 +126,28 @@ struct WhyOsisSectionProp {
     children: Children,
     header: String,
     image_path: String,
-    align: WhyOsisAlign,
-    color: String,
+    link: String,
 }
 
-#[derive(PartialEq)]
-enum WhyOsisAlign {
-    Left,
-    Right,
-}
-
-#[function_component(Testimonies)]
-fn testimonies() -> Html {
+#[function_component(WhyOsisSection)]
+fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
     html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Our proof" }</h1>
-            <div class="flex wrap space-around gap-50">
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-                <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-                </Testimony>
-            </div>
-        </div>
-    }
-}
-
-#[function_component(Testimony)]
-fn testimony(props: &TestimonyProp) -> Html {
-    html! {
-        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3 testimony">
+        <div class="flex list-vert width-20 min-width-400">
             <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={ props.image_path.clone() } class="" />
-            <div class="area-text">
-                { for props.children.iter() }
-            </div>
+            <img src={props.image_path.clone()} />
+            { for props.children.iter() }
+            <LearnMoreButton link={ props.link.clone() }/>
         </div>
     }
-}
-
-#[derive(Properties, PartialEq)]
-struct TestimonyProp {
-    header: String,
-    children: Children,
-    image_path: String,
 }
 
 #[function_component(WhatIsOsis)]
 fn what_is_osis() -> Html {
     html! {
-        <div>
+        <>
             <h1 class="font-xl center-text">{ "What is osis" }</h1>
             <OsisInfo />
-        </div>
+        </>
     }
 }
 
@@ -191,79 +158,24 @@ fn osis_info() -> Html {
             <img src="data/banner.jpeg" class="img"/>
             <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-            <LearnMoreButton />
+            <LearnMoreButton link="/about/3"/>
         </div>
     }
+}
+
+#[derive(Properties, PartialEq)]
+struct LearnMoreButtonProp {
+    link: String,
 }
 
 #[function_component(LearnMoreButton)]
-fn learn_more_button() -> Html {
+fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     html! {
-        <div class="hover back-accent but center-text margin-smallest width-50">
+        <a href={props.link.clone()} class="back-accent but center-text margin-smallest width-50 link-nochange">
             <h1 class="font-medium white">{ "Learn more" }</h1>
-        </div>
+        </a>
     }
 }
-
-// #[function_component(ProgramListMain)]
-// fn program_list_main() -> Html {
-//     html! {
-//         <div class="margin-base">
-//             <h1 class="font-xl center-text">{ "Our best programs" }</h1>
-//             <div class="flex space-around wrap">
-//                 <ProgramEvent />
-//                 <ProgramEvent />
-//                 <ProgramEvent />
-//                 <ProgramEvent />
-//             </div>
-//         </div>
-//     }
-// }
-
-// // enum ProgramEventType {
-// //     Program,
-// //     Event,
-// // }
-// //
-// // #[derive(Properties, PartialEq)]
-// // struct ProgramEventProp {
-// //     pe_type: ProgramEventType
-// // }
-
-// #[function_component(ProgramEvent)]
-// fn program_events() -> Html {
-//     html! {
-//         <div class="grid hor-split-aaa width-1-5 min-width-200 center-vert">
-//             <div>
-//                 <h1 class="font-large center-text">{ "Lorem ipsum" }</h1>
-//             </div>
-//             <div class="height-100">
-//                 <img src="data/program.jpeg" class="height-100" />
-//             </div>
-//             <div class="height-100">
-//                 <Rating />
-//             </div>
-//         </div>
-//     }
-// }
-
-// // #[derive(Properties)]
-// // struct RatingProp {
-// //     rating: u8
-// // }
-
-// #[function_component(Rating)]
-// fn rating() -> Html {
-//     html! {
-//         <div class="grid ver-split-5x1">
-//             <img class="height-100" src="data/star.png" />
-//             <img class="height-100" src="data/star.png" />
-//             <img class="height-100" src="data/star.png" />
-//             <img class="height-100" src="data/star.png" />
-//             <img class="height-100" src="data/star.png" />
-//         </div>
-//     }
-// }
 
 #[function_component(Faq)]
 fn faq() -> Html {
@@ -352,79 +264,123 @@ impl Dropdown {
     }
 }
 
-#[function_component(SignUpToday)]
-fn sign_up_today() -> Html {
+#[function_component(ProgramEventList)]
+fn program_event_list(props: &ProgramEventListProp) -> Html {
+    let header = match props.pro_event {
+        ProgramEventType::Program => "Our best programs",
+        ProgramEventType::Event => "Our latest events",
+    };
+
+    let link = match props.pro_event {
+        ProgramEventType::Program => "/todo/program",
+        ProgramEventType::Event => "/todo/event",
+    };
+
+    let link_text = match props.pro_event {
+        ProgramEventType::Program => "Click here to see more programs",
+        ProgramEventType::Event => "Click here to see more event",
+    };
+
     html! {
-        <div class="flex center-vert center-horz list-vert">
-            <h1 class="font-xl">{ "Sign up for a better future" }</h1>
-            <SignUp />
+        <div class="margin-base flex center-horz list-vert">
+            <h1 class="font-xl center-text">{ header }</h1>
+            <div class="flex space-around wrap">
+                <ProgramEvent />
+                <ProgramEvent />
+                <ProgramEvent />
+                <ProgramEvent />
+            </div>
+            <a href={ link }><h2 class="center-text">{ link_text }</h2></a>
         </div>
     }
 }
 
-struct SignUp {
-    username: String,
-    password: String,
+#[derive(Properties, PartialEq)]
+struct ProgramEventListProp {
+    // Program or events
+    pro_event: ProgramEventType,
 }
 
-impl Component for SignUp {
-    type Message = SignUpMsg;
-    type Properties = ();
+#[derive(PartialEq)]
+enum ProgramEventType {
+    Program,
+    Event,
+}
 
-    fn create(_: &Context<Self>) -> Self {
-        Self {
-            username: "".to_string(),
-            password: "".to_string(),
-        }
-    }
+// enum ProgramEventType {
+//     Program,
+//     Event,
+// }
+//
+// #[derive(Properties, PartialEq)]
+// struct ProgramEventProp {
+//     pe_type: ProgramEventType
+// }
 
-    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            SignUpMsg::SetUsername(x) => {
-                self.username = x;
-                true
-            }
-            SignUpMsg::SetPassword(x) => {
-                self.password = x;
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let set_name = ctx.link().batch_callback(|event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
-
-            input.map(|input| SignUpMsg::SetUsername(input.value()))
-        });
-
-        let set_reason = ctx.link().batch_callback(|event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
-
-            input.map(|input| SignUpMsg::SetPassword(input.value()))
-        });
-
-        html! {
-            <form class="margin-base white grid back-base center-horz center-text height-20 width-50">
-                <label for="usern" class="font-medium">{ "Username" }</label>
-                <textarea type="text" id="usern" name="usern" class="width-50 font-medium" onchange={set_name}/>
-                <label for="reason" class="font-medium">{ "Password" }</label>
-                <textarea type="text" id="reason" name="reason" class="width-50 font-medium" onchange={set_reason}/><div class="height-50px"/>
-                <div class="sign-up-button flex center-horz-flex width-100">
-                    <SignUpButton />
-                </div>
-                <div class="height-50px"/>
-            </form>
-        }
+#[function_component(ProgramEvent)]
+fn program_events() -> Html {
+    html! {
+        <div class="grid hor-split-aaa width-1-5 min-width-200 center-vert">
+            <div>
+                <h1 class="font-large center-text">{ "Lorem ipsum" }</h1>
+            </div>
+            <div class="height-100">
+                <img src="data/program.jpeg" class="height-100" />
+            </div>
+            <div class="height-100">
+                <Rating />
+            </div>
+        </div>
     }
 }
 
-enum SignUpMsg {
-    SetUsername(String),
-    SetPassword(String),
-    // Submit; todo
+// #[derive(Properties)]
+// struct RatingProp {
+//     rating: u8
+// }
+
+#[function_component(Rating)]
+fn rating() -> Html {
+    html! {
+        <div class="flex rating">
+            <img src="data/star.png" />
+            <img src="data/star.png" />
+            <img src="data/star.png" />
+            <img src="data/star.png" />
+            <img src="data/star.png" />
+        </div>
+    }
+}
+
+#[function_component(ContactList)]
+fn contact_list() -> Html {
+    html! {
+        <div class="margin-base">
+            <h2 class="center-text font-xl">{ "Contacts" }</h2>
+            <div class="flex wrap space-around gap-50 align-base">
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+                <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
+            </div>
+        </div>
+    }
+}
+
+#[function_component(Contact)]
+fn contact(props: &ContactProp) -> Html {
+    html! {
+        <div class="flex max-width-fit height-150px">
+            <img src={ props.image.clone() } class="width-auto"/>
+            <h2>
+                { props.name.clone() }
+            </h2>
+        </div>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct ContactProp {
+    image: String,
+    name: String,
 }

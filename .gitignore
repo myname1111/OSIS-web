@@ -2,3 +2,5 @@
 /frontend/dist
 /backend/.env
 Cargo.lock
+/backend.env
+Cargo.lock
