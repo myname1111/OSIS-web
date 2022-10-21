@@ -1,16 +1,17 @@
 use actix_web::*;
 use actix_web_lab::web::spa;
 
-// #[get("/member")]
-// async fn get_hello() -> impl Responder {
-//     "Hello world!"
-// }
+mod api;
+mod db;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+    let pool = db::get_connection_pool();
+
+    HttpServer::new(move || {
         App::new()
-            // .service(web::scope("/api").service(get_hello))
+            .app_data(web::Data::new(pool.clone()))
+            .configure(api::config)
             .service(
                 spa()
                     .index_file("../frontend/dist/index.html")
