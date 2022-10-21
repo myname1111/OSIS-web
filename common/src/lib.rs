@@ -16,6 +16,7 @@ pub struct BlogPost {
 #[derive(Queryable)]
 pub struct Division {
     pub id: i32,
+    pub name: String
 }
 
 #[derive(Queryable)]
@@ -97,20 +98,21 @@ impl TryFrom<Date> for time::Date {
 #[derive(Serialize, Deserialize)]
 pub struct Member {
     pub id: i32,
-    pub profile: Option<i32>,
+    pub name: String,
+    pub profile: Option<i32>, // Replace this with Option<Image>
     pub role: String,
     pub bio: String,
     pub joined: Date,
     pub reported: i32,
     pub class: String,
-    pub division: i32,
-    pub head_of: Option<i32>,
+    pub division: Option<i32>,
 }
 
 impl From<MemberSql> for Member {
     fn from(other: MemberSql) -> Self {
         Self {
             id: other.id,
+            name: other.name,
             profile: other.profile,
             role: other.role,
             bio: other.bio,
@@ -118,7 +120,6 @@ impl From<MemberSql> for Member {
             reported: other.reported,
             class: other.class,
             division: other.division,
-            head_of: other.head_of,
         }
     }
 }
@@ -126,14 +127,14 @@ impl From<MemberSql> for Member {
 #[derive(Queryable)]
 pub struct MemberSql {
     pub id: i32,
+    pub name: String,
     pub profile: Option<i32>,
     pub role: String,
     pub bio: String,
     pub joined: time::Date,
     pub reported: i32,
     pub class: String,
-    pub division: i32,
-    pub head_of: Option<i32>,
+    pub division: Option<i32>,
 }
 
 impl TryFrom<Member> for MemberSql {
@@ -142,6 +143,7 @@ impl TryFrom<Member> for MemberSql {
     fn try_from(other: Member) -> Result<Self, Self::Error> {
         Ok(Self {
             id: other.id,
+            name: other.name,
             profile: other.profile,
             role: other.role,
             bio: other.bio,
@@ -149,7 +151,6 @@ impl TryFrom<Member> for MemberSql {
             reported: other.reported,
             class: other.class,
             division: other.division,
-            head_of: other.head_of,
         })
     }
 }

@@ -5,19 +5,20 @@ CREATE TABLE images (
 );
 
 CREATE TABLE division (
-    id INTEGER PRIMARY KEY
+    id INTEGER PRIMARY KEY,
+    d_name VARCHAR NOT NULL
 );
 
 CREATE TABLE member (
     id SERIAL PRIMARY KEY,
+    m_name VARCHAR NOT NULL,
     profile_id INTEGER REFERENCES images,
-    role VARCHAR NOT NUll,
-    bio VARCHAR NOT NULL,
+    role VARCHAR DEFAULT 'member' NOT NUll,
+    bio VARCHAR DEFAULT 'Hello' NOT NULL,
     joined DATE NOT NULL,
-    reported INTEGER NOT NULL DEFAULT 1,
+    reported INTEGER NOT NULL DEFAULT 0,
     class VARCHAR NOT NULL,
-    division_id INTEGER NOT NULL REFERENCES division,
-    head_of INTEGER REFERENCES division
+    division_id INTEGER REFERENCES division
 );
 
 CREATE TABLE president (
