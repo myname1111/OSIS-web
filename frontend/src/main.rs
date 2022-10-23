@@ -1,8 +1,10 @@
 mod about;
 mod home;
 mod landing;
+mod member;
 
 use about::About;
+use member::MemberComp;
 use home::Home;
 use landing::Landing;
 
@@ -17,6 +19,8 @@ enum Route {
     About { id: u8 },
     #[at("/landing")]
     Landing,
+    #[at("/member/:id")]
+    Member { id: u32 },
 }
 
 fn switch(route: &Route) -> Html {
@@ -29,6 +33,9 @@ fn switch(route: &Route) -> Html {
         },
         Route::Landing => html! {
             <Landing />
+        },
+        Route::Member { id } => html! {
+            <MemberComp member_id={ *id } />
         },
     }
 }

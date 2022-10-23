@@ -72,7 +72,7 @@ pub struct Improvement {
     pub program: Option<i32>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Copy, Clone)]
 pub struct Date {
     year: i32,
     ordinal: u16,
@@ -95,7 +95,7 @@ impl TryFrom<Date> for time::Date {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Member {
     pub id: i32,
     pub name: String,
@@ -106,6 +106,7 @@ pub struct Member {
     pub reported: i32,
     pub class: String,
     pub division: Option<i32>,
+    // add pub profile Vec<image> or Vec<Vec<u8>>
 }
 
 impl From<MemberSql> for Member {
@@ -225,9 +226,4 @@ pub struct WorkOnEvent {
 pub struct WorkOnProgram {
     pub program: i32,
     pub division: i32,
-}
-
-pub enum Error {
-    DbError(diesel::result::Error),
-    ServerError(actix_web::Error),
 }
