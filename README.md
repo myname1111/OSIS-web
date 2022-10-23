@@ -38,7 +38,7 @@ cd ..
 ### 3. Build and run backend
 
 ```bat
-echo DATABASE_URL=postgres://postgres:bima1709@localhost:8080/osis_web > .env 
+echo DATABASE_URL=postgres://user:password@localhost:port/osis_web > .env 
 cd backend
 cargo run // use cargo watch for hot reloading
 ```
