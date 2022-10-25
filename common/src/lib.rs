@@ -1,5 +1,6 @@
 use diesel::{data_types::PgInterval, Queryable};
 use serde::*;
+use std::fmt;
 
 #[derive(Queryable)]
 pub struct Blog {
@@ -72,7 +73,7 @@ pub struct Improvement {
     pub program: Option<i32>,
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
 pub struct Date {
     year: i32,
     ordinal: u16,
@@ -95,7 +96,13 @@ impl TryFrom<Date> for time::Date {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+impl fmt::Display for Date {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", time::Date::try_from(*self).unwrap())
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Member {
     pub id: i32,
     pub name: String,

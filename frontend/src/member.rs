@@ -1,39 +1,59 @@
-use common::Member;
+use common::{Member, Date};
 use reqwasm::http::Request;
 use yew::prelude::*;
 
-fn get_member(id: u32) -> Member {
-    try_get_member(id).expect("Cannot get member")
+async fn get_member(id: u32) -> Member {
+    try_get_member(id).await.expect("Cannot get member")
 }
 
-fn try_get_member(id: u32) -> Option<Member> {
-    let member: UseStateHandle<Option<Member>> = use_state(|| None);
-    let member_clone = member.clone();
-    wasm_bindgen_futures::spawn_local(async move {
-        let member_fetch = Request::get(
-                format!("https://0.0.0.0/api/member/{}", id).as_str()
-            )
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap();
-        member.set(member_fetch)
-    });
-    match member_clone.as_ref() {
-        Some(e) => Some(e.clone()),
-        None => None
-    }
+async fn try_get_member(id: u32) -> Option<Member> {
+    log::info!("Using id {}", id);
+    let url = format!("http://localhost/api/member/{}", id);
+    log::debug!("With url of {}", url);
+    let member: Option<Member> = Request::get(url.as_str())
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    log::info!("{}", if member.is_some() { "Success!" } else { "No member found" });
+    log::debug!("{:?}", member);
+    member
 }
 
 #[function_component(MemberComp)]
 pub fn member_comp(props: &MemberProp) -> Html {
-    html! {
-        <div>
-            <MemberInfo member_id={ props.member_id } />
-            <MemberDesc member_id={ props.member_id }/>
-        </div>
+    let member_id = props.member_id;
+    let member = use_state(|| None);
+    
+    {
+        let member = member.clone();
+        use_effect_with_deps( move |_| {
+            let member = member.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_member = get_member(member_id).await;
+                member.set(Some(fetched_member));
+            });
+            || ()
+        }, ())
+    }
+
+    if let Some(member) = &*member {
+       html! {
+            <div>
+                <MemberInfo profile={ member.profile.clone() } 
+                    name={ member.name.clone() } division={ member.division.clone() }
+                    joined={ member.joined.clone() } class={ member.class.clone() }/>
+                <MemberDesc bio={ member.bio.clone() }/>
+            </div>
+        } 
+    } else {
+        html! {
+            <>
+                <p>{ "Loading, please wait" }</p>
+            </>
+        }
     }
 }
 
@@ -43,27 +63,25 @@ pub struct MemberProp {
 }
 
 #[function_component(MemberInfo)]
-fn member_info(props: &MemberProp) -> Html {
-    let member: Member = get_member(props.member_id);
-
+fn member_info(props: &MemberInfoProp) -> Html {
     html! {
         <div class="grid vert-split-2-3">
             <img src={
-                    format!("https://0.0.0.0/api/images/{}", member.profile
-                            .unwrap_or(0))
+                    format!("https://0.0.0.0/api/images/{}", 
+                            props.profile.unwrap_or(0))
                 }
                 alt="member profile"/>
             <div class="flex list-vert"> <h1 class="font-large">
-                    {format!("name: {}", member.name)}
+                    {format!("name: {}", props.name.clone())}
                 </h1>
                 <h1 class="font-large">
-                    {format!("name: {}", member.name)}
+                    {format!("division {}", props.division.clone().unwrap_or(0))}
                 </h1>
                  <h1 class="font-large">
-                    {format!("name: {}", member.name)}
+                    {format!("date joined: {}", props.joined.clone())}
                 </h1>
                 <h1 class="font-large">
-                    {format!("name: {}", member.name)}
+                    {format!("class: {}", props.class.clone())}
                 </h1>
                 <a href="https://0.0.0.0/report"
                     class="link-nochange font-large"
@@ -76,13 +94,25 @@ fn member_info(props: &MemberProp) -> Html {
     }
 }
 
+#[derive(Properties, PartialEq)]
+struct MemberInfoProp {
+    profile: Option<i32>,
+    name: String,
+    division: Option<i32>,
+    joined: Date,
+    class: String
+}
+  
 #[function_component(MemberDesc)]
-fn member_desc(props: &MemberProp) -> Html {
-    let member: Member = get_member(props.member_id);
-
+fn member_desc(props: &MemberDescProp) -> Html {
     html! {
         <div class="flex list-vert">
-            <p>{ member.bio }</p>
+            <p>{ props.bio.clone() }</p>
         </div>
     }
+}
+
+#[derive(Properties, PartialEq)]
+struct MemberDescProp {
+    bio: String
 }

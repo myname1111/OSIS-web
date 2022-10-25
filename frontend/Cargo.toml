@@ -14,5 +14,6 @@ yew-router = "0.16"
 reqwasm = "0.5.0"
 wasm-bindgen-futures = "0.4.33"
 common = { path = "../common" }
-
-
+wasm-logger = "0.2.0"
+log = "0.4.6"
+futures = "0.3"

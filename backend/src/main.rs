@@ -20,7 +20,7 @@ async fn main() -> std::io::Result<()> {
                     .finish(),
             )
     })
-    .bind(("0.0.0.0", 80))?
+    .bind(("localhost", 80))?
     .run()
     .await
 }
