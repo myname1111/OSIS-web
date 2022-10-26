@@ -1,6 +1,16 @@
 /target
 /frontend/dist
+<<<<<<< HEAD
 /backend/.env
 Cargo.lock
 /backend.env
 Cargo.lock
+=======
+<<<<<<< HEAD
+/backend.env
+Cargo.lock
+=======
+/backend/.env
+Cargo.lock
+>>>>>>> ac92d75bfc9d6c2c29014b0400184a247195fd7e
+>>>>>>> 5b18b5adb3a323affe8a5297ae8e6447be6beed4
