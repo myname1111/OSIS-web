@@ -26,7 +26,7 @@ async fn try_get_member(id: u32) -> Option<Member> {
 pub fn member_comp(props: &MemberProp) -> Html {
     let member_id = props.member_id;
     let member = use_state(|| None);
-    
+
     {
         let member = member.clone();
         use_effect_with_deps( move |_| {
@@ -42,9 +42,9 @@ pub fn member_comp(props: &MemberProp) -> Html {
     if let Some(member) = &*member {
        html! {
             <div>
-                <MemberInfo profile={ member.profile.clone() } 
-                    name={ member.name.clone() } division={ member.division.clone() }
-                    joined={ member.joined.clone() } class={ member.class.clone() }/>
+                <MemberInfo profile={ member.profile } 
+                    name={ member.name.clone() } division={ member.division }
+                    joined={ member.joined } class={ member.class.clone() }/>
                 <MemberDesc bio={ member.bio.clone() }/>
             </div>
         } 
@@ -57,7 +57,7 @@ pub fn member_comp(props: &MemberProp) -> Html {
     }
 }
 
-#[derive(Properties, PartialEq)]
+#[derive(Properties, PartialEq, Eq)]
 pub struct MemberProp {
     pub member_id: u32,
 }
@@ -75,7 +75,7 @@ fn member_info(props: &MemberInfoProp) -> Html {
                     {format!("name: {}", props.name.clone())}
                 </h1>
                 <h1 class="font-large">
-                    {format!("division {}", props.division.clone().unwrap_or(0))}
+                    {format!("division {}", props.division.unwrap_or(0))}
                 </h1>
                  <h1 class="font-large">
                     {format!("date joined: {}", props.joined.clone())}
