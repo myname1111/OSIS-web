@@ -209,7 +209,7 @@ pub fn about(props: &AboutProp) -> Html {
     }
 }
 
-#[derive(Properties, PartialEq)]
+#[derive(Properties, PartialEq, Eq)]
 pub struct AboutProp {
     pub content_id: u8,
 }

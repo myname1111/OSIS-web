@@ -1,9 +1,5 @@
 /target
 /frontend/dist
-<<<<<<< HEAD
-/backend.env
-Cargo.lock
-=======
 /backend/.env
+/backend/data
 Cargo.lock
->>>>>>> ac92d75bfc9d6c2c29014b0400184a247195fd7e

@@ -73,7 +73,7 @@ pub struct Improvement {
     pub program: Option<i32>,
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub struct Date {
     year: i32,
     ordinal: u16,
