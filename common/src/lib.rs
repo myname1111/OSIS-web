@@ -56,10 +56,10 @@ pub struct Forums {
     pub member: i32,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, Serialize, Deserialize, Debug)]
 pub struct Image {
     pub id: i32,
-    pub image: Vec<u8>,
+    pub path: String,
     pub title: String,
 }
 

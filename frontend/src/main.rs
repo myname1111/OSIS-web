@@ -2,6 +2,7 @@ mod about;
 mod home;
 mod landing;
 mod member;
+mod backend;
 
 use about::About;
 use member::MemberComp;
