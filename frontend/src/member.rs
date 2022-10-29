@@ -56,7 +56,7 @@ fn member_info(props: &MemberInfoProp) -> Html {
         use_effect_with_deps(move |_| {
             let image = image.clone();
             wasm_bindgen_futures::spawn_local(async move {
-                let fetched_image = get_image(id.try_into().unwrap()).await;
+                let fetched_image = get_image(id).await;
 
                 image.set(Some(fetched_image))
             });
@@ -66,27 +66,32 @@ fn member_info(props: &MemberInfoProp) -> Html {
 
 
     html! {
-        <div class="grid vert-split-2-3">
-            <img src={
-                    if let Some(image) = &*image {
-                        format!("http://localhost/data/{}", image.path)
-                    } else {
-                        "http://localhost/data/person.png".to_string()
+        <div class="flex margin-vert-80">
+            <div class="width-40 flex center-horz space-around center-horz">
+                <div class="width-80">
+                    <img src={
+                        if let Some(image) = &*image {
+                            format!("http://localhost/data/{}", image.path)
+                        } else {
+                            "http://localhost/data/person.png".to_string()
+                        }
                     }
-                }
-                alt="member profile"/>
-            <div class="flex list-vert"> <h1 class="font-large">
+                        alt="member profile"/> // Replace alt with {member.name}
+                </div>
+            </div> 
+            <div class="member-properties">
+                <h2>
                     {format!("name: {}", props.name.clone())}
-                </h1>
-                <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("division {}", props.division.unwrap_or(0))}
-                </h1>
-                 <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("date joined: {}", props.joined.clone())}
-                </h1>
-                <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("class: {}", props.class.clone())}
-                </h1>
+                </h2>
                 <a href="https://0.0.0.0/report"
                     class="link-nochange font-large"
                 > // TODO: make
@@ -110,8 +115,8 @@ struct MemberInfoProp {
 #[function_component(MemberDesc)]
 fn member_desc(props: &MemberDescProp) -> Html { 
     html! {
-        <div class="flex list-vert">
-            <p>{ props.bio.clone() }</p>
+        <div class="flex list-vert margin-small">
+            <p>{ props.bio.clone() }</p> //TODO: Create image list
         </div>
     }
 }
