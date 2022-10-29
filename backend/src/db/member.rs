@@ -1,5 +1,6 @@
 use super::schema::member::dsl::*;
 use super::DbConnection;
+use super::image::ImageId;
 use common::MemberSql;
 use diesel::prelude::*;
 use diesel::result::Error;
@@ -8,16 +9,20 @@ use serde::{Deserialize, Serialize};
 pub type MemberId = i32;
 
 #[derive(Serialize, Deserialize)]
-pub(crate) struct MemberPreview {
-    pub(crate) profile: Option<i32>,
-    pub(crate) role: String,
+pub struct MemberPreview {
+    pub profile: Option<i32>,
+    pub role: String,
+    pub name: String,
+    pub division: Option<ImageId>
 }
 
-impl From<(Option<i32>, String)> for MemberPreview {
-    fn from(other: (Option<i32>, String)) -> Self {
+impl From<(Option<i32>, String, String, Option<ImageId>)> for MemberPreview {
+    fn from(other: (Option<i32>, String, String, Option<ImageId>)) -> Self {
         Self {
             profile: other.0,
             role: other.1,
+            name: other.2,
+            division: other.3
         }
     }
 }
@@ -34,9 +39,9 @@ pub(crate) fn get_all_member_id(conn: &mut DbConnection) -> Result<Vec<MemberId>
 }
 
 pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> Result<Vec<MemberPreview>, Error> {
-    let out: std::result::Result<Vec<(Option<i32>, String)>, _> = member
-        .select((profile_id, role))
-        .load::<(Option<i32>, String)>(conn);
+    let out = member
+        .select((profile_id, role, m_name, division_id))
+        .load::<(Option<i32>, String, String, Option<ImageId>)>(conn);
 
     Ok(out?
         .into_iter()
