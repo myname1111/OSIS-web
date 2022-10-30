@@ -42,3 +42,30 @@ pub async fn try_get_image(id: u32) -> Option<Image> {
     log::debug!("{:?}", image);
     image
 }
+
+pub async fn get_member_list() -> Vec<MemberPreview> {
+    try_get_member_list().await.expect("There was a problem in getting the member preview")
+}
+
+pub async fn try_get_member_list() -> Option<Vec<MemberPreview>> {
+    log::info!("Attempting to get all member preview");
+    let url = "http://localhost/api/member/preview";
+
+    let preview: Option<Vec<MemberPreview>> = Request::get(url)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    
+    if preview.is_some() {
+        log::info!("Success")
+    } else {
+        log::warn!("Unable to get member preview")
+    };
+    
+    log::debug!("{:?}", preview);
+
+    preview
+}

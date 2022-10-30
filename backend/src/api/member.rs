@@ -1,6 +1,6 @@
 use crate::db::{get_conn_from_pool, member::*, DbPool};
 use actix_web::*;
-use common::Member;
+use common::{MemberPreview, Member};
 use web::{Data, Json, Path};
 
 #[get("/")]

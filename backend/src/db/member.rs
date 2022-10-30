@@ -1,31 +1,11 @@
 use super::schema::member::dsl::*;
 use super::DbConnection;
 use super::image::ImageId;
-use common::MemberSql;
+use common::{MemberSql, MemberPreview};
 use diesel::prelude::*;
 use diesel::result::Error;
-use serde::{Deserialize, Serialize};
 
 pub type MemberId = i32;
-
-#[derive(Serialize, Deserialize)]
-pub struct MemberPreview {
-    pub profile: Option<i32>,
-    pub role: String,
-    pub name: String,
-    pub division: Option<ImageId>
-}
-
-impl From<(Option<i32>, String, String, Option<ImageId>)> for MemberPreview {
-    fn from(other: (Option<i32>, String, String, Option<ImageId>)) -> Self {
-        Self {
-            profile: other.0,
-            role: other.1,
-            name: other.2,
-            division: other.3
-        }
-    }
-}
 
 pub(crate) fn get_member_by_id(
     conn: &mut DbConnection,
