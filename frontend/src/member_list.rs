@@ -19,22 +19,20 @@ pub fn member_list() -> Html {
 
     let images = use_state(|| None);
 
-    {
+    if let Some(member_list) = &*member_list {
         let images = images.clone();
         let member_list = member_list.clone();
         use_effect_with_deps(move |_| {
             let images = images.clone();
             wasm_bindgen_futures::spawn_local(async move {
                 let mut fetched_images = vec![];
-                if let Some(member_list) = &*member_list { 
-                    for member in member_list {
-                        if let Some(profile) = member.profile {
-                            fetched_images.push(Some(get_image(profile.try_into().unwrap()).await))
-                        } else {
-                            fetched_images.push(None)
-                        }
+                for member in member_list {
+                    if let Some(profile) = member.profile {
+                        fetched_images.push(Some(get_image(profile.try_into().unwrap()).await))
+                    } else {
+                        fetched_images.push(None)
                     }
-                };
+                }
                 images.set(Some(fetched_images))
             });
             || ()
@@ -45,6 +43,8 @@ pub fn member_list() -> Html {
         <div>
             {
                 if let (Some(images), Some(member_list)) = (&*images, &*member_list) {
+                    log::debug!("images: {:?}", images);
+                    log::debug!("members: {:?}", member_list);
                     member_list.iter().zip(images.iter()).map(|(member, image)| {
                         html! {
                             <Member member={(*member).clone()} image={(*image).clone()} />
@@ -68,10 +68,14 @@ pub fn member_list() -> Html {
 
 #[function_component(Member)]
 fn member(props: &MemberProp) -> Html {
+    log::info!("rendering preview with data {:?}", props.member);
     html! {
         <div class="member-container">
-            <img src={props.image.as_ref().map(|image| image.path.clone())
-                .unwrap_or_else(|| "http://localhost/data/person.png".to_string())} />
+            <h2>{ props.member.name.clone() }</h2>
+            <img src={format!("http://localhost/data/{}", props.image.as_ref()
+                .map(|image| image.path.clone())
+                .unwrap_or_else(|| "person.png".to_string()))} />
+            <h2>{ props.member.role.clone() }</h2>
         </div>
     }
 }
