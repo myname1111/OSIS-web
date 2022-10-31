@@ -2,17 +2,20 @@ mod about;
 mod home;
 mod landing;
 mod member;
+mod backend;
+mod member_list;
 
 use about::About;
 use member::MemberComp;
 use home::Home;
 use landing::Landing;
+use member_list::MemberList;
 
 use yew::prelude::*;
 use yew_router::prelude::*;
 
 #[derive(Clone, Routable, PartialEq)]
-enum Route {
+enum Route { // TODO: create 404
     #[at("/")]
     Home,
     #[at("/about/:id")]
@@ -21,6 +24,8 @@ enum Route {
     Landing,
     #[at("/member/:id")]
     Member { id: u32 },
+    #[at("/member")]
+    MemberList
 }
 
 fn switch(route: &Route) -> Html {
@@ -37,6 +42,9 @@ fn switch(route: &Route) -> Html {
         Route::Member { id } => html! {
             <MemberComp member_id={ *id } />
         },
+        Route::MemberList => html! {
+            <MemberList />
+        }
     }
 }
 

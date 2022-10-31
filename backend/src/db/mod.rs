@@ -6,6 +6,7 @@ use dotenvy::dotenv;
 use std::env;
 
 pub mod member;
+pub mod image;
 mod schema;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;

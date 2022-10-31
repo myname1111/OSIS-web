@@ -60,7 +60,7 @@ diesel::table! {
 diesel::table! {
     images (id) {
         id -> Int4,
-        i_image -> Bytea,
+        i_path -> Varchar,
         title -> Varchar,
     }
 }

@@ -1,6 +1,6 @@
 CREATE TABLE images (
     id INTEGER PRIMARY KEY,
-    i_image BYTEA NOT NULL,
+    i_path VARCHAR NOT NULL,
     title VARCHAR NOT NULL
 );
 

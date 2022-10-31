@@ -1,7 +1,7 @@
 /* Atomic css. Do not forget
 
 @use "sass:math"
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap')
 
 $accent: #1f7be0
 
@@ -60,7 +60,7 @@ nav > h2
     height: 50px
 
 .height-150px
-    height: 150px
+  height: 150px
 
 .list-vert
     flex-direction: column
@@ -69,7 +69,13 @@ nav > h2
     width: 15%
 
 .width-50
-    width: 50%
+  width: 50%
+
+.width-80
+  width: 80%
+
+.width-40
+  width: 40%
 
 .width-fit
     width: fit-content
@@ -141,7 +147,10 @@ nav > h2
     margin: 100px
 
 .margin-large
-    margin: 150px
+  margin: 150px
+
+.margin-small
+  margin: 50px
 
 .margin-hor-0
     margin-left: 0px
@@ -157,8 +166,12 @@ nav > h2
 .margin-right-30
     margin-right: 30px
 
+.margin-vert-80
+  margin-top: 80px
+  margin-bottom: 80px
+
 html
-    font-family: Roboto
+  font-family: 'Raleway', sans-serif
 
 .font-large
     font-size: 50px
@@ -249,9 +262,6 @@ img
 .margin-smallest
     margin: auto
 
-.width-50
-    width: 50%
-
 .min-width-300
     min-width: 300px
 
@@ -320,3 +330,12 @@ img
 .rating img
     height: 100%
     width: 20%
+
+.member-properties
+  display: flex,
+  flex-direction: column
+
+.member-properties > h2
+  font-size: 50px,
+  margin: 0px
+  font-weight: 400

@@ -1,26 +1,6 @@
-use common::{Member, Date};
-use reqwasm::http::Request;
+use common::Date;
 use yew::prelude::*;
-
-async fn get_member(id: u32) -> Member {
-    try_get_member(id).await.expect("Cannot get member")
-}
-
-async fn try_get_member(id: u32) -> Option<Member> {
-    log::info!("Using id {}", id);
-    let url = format!("http://localhost/api/member/{}", id);
-    log::debug!("With url of {}", url);
-    let member: Option<Member> = Request::get(url.as_str())
-        .send()
-        .await
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    log::info!("{}", if member.is_some() { "Success!" } else { "No member found" });
-    log::debug!("{:?}", member);
-    member
-}
+use crate::backend::*;
 
 #[function_component(MemberComp)]
 pub fn member_comp(props: &MemberProp) -> Html {
@@ -39,13 +19,17 @@ pub fn member_comp(props: &MemberProp) -> Html {
         }, ())
     }
 
+    let member_profile: Option<u32> = member.as_ref().and_then(|member |
+        member.profile.map(|id| id.try_into().unwrap())
+    );
+
     if let Some(member) = &*member {
        html! {
             <div>
-                <MemberInfo profile={ member.profile } 
-                    name={ member.name.clone() } division={ member.division }
-                    joined={ member.joined } class={ member.class.clone() }/>
-                <MemberDesc bio={ member.bio.clone() }/>
+                <MemberInfo name={ member.name.clone() } 
+                    division={ member.division } joined={ member.joined }
+                    class={ member.class.clone() } profile={ member_profile }/>
+                <MemberDesc bio={ member.bio.clone() } />
             </div>
         } 
     } else {
@@ -64,25 +48,50 @@ pub struct MemberProp {
 
 #[function_component(MemberInfo)]
 fn member_info(props: &MemberInfoProp) -> Html {
+    let id = props.profile.unwrap_or(0);
+    let image = use_state(|| None);
+
+    {
+        let image = image.clone();
+        use_effect_with_deps(move |_| {
+            let image = image.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                let fetched_image = get_image(id).await;
+
+                image.set(Some(fetched_image))
+            });
+            || ()
+        }, ())
+    }
+
+
     html! {
-        <div class="grid vert-split-2-3">
-            <img src={
-                    format!("https://0.0.0.0/api/images/{}", 
-                            props.profile.unwrap_or(0))
-                }
-                alt="member profile"/>
-            <div class="flex list-vert"> <h1 class="font-large">
+        <div class="flex margin-vert-80">
+            <div class="width-40 flex center-horz space-around center-horz">
+                <div class="width-80">
+                    <img src={
+                        if let Some(image) = &*image {
+                            format!("http://localhost/data/{}", image.path)
+                        } else {
+                            "http://localhost/data/person.png".to_string()
+                        }
+                    }
+                        alt="member profile"/> // Replace alt with {member.name}
+                </div>
+            </div> 
+            <div class="member-properties">
+                <h2>
                     {format!("name: {}", props.name.clone())}
-                </h1>
-                <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("division {}", props.division.unwrap_or(0))}
-                </h1>
-                 <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("date joined: {}", props.joined.clone())}
-                </h1>
-                <h1 class="font-large">
+                </h2>
+                <h2>
                     {format!("class: {}", props.class.clone())}
-                </h1>
+                </h2>
                 <a href="https://0.0.0.0/report"
                     class="link-nochange font-large"
                 > // TODO: make
@@ -96,23 +105,23 @@ fn member_info(props: &MemberInfoProp) -> Html {
 
 #[derive(Properties, PartialEq)]
 struct MemberInfoProp {
-    profile: Option<i32>,
     name: String,
     division: Option<i32>,
     joined: Date,
-    class: String
+    class: String,
+    profile: Option<u32>
 }
   
 #[function_component(MemberDesc)]
-fn member_desc(props: &MemberDescProp) -> Html {
+fn member_desc(props: &MemberDescProp) -> Html { 
     html! {
-        <div class="flex list-vert">
-            <p>{ props.bio.clone() }</p>
+        <div class="flex list-vert margin-small">
+            <p>{ props.bio.clone() }</p> //TODO: Create image list
         </div>
     }
 }
 
 #[derive(Properties, PartialEq)]
 struct MemberDescProp {
-    bio: String
+    bio: String,
 }

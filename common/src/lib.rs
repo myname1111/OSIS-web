@@ -56,10 +56,10 @@ pub struct Forums {
     pub member: i32,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Image {
     pub id: i32,
-    pub image: Vec<u8>,
+    pub path: String,
     pub title: String,
 }
 
@@ -73,7 +73,7 @@ pub struct Improvement {
     pub program: Option<i32>,
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub struct Date {
     year: i32,
     ordinal: u16,
@@ -102,7 +102,7 @@ impl fmt::Display for Date {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Member {
     pub id: i32,
     pub name: String,
@@ -114,6 +114,25 @@ pub struct Member {
     pub class: String,
     pub division: Option<i32>,
     // add pub profile Vec<image> or Vec<Vec<u8>>
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
+pub struct MemberPreview {
+    pub profile: Option<i32>,
+    pub role: String,
+    pub name: String,
+    pub division: Option<i32>
+}
+
+impl From<(Option<i32>, String, String, Option<i32>)> for MemberPreview {
+    fn from(other: (Option<i32>, String, String, Option<i32>)) -> Self {
+        Self {
+            profile: other.0,
+            role: other.1,
+            name: other.2,
+            division: other.3
+        }
+    }
 }
 
 impl From<MemberSql> for Member {
