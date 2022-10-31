@@ -103,61 +103,16 @@ impl fmt::Display for Date {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
-
-type DivisionId = i32;
-
-#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize, PartialOrd, Ord)]
-pub enum Role {
-    Member = 0,
-    Head = 1,
-    VicePresident = 4,
-    President = 5,
-    Exchequer = 2,
-    Secretary = 3
-}
-
-impl TryFrom<String> for Role {
-    type Error = String; // TODO: Replace this with custom error handling
-
-    fn try_from(value: String) -> Result<Self, Self::Error> {
-        match value.as_str() {
-            "member" => Ok(Self::Member),
-            "head" => Ok(Self::Head),
-            "VP" => Ok(Self::VicePresident),
-            "president" => Ok(Self::President),
-            "exchequer" => Ok(Self::Exchequer),
-            "secretary" => Ok(Self::Secretary),
-            unintended => Err(format!("
-                            expected either member, head, VP president, exchequer or secretary. 
-                            got {unintended}"))
-        }
-    }
-}
-
-impl From<Role> for String {
-    fn from(value: Role) -> Self {
-        match value {
-            Role::Member => "member",
-            Role::Head => "head",
-            Role::VicePresident => "VP",
-            Role::President => "president",
-            Role::Exchequer => "exchequer",
-            Role::Secretary => "secretary"
-        }.to_string()
-    }
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Member {
     pub id: i32,
     pub name: String,
     pub profile: Option<i32>, // Replace this with Option<Image>
-    pub role: Role,
+    pub role: String,
     pub bio: String,
     pub joined: Date,
     pub reported: i32,
     pub class: String,
-    pub division: Option<DivisionId>,
+    pub division: Option<i32>,
     // add pub profile Vec<image> or Vec<Vec<u8>>
 }
 
@@ -186,8 +141,7 @@ impl From<MemberSql> for Member {
             id: other.id,
             name: other.name,
             profile: other.profile,
-            role: other.role.try_into().unwrap(), // TODO: make better error handiling by making
-                                                  // this try from after cretaing error struct/enum
+            role: other.role,
             bio: other.bio,
             joined: other.joined.into(),
             reported: other.reported,
@@ -218,7 +172,7 @@ impl TryFrom<Member> for MemberSql {
             id: other.id,
             name: other.name,
             profile: other.profile,
-            role: other.role.into(),
+            role: other.role,
             bio: other.bio,
             joined: other.joined.try_into()?,
             reported: other.reported,
