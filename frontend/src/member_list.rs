@@ -40,7 +40,7 @@ pub fn member_list() -> Html {
     }
 
     html! {
-        <div>
+        <div class="member-container">
             {
                 if let (Some(images), Some(member_list)) = (&*images, &*member_list) {
                     log::debug!("images: {:?}", images);
@@ -70,12 +70,12 @@ pub fn member_list() -> Html {
 fn member(props: &MemberProp) -> Html {
     log::info!("rendering preview with data {:?}", props.member);
     html! {
-        <div class="member-container">
-            <h2>{ props.member.name.clone() }</h2>
+        <div class="member">
+            <h2 class="member-name">{ props.member.name.clone() }</h2>
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
-                .unwrap_or_else(|| "person.png".to_string()))} />
-            <h2>{ props.member.role.clone() }</h2>
+                .unwrap_or_else(|| "person.png".to_string()))} /> 
+            <h2 class="member-role">{ props.member.role.clone() }</h2>
         </div>
     }
 }

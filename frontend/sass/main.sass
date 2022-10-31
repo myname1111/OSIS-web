@@ -1,4 +1,4 @@
-/* Atomic css. Do not forget
+/* TODO: switch to semantic css, hopefully in next commit
 
 @use "sass:math"
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap')
@@ -193,10 +193,16 @@ img
     column-gap: 75px
 
 .column-gap-large
-    column-gap: 100px
+  column-gap: 100px
+
+.column-gap-xl
+  column-gap: 200px
 
 .row-gap-xl
-    row-gap: 200px
+  row-gap: 200px
+
+.row-gap-large
+  row-gap: 100px
 
 .row-gap-med
     row-gap: 75px
@@ -211,7 +217,10 @@ img
     flex-wrap: wrap
 
 .space-around
-    justify-content: space-around
+  justify-content: space-around
+
+.space-evenly
+  justify-content: space-evenly
 
 .hover:hover
     cursor: pointer
@@ -293,7 +302,10 @@ img
     position: fixed
 
 .banner-text
-    margin-bottom: 0px
+  margin-bottom: 0px
+
+.align-baseline
+  align-content: baseline
 
 .info-button a
     display: flex
@@ -336,6 +348,31 @@ img
   flex-direction: column
 
 .member-properties > h2
-  font-size: 50px,
+  font-size: 50px
   margin: 0px
   font-weight: 400
+
+.member-container
+  justify-content: space-around
+  flex-wrap: wrap
+  display: flex
+  column-gap: 200px
+  row-gap: 100px
+  margin: 100px
+
+.member
+  display: grid
+  grid-template-rows: 4fr 6fr 1fr
+  width: 20%
+  min-width: 300px
+  flex-direction: column
+  gap: 10px
+
+  h2
+    margin: 0px
+
+.member-name
+  align-self: end
+
+.member-role
+  align-self: start

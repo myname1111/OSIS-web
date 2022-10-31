@@ -3,3 +3,4 @@
 /backend/.env
 /backend/data
 Cargo.lock
+database.txt
