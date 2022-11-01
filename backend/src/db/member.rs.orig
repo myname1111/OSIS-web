@@ -1,12 +1,18 @@
 use super::schema::member::dsl::*;
 use super::DbConnection;
+<<<<<<< HEAD
 use super::image::ImageId;
 use common::{MemberSql, MemberPreview};
+=======
+use common::MemberSql;
+>>>>>>> backend
 use diesel::prelude::*;
 use diesel::result::Error;
 
 pub type MemberId = i32;
 
+<<<<<<< HEAD
+=======
 #[derive(Serialize, Deserialize)]
 pub(crate) struct MemberPreview {
     pub(crate) profile: Option<i32>,
@@ -22,6 +28,7 @@ impl From<(Option<i32>, String)> for MemberPreview {
     }
 }
 
+>>>>>>> backend
 pub(crate) fn get_member_by_id(
     conn: &mut DbConnection,
     member_id: i32,

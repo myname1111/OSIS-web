@@ -48,10 +48,9 @@ pub struct MemberProp {
 
 #[function_component(MemberInfo)]
 fn member_info(props: &MemberInfoProp) -> Html {
-    let id = props.profile.unwrap_or(0);
     let image = use_state(|| None);
 
-    {
+    if let Some(id) = props.profile {
         let image = image.clone();
         use_effect_with_deps(move |_| {
             let image = image.clone();
@@ -62,7 +61,7 @@ fn member_info(props: &MemberInfoProp) -> Html {
             });
             || ()
         }, ())
-    }
+    };
 
 
     html! {
@@ -116,7 +115,7 @@ struct MemberInfoProp {
 fn member_desc(props: &MemberDescProp) -> Html { 
     html! {
         <div class="flex list-vert margin-small">
-            <p>{ props.bio.clone() }</p> //TODO: Create image list
+            <p>{ props.bio.clone() }</p>
         </div>
     }
 }
