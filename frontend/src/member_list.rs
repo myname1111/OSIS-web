@@ -10,7 +10,9 @@ pub fn member_list() -> Html {
         let member_list = member_list.clone();
         use_effect_with_deps(move |_| {
             wasm_bindgen_futures::spawn_local( async move {
-                let fetched_list = get_member_list().await;
+                let mut fetched_list = get_member_list().await;
+                fetched_list.sort_by(|member_1, member_2| 
+                    member_2.role.cmp(&member_1.role)); // TODO: Support sorting by other things
                 member_list.set(Some(fetched_list))
             });
             || ()
@@ -75,7 +77,7 @@ fn member(props: &MemberProp) -> Html {
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
                 .unwrap_or_else(|| "person.png".to_string()))} /> 
-            <h2 class="member-role">{ props.member.role.clone() }</h2>
+            <h2 class="member-role">{ props.member.role }</h2>
         </div>
     }
 }
