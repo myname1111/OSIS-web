@@ -114,6 +114,12 @@ pub enum Role {
     Secretary = 3
 }
 
+impl fmt::Display for Role {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", String::from(*self)) 
+    }
+}
+
 impl TryFrom<String> for Role {
     type Error = String; // TODO: Replace this with custom error handling
 
