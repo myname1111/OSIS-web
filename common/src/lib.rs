@@ -162,7 +162,7 @@ pub struct Member {
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct MemberPreview {
     pub profile: Option<i32>,
-    pub role: String,
+    pub role: Role,
     pub name: String,
     pub division: Option<i32>
 }
@@ -171,7 +171,7 @@ impl From<(Option<i32>, String, String, Option<i32>)> for MemberPreview {
     fn from(other: (Option<i32>, String, String, Option<i32>)) -> Self {
         Self {
             profile: other.0,
-            role: other.1,
+            role: other.1.try_into().unwrap(),
             name: other.2,
             division: other.3
         }

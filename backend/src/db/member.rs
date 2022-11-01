@@ -1,26 +1,11 @@
 use super::schema::member::dsl::*;
 use super::DbConnection;
-use super::image::ImageId;
 use common::{MemberSql, MemberPreview};
 use diesel::prelude::*;
 use diesel::result::Error;
 
 pub type MemberId = i32;
-
-#[derive(Serialize, Deserialize)]
-pub(crate) struct MemberPreview {
-    pub(crate) profile: Option<i32>,
-    pub(crate) role: String,
-}
-
-impl From<(Option<i32>, String)> for MemberPreview {
-    fn from(other: (Option<i32>, String)) -> Self {
-        Self {
-            profile: other.0,
-            role: other.1,
-        }
-    }
-}
+type MemberPreviewSql = (Option<i32>, String, String, Option<i32>);
 
 pub(crate) fn get_member_by_id(
     conn: &mut DbConnection,
@@ -34,9 +19,9 @@ pub(crate) fn get_all_member_id(conn: &mut DbConnection) -> Result<Vec<MemberId>
 }
 
 pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> Result<Vec<MemberPreview>, Error> {
-    let out: std::result::Result<Vec<(Option<i32>, String)>, _> = member
-        .select((profile_id, role))
-        .load::<(Option<i32>, String)>(conn);
+    let out: std::result::Result<Vec<MemberPreviewSql>, _> = member
+        .select((profile_id, role, m_name, division_id))
+        .load::<MemberPreviewSql>(conn);
 
     Ok(out?
         .into_iter()
