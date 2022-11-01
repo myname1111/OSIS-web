@@ -102,8 +102,6 @@ impl fmt::Display for Date {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
-
 type DivisionId = i32;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize, PartialOrd, Ord)]
@@ -147,7 +145,7 @@ impl From<Role> for String {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Member {
     pub id: i32,
     pub name: String,
