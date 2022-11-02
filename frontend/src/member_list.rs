@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use common::Image;
 use yew::prelude::*;
 use crate::backend::*;
@@ -11,8 +13,23 @@ pub fn member_list() -> Html {
         use_effect_with_deps(move |_| {
             wasm_bindgen_futures::spawn_local( async move {
                 let mut fetched_list = get_member_list().await;
+
+                // Sort by alphabetical order of name
+                fetched_list.sort_unstable_by(|member_1, member_2|
+                    member_2.name.cmp(&member_1.name));
+                
+                // Sort by their division
+                fetched_list.sort_by(|member_1, member_2|
+                    if let (Some(division1), Some(division2)) = (member_1.division, member_2.division) {
+                        division2.cmp(&division1)
+                    } else {
+                        Ordering::Equal
+                    });
+
+                // Sort by their role
                 fetched_list.sort_by(|member_1, member_2| 
                     member_2.role.cmp(&member_1.role)); // TODO: Support sorting by other things
+                
                 member_list.set(Some(fetched_list))
             });
             || ()
