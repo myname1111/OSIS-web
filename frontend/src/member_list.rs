@@ -1,8 +1,15 @@
-use std::cmp::Ordering;
-
-use common::Image;
+use common::{Image, Role::*};
 use yew::prelude::*;
 use crate::backend::*;
+use crate::home::{NavBar, NavBarPos};
+
+fn capitalize_first_letter(s: &str) -> String {
+    let mut c = s.chars();
+    match c.next() {
+        None => String::new(),
+        Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
+    }
+}
 
 #[function_component(MemberList)]
 pub fn member_list() -> Html {
@@ -18,13 +25,39 @@ pub fn member_list() -> Html {
                 fetched_list.sort_unstable_by(|member_1, member_2|
                     member_2.name.cmp(&member_1.name));
                 
-                // Sort by their division
-                fetched_list.sort_by(|member_1, member_2|
-                    if let (Some(division1), Some(division2)) = (member_1.division, member_2.division) {
-                        division2.cmp(&division1)
-                    } else {
-                        Ordering::Equal
-                    });
+                // Create a list with only the members and the head of the divisions
+                let member_head_only = fetched_list
+                    .clone();
+
+                let member_head_only = member_head_only.iter()
+                    .filter(|&member| member.division.is_some())
+                    .collect::<Vec<_>>();
+
+                let mut member_head_only = member_head_only
+                    .iter()
+                    .map(|&member| member.clone())
+                    .collect::<Vec<_>>();
+
+                // Remove all members and heads
+                let fetched_list_ref = fetched_list
+                    .iter()
+                    .filter(|&member| member.division.is_none())
+                    .collect::<Vec<_>>();
+
+                fetched_list = fetched_list_ref.iter()
+                    .map(|&member| member.clone())
+                    .collect::<Vec<_>>();
+
+                // Sort by division
+                member_head_only.sort_by(|member_1, member_2| {
+                    let msg = "Expecting here is safe as we SHOULD have filtered out
+                        any members/heads with no division id, making it impossible for this to happen";
+                    member_2.division.expect(msg)
+                        .cmp(&member_1.division.expect(msg))
+                });
+
+                // Add back member/heads
+                fetched_list.append(&mut member_head_only);
 
                 // Sort by their role
                 fetched_list.sort_by(|member_1, member_2| 
@@ -59,29 +92,32 @@ pub fn member_list() -> Html {
     }
 
     html! {
-        <div class="member-container">
-            {
-                if let (Some(images), Some(member_list)) = (&*images, &*member_list) {
-                    log::debug!("images: {:?}", images);
-                    log::debug!("members: {:?}", member_list);
-                    member_list.iter().zip(images.iter()).map(|(member, image)| {
+        <>
+            <NavBar pos={NavBarPos::Fixed}/>
+            <div class="member-container">
+                {
+                    if let (Some(images), Some(member_list)) = (&*images, &*member_list) {
+                        log::debug!("images: {:?}", images);
+                        log::debug!("members: {:?}", member_list);
+                        member_list.iter().zip(images.iter()).map(|(member, image)| {
+                            html! {
+                                <Member member={(*member).clone()} image={(*image).clone()} />
+                            }
+                        }).collect::<Html>()
+                    } else if let (None, Some(member_list)) = (&*images, &*member_list) {
+                        member_list.iter().map(|member| {
+                            html! {
+                                <Member member={(*member).clone()} image={None} />
+                            }
+                        }).collect::<Html>()
+                    } else {
                         html! {
-                            <Member member={(*member).clone()} image={(*image).clone()} />
+                            <p>{"Loading, please wait"}</p>
                         }
-                    }).collect::<Html>()
-                } else if let (None, Some(member_list)) = (&*images, &*member_list) {
-                    member_list.iter().map(|member| {
-                        html! {
-                            <Member member={(*member).clone()} image={None} />
-                        }
-                    }).collect::<Html>()
-                } else {
-                    html! {
-                        <p>{"Loading, please wait"}</p>
                     }
                 }
-            }
-        </div>
+            </div>
+        </>
     }
 }
 
@@ -94,7 +130,15 @@ fn member(props: &MemberProp) -> Html {
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
                 .unwrap_or_else(|| "person.png".to_string()))} /> 
-            <h2 class="member-role">{ props.member.role }</h2>
+            <h2 class="member-role">{ capitalize_first_letter(
+                &match props.member.role {
+                    Member => format!("Member of the division of {}", props.member.division
+                        .expect("If it is a member then it must have a division")),
+                    Head => format!("Head of the division of {}", props.member.division
+                        .expect("If its the head of the division then it must have a division")),
+                    role => String::from(role)
+                }
+            ) }</h2>
         </div>
     }
 }
@@ -104,3 +148,4 @@ struct MemberProp {
     member: common::MemberPreview,
     image: Option<Image>
 }
+
