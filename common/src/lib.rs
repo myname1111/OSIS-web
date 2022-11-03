@@ -14,11 +14,12 @@ pub struct BlogPost {
     pub blog: Option<i32>,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, Serialize, Deserialize)]
 pub struct Division {
     pub id: i32,
     pub name: String
 }
+
 
 #[derive(Queryable)]
 pub struct Event {
@@ -49,7 +50,6 @@ pub struct Forum {
     pub member: i32,
 }
 
-#[derive(Queryable)]
 pub struct Forums {
     pub id: i32,
     pub title: String,
