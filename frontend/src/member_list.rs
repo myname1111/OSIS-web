@@ -1,4 +1,4 @@
-use common::{Image, Role::*};
+use common::{Image, Role::*, Division};
 use yew::prelude::*;
 use crate::backend::*;
 use crate::home::{NavBar, NavBarPos};
@@ -14,12 +14,15 @@ fn capitalize_first_letter(s: &str) -> String {
 #[function_component(MemberList)]
 pub fn member_list() -> Html {
     let member_list = use_state(|| None);
+    let division = use_state(|| None);
     
     {
+        let division = division.clone();
         let member_list = member_list.clone();
         use_effect_with_deps(move |_| {
             wasm_bindgen_futures::spawn_local( async move {
                 let mut fetched_list = get_member_list().await;
+                let mut fetched_division = vec![];
 
                 // Sort by alphabetical order of name
                 fetched_list.sort_unstable_by(|member_1, member_2|
@@ -62,7 +65,17 @@ pub fn member_list() -> Html {
                 // Sort by their role
                 fetched_list.sort_by(|member_1, member_2| 
                     member_2.role.cmp(&member_1.role)); // TODO: Support sorting by other things
+
+                for member in &fetched_list {
+                    fetched_division.push(match member.division {
+                        Some(division) => Some(
+                            get_division(division.try_into().unwrap()).await
+                        ),
+                        None => None
+                    })
+                };
                 
+                division.set(Some(fetched_division));
                 member_list.set(Some(fetched_list))
             });
             || ()
@@ -96,18 +109,22 @@ pub fn member_list() -> Html {
             <NavBar pos={NavBarPos::Fixed}/>
             <div class="member-container">
                 {
-                    if let (Some(images), Some(member_list)) = (&*images, &*member_list) {
+                    if let (Some(images), Some(division), Some(member_list)) = (&*images, &*division, &*member_list) {
                         log::debug!("images: {:?}", images);
                         log::debug!("members: {:?}", member_list);
-                        member_list.iter().zip(images.iter()).map(|(member, image)| {
-                            html! {
-                                <Member member={(*member).clone()} image={(*image).clone()} />
-                            }
-                        }).collect::<Html>()
-                    } else if let (None, Some(member_list)) = (&*images, &*member_list) {
+                        member_list
+                            .iter()
+                            .zip(images.iter())
+                            .zip(division.iter())
+                            .map(|((member, image), division)| {
+                                html! {
+                                    <Member member={(*member).clone()} image={(*image).clone()} division={(*division).clone()}/>
+                                }
+                            }).collect::<Html>()
+                    } else if let (None, None, Some(member_list)) = (&*images, &*division, &*member_list) {
                         member_list.iter().map(|member| {
                             html! {
-                                <Member member={(*member).clone()} image={None} />
+                                <Member member={(*member).clone()} image={None} division={None} />
                             }
                         }).collect::<Html>()
                     } else {
@@ -130,15 +147,17 @@ fn member(props: &MemberProp) -> Html {
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
                 .unwrap_or_else(|| "person.png".to_string()))} /> 
-            <h2 class="member-role">{ capitalize_first_letter(
+            <h2 class="member-role">{ capitalize_first_letter( {
+                let division_msg = props.division.as_ref()
+                    .map(|division| format!(" of the division of {}", division.name))
+                    .unwrap_or_else(|| "".to_string());
+
                 &match props.member.role {
-                    Member => format!("Member of the division of {}", props.member.division
-                        .expect("If it is a member then it must have a division")),
-                    Head => format!("Head of the division of {}", props.member.division
-                        .expect("If its the head of the division then it must have a division")),
+                    Member => format!("Member{}", division_msg),
+                    Head => format!("Head{}", division_msg),
                     role => String::from(role)
                 }
-            ) }</h2>
+            }) }</h2>
         </div>
     }
 }
@@ -146,6 +165,7 @@ fn member(props: &MemberProp) -> Html {
 #[derive(Properties, PartialEq, Eq)]
 struct MemberProp {
     member: common::MemberPreview,
-    image: Option<Image>
+    image: Option<Image>,
+    division: Option<Division>
 }
 

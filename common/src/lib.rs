@@ -14,7 +14,7 @@ pub struct BlogPost {
     pub blog: Option<i32>,
 }
 
-#[derive(Queryable, Serialize, Deserialize)]
+#[derive(Queryable, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Division {
     pub id: i32,
     pub name: String

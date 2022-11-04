@@ -69,3 +69,30 @@ pub async fn try_get_member_list() -> Option<Vec<MemberPreview>> {
 
     preview
 }
+
+pub async fn get_division(id: u32) -> Division {
+    try_get_division(id).await.expect("Unable to get division")
+}
+
+pub async fn try_get_division(id: u32) -> Option<Division> {
+    log::info!("Attempting to get division with id {}", id);
+    let url = format!("http://localhost/api/division/{}", id);
+
+    let division: Option<Division> = Request::get(url.as_str())
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+
+    if division.is_some() {
+        log::info!("Success i getting division with id {}", id)
+    } else {
+        log::warn!("Unable to get division with id {}", id)
+    };
+
+    log::debug!("{:?}", division);
+
+    division
+}
