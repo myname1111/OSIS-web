@@ -18,5 +18,5 @@ use actix_web::*;
 // TODO: make custom error response
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/api").configure(member::config).configure(image::config));
+    cfg.service(web::scope("/api").configure(member::config).configure(image::config).configure(division::cofig));
 }

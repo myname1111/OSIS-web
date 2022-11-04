@@ -5,6 +5,7 @@ use diesel::r2d2::PooledConnection;
 use dotenvy::dotenv;
 use std::env;
 
+pub mod division;
 pub mod member;
 pub mod image;
 mod schema;
