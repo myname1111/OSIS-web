@@ -4,6 +4,7 @@ mod landing;
 mod member;
 mod backend;
 mod member_list;
+mod utilities;
 
 use about::About;
 use member::MemberComp;

@@ -1,6 +1,5 @@
 use yew::prelude::*;
-
-use crate::home::{NavBar, NavBarPos};
+use crate::utilities::*;
 
 #[function_component(About)]
 pub fn about(props: &AboutProp) -> Html {

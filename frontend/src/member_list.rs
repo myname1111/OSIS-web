@@ -1,7 +1,7 @@
 use common::{Image, Role::*, Division};
 use yew::prelude::*;
 use crate::backend::*;
-use crate::home::{NavBar, NavBarPos};
+use crate::utilities::*;
 
 fn capitalize_first_letter(s: &str) -> String {
     let mut c = s.chars();
