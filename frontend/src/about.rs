@@ -5,7 +5,7 @@ use crate::utilities::*;
 pub fn about(props: &AboutProp) -> Html {
     html! {
         <>
-        <NavBar pos={ NavBarPos::Fixed } />
+        <NavBar/>
         <div class="grid margin-base ver-split-15p-1 column-gap-large">
                 <Sidebar> // TODO: replace with json
                     <Bar header="Lorem ipsum" content={0}/>

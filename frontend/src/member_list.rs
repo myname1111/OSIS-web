@@ -106,7 +106,7 @@ pub fn member_list() -> Html {
 
     html! {
         <>
-            <NavBar pos={NavBarPos::Fixed}/>
+            <NavBar />
             <div class="member-container">
                 {
                     if let (Some(images), Some(division), Some(member_list)) = (&*images, &*division, &*member_list) {

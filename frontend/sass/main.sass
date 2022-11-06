@@ -17,7 +17,7 @@ h2
 
 p
     font-size: 20px
-    font-weight: 100
+    font-weight: 500
 
 nav
   gap: 20px
@@ -34,293 +34,62 @@ nav > h2
   color: white
   margin: 0
 
+.nav
+  position: fixed
+
+.nav-img
+  height: 100%
+
 .nav-sign-up
   margin-left: auto
-
-.white
-    color: white
-
-.top-0
-    top: 0%
-
-.inline-block
-    display: inline-block
-
-.banner
-    background-image: (linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("/data/banner.jpeg"))
-
-.fill
-    height: 100%
-    width: 100%
-
-.width-100
-    width: 100%
-
-.height-100
-    height: 100%
-
-.height-75
-    height: 75%
-
-.height-30
-    height: 30%
-
-.height-20
-    height: 20%
-
-.height-10
-    height: 10%
-
-.height-50px
-    height: 50px
-
-.height-150px
-  height: 150px
-
-.list-vert
-    flex-direction: column
-
-.width-15
-    width: 15%
-
-.width-50
-  width: 50%
-
-.width-80
-  width: 80%
-
-.width-40
-  width: 40%
-
-.width-fit
-    width: fit-content
-
-.width-auto
-    width: auto
-
-.cover-image
-    background-size: cover
-
-.grid
-    display: grid
-
-.width-20
-    width: 20%
-
-.width-30
-    width: 30%
-
-.vert-split-4-3
-    grid-template-columns: 4fr 3fr
-
-.vert-split-3-4
-    grid-template-columns: 3fr 4fr
-
-.hor-split-3-1
-    grid-template-rows: 3fr 1fr
-
-.hor-split-1-1-auto
-    grid-template-rows: 1fr 1fr auto
-
-.hor-split-1-100px
-    grid-template-rows: 1fr 100px
-
-.ver-split-5x1
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
-
-.ver-split-1-3
-    grid-template-columns: 1fr 3fr
-
-.ver-split-15p-1
-    grid-template-columns: 15% 1fr
-
-.ver-split-1-3-1
-    grid-template-columns: 1fr 3fr 1fr
-
-.ver-split-1-2
-    grid-template-columns: 1fr 3fr
-
-.ver-split-2-1
-    grid-template-columns: 3fr 1fr
-
-.center-vert
-    align-items: center
-
-.center-horz
-    justify-items: center
-
-.center-horz-flex
-    justify-content: center
-
-.center-text
-    text-align: center
-
-.bottom-vert
-    align-items: end
-
-.margin-base
-    margin: 100px
-
-.margin-large
-  margin: 150px
-
-.margin-small
-  margin: 50px
-
-.margin-hor-0
-    margin-left: 0px
-    margin-right: 0px
-
-.margin-hor-large
-    margin-left: 150px
-    margin-right: 150px
-
-.margin-right-auto
-    margin-right: auto
-
-.margin-right-30
-    margin-right: 30px
-
-.margin-vert-80
-  margin-top: 80px
-  margin-bottom: 80px
+  margin-right: 30px
 
 html
   font-family: 'Raleway', sans-serif
-
-.font-large
-    font-size: 50px
-
-.font-xl
-    font-size: 100px
-
-.font-medium
-    font-size: 30px
-
-.font-small
-    font-size: 20px
 
 img
     width: 100%
     height: auto
 
-.column-gap-med
-    column-gap: 75px
+.banner
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/data/banner.jpeg)
+  height: 100%
+  background-size: cover
+  align-items: center
+  text-align: center
 
-.column-gap-large
-  column-gap: 100px
+.banner-container
+  display: grid
+  justify-items: center
+  height: 100%
+  row-gap: 75px
 
-.column-gap-xl
-  column-gap: 200px
+.banner-text-container
+  height: 100%
+  align-items: end
+  display: flex
 
-.row-gap-xl
-  row-gap: 200px
+.banner-text
+  color: white
+  font-size: 50px
 
-.row-gap-large
-  row-gap: 100px
+.sign-up-button
+  background-color: white
+  width: 30%
+  height: 30%
+  display: flex
+  justify-items: center
+  align-items: center
 
-.row-gap-med
-    row-gap: 75px
+.sign-up-button-text
+  font-size: 30px
+  width: 100%
 
-.row-gap-xs
-    row-gap: 25px
-
-.flex
-    display: flex
-
-.wrap
-    flex-wrap: wrap
-
-.space-around
-  justify-content: space-around
-
-.space-evenly
-  justify-content: space-evenly
-
-.hover:hover
-    cursor: pointer
-
-.back-accent
-    background-color: $accent-color
-
-.back-base
-    background-color: #base-color
-
-.back-white
-    background-color: white
-
-.back-lightgrey
-    background-color: #e2e2e2
-
-.round-border-25
-    border-radius: 25px
-
-.link-nochange:link
-    color: inherit
-    text-decoration: none
-
-.link-nochange:visited
-    color: inherit
-    text-decoration: none
-
-.link-nochange:hover
-    color: inherit
-    text-decoration: none
-
-.link-nochange:active
-    color: inherit
-    text-decoration: none
+.sign-up-button-hover:hover
+  cursor: pointer
 
 .osis-info
     grid-template-areas: "img par" "img but"
-
-.img
-    grid-area: img
-
-.par
-    grid-area: par
-
-.but
-    grid-area: but
-
-.margin-smallest
-    margin: auto
-
-.min-width-300
-    min-width: 300px
-
-.min-width-400
-    min-width: 400px
-
-.min-width-200
-    min-width: 200px
-
-.width-1-5
-    width: math.div(100%, 5)
-
-.area-text
-    grid-area: text
-
-.gap-20
-    gap: 20px
-
-.gap-50
-    gap: 50px
-
-.gap-150
-    gap: 150px
-
-.align-base
-    align-content: baseline
-
-.fixed
-    position: fixed
-
-.banner-text
-  margin-bottom: 0px
-
-.align-baseline
-  align-content: baseline
 
 .info-button a
     display: flex
@@ -334,29 +103,56 @@ img
     width: 100%
     column-gap: 20px
 
+.why-osis
+  margin: 100px
+
+.why-osis-title
+  font-size: 100px
+  text-align: center
+
+.why-osis-container
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-around
+
 .why-osis-section
-    width: 60%
-    column-gap: 100px
+  display: flex
+  flex-direction: column
+  width: 20%
+  min-width: 400px
 
-.why-osis-section.align-right
-    grid-template-areas: "title title" "text img"
+.why-osis-section-header
+  font-size: 50px
+  text-align: center
 
-.why-osis-section.align-left
-    grid-template-areas: "title title" "img text"
+.why-osis-par
+  font-size: 30px
 
-.sign-up-button > div
-    background-color: $accent-color
-    width: 75%
+.learn-more-button
+  background-color: $accent-color
+  text-align: center
+  margin: auto
+  width: 50%
 
-.content-list
-    grid-template-areas: "content content content" "left . right"
+.learn-more-button:link
+    color: inherit
+    text-decoration: none
 
-.content
-    grid-area: content
+.learn-more-button:visited
+    color: inherit
+    text-decoration: none
 
-.rating img
-    height: 100%
-    width: 20%
+.learn-more-button:hover
+    color: inherit
+    text-decoration: none
+
+.learn-more-button:active
+    color: inherit
+    text-decoration: none
+
+.learn-more-button-text
+  font-size: 30px
+  color: white
 
 .member-properties
   display: flex,
@@ -394,3 +190,107 @@ img
   align-self: start
   font-size: 30px
   font-weight: 400
+
+.what-osis-header
+  font-size: 100px
+  text-align: center
+
+.what-osis-info
+  display: grid
+  grid-template-rows: 3fr 1fr
+  grid-template-columns: 3fr 4fr
+  margin: 100px
+  column-gap: 75px
+  grid-template-areas: "img par" "img but"
+
+.what-osis-img
+  grid-area: img
+
+.what-osis-par
+  grid-area: par
+
+.faq-header
+  font-size: 100px
+  text-align: center
+
+.faq-container
+  display: flex
+  flex-direction: column
+  margin: 100px
+  gap: 50px
+
+.faq-section
+  display: flex
+  align-items: center
+  flex-direction: column
+
+.faq-content
+  font-size: 50px
+  width: fit
+
+.faq-content-hover:hover
+  cursor: pointer
+
+.program-list, .event-list
+  margin: 100px
+  display: flex
+  justify-items: center
+  flex-direction: column
+
+.program-header, .event-header
+  font-size: 100px
+  text-align: center
+
+.program-section, .event-section
+  display: flex
+  justify-content: space-around
+  flex-wrap: wrap
+
+.program-link, .event-link
+  text-align: center
+
+.program, .event
+  display: grid
+  grid-template-rows: repeat(auto, 3)
+  width: 20%
+  align-items: center
+  min-width: 200px
+
+.program-title, .event-title
+  font-size: 50px
+
+.program-image-container, .event-image-container
+  height: 100%
+
+.program-image, .event-image
+  height: 100%
+
+.rating
+  height: 100%
+
+.rating-list
+  display: flex
+
+.rating-img
+  height: 100%
+  width: 20%
+
+.contact
+  margin: 100px
+
+.contact-header
+  text-align: center
+  font-size: 100px
+
+.contact-list
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-around
+  gap: 50px
+
+.contact-item
+  display: flex
+  height: 150px
+
+.contact-img
+  width: auto

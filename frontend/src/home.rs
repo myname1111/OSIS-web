@@ -5,15 +5,14 @@ use crate::utilities::*;
 pub fn home() -> Html {
     html! {
         <>
-            <NavBar pos={ NavBarPos::Fixed } />
+            <NavBar />
             <Banner />
             <WhyOsis />
             <WhatIsOsis />
             <Faq />
-            <ProgramEventList pro_event={ ProgramEventType::Program } />
-            <ProgramEventList pro_event={ ProgramEventType::Event } />
+            <ProgramList />
+            <EventList />
             <ContactList />
-            <NavBar pos={ NavBarPos::Static } />
         </>
     }
 }
@@ -21,8 +20,8 @@ pub fn home() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner cover-image center-vert center-horz center-text height-100">
-            <div class="grid center-horz height-100 row-gap-med">
+        <div class="banner">
+            <div class="banner-container">
                 <BannerText />
                 <SignUpButton />
             </div>
@@ -33,19 +32,9 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="height-100 bottom-vert flex">
-            <h1 class="white font-large">
-                <span>
-                    {"Empowerment"}
-                </span>
-                {", "}
-                <span>
-                    {"team work"}
-                </span>
-                {", and "}
-                <span>
-                    {"experience"}
-                </span>
+        <div class="banner-text-container">
+            <h1 class="banner-text">
+                {"Empowerment, team work, and experience"}
             </h1>
         </div>
     }
@@ -54,8 +43,8 @@ fn banner_text() -> Html {
 #[function_component(SignUpButton)]
 fn sign_up_button() -> Html {
     html! {
-        <div class="hover back-white width-30 height-30 flex center-vert center-horz">
-            <h1 class="font-medium width-100">{ "Sign up for a better future" }</h1>
+        <div class="sign-up-button sign-up-button-hover">
+            <h1 class="sign-up-button-text">{ "Sign up for a better future" }</h1>
         </div>
     }
 }
@@ -63,26 +52,26 @@ fn sign_up_button() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Why osis" }</h1>
-            <div class="flex wrap space-around">
+        <div class="why-osis">
+            <h1 class="why-osis-title">{ "Why osis" }</h1>
+            <div class="why-osis-container">
                 <WhyOsisSection image_path="data/banner.jpeg" header="Experience" link="/about/0">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
                 <WhyOsisSection image_path="data/banner.jpeg" header="Collaboration" link="/about/1">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
                 <WhyOsisSection image_path="data/banner.jpeg" header="Empowerment" link="/about/2">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
             </div>
         </div>
@@ -100,10 +89,10 @@ struct WhyOsisSectionProp {
 #[function_component(WhyOsisSection)]
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
     html! {
-        <div class="flex list-vert width-20 min-width-400">
-            <h1 class="font-large center-text">{ props.header.clone() }</h1>
+        <div class="why-osis-section">
+            <h1 class="why-osis-section-header">{ props.header.clone() }</h1>
             <img src={props.image_path.clone()} />
-            { for props.children.iter() }
+            <p class="why-osis-par">{ for props.children.iter() }</p>
             <LearnMoreButton link={ props.link.clone() }/>
         </div>
     }
@@ -112,22 +101,22 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
 #[function_component(WhatIsOsis)]
 fn what_is_osis() -> Html {
     html! {
-        <>
-            <h1 class="font-xl center-text">{ "What is osis" }</h1>
+        <section>
+            <h1 class="what-osis-header">{ "What is osis" }</h1>
             <OsisInfo />
-        </>
+        </section>
     }
 }
 
 #[function_component(OsisInfo)]
 fn osis_info() -> Html {
     html! {
-        <div class="grid hor-split-3-1 vert-split-3-4 margin-base column-gap-med osis-info">
-            <img src="data/banner.jpeg" class="img"/>
-            <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        <article class="what-osis-info">
+            <img src="data/banner.jpeg" class="what-osis-img"/>
+            <p class="what-osis-par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
             <LearnMoreButton link="/about/3"/>
-        </div>
+        </article>
     }
 }
 
@@ -139,8 +128,8 @@ struct LearnMoreButtonProp {
 #[function_component(LearnMoreButton)]
 fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     html! {
-        <a href={props.link.clone()} class="back-accent but center-text margin-smallest width-50 link-nochange">
-            <h1 class="font-medium white">{ "Learn more" }</h1>
+        <a href={props.link.clone()} class="learn-more-button">
+            <h1 class="learn-more-button-text">{ "Learn more" }</h1>
         </a>
     }
 }
@@ -148,9 +137,9 @@ fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
 #[function_component(Faq)]
 fn faq() -> Html {
     html! {
-        <div>
-            <h1 class="font-xl center-text">{ "FAQ" }</h1>
-            <div class="flex list-vert margin-base gap-50">
+        <section class="faq">
+            <h1 class="faq-header">{ "FAQ" }</h1>
+            <div class="faq-container">
                 <FaqSection question="lorem ipsum">
                     {"
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -170,7 +159,7 @@ fn faq() -> Html {
                     "}
                 </FaqSection>
             </div>
-        </div>
+        </section>
     }
 }
 
@@ -196,16 +185,15 @@ fn faq_section(props: &FaqSectionProp) -> Html {
         },
     };
 
-    let dropdown = dropdown.clone();
 
     let onclick = {
-        let dropdown = dropdown.clone();
+        let dropdown = dropdown;
         Callback::from(move |_| dropdown.set((*dropdown).switch()))
     };
 
     html! {
-        <div class="flex center-vert list-vert">
-            <h1 class="center-text font-large width-fit align-start hover" {onclick}>{ header() }{ props.question.clone() }</h1>
+        <div class="faq-section">
+            <h1 class="faq-content faq-content-hover" {onclick}>{ header() }{ props.question.clone() }</h1>
             { paragraph() }
         </div>
     }
@@ -232,76 +220,72 @@ impl Dropdown {
     }
 }
 
-#[function_component(ProgramEventList)]
-fn program_event_list(props: &ProgramEventListProp) -> Html {
-    let header = match props.pro_event {
-        ProgramEventType::Program => "Our best programs",
-        ProgramEventType::Event => "Our latest events",
-    };
-
-    let link = match props.pro_event {
-        ProgramEventType::Program => "/todo/program",
-        ProgramEventType::Event => "/todo/event",
-    };
-
-    let link_text = match props.pro_event {
-        ProgramEventType::Program => "Click here to see more programs",
-        ProgramEventType::Event => "Click here to see more event",
-    };
-
+#[function_component(ProgramList)]
+fn program_list() -> Html {
     html! {
-        <div class="margin-base flex center-horz list-vert">
-            <h1 class="font-xl center-text">{ header }</h1>
-            <div class="flex space-around wrap">
-                <ProgramEvent />
-                <ProgramEvent />
-                <ProgramEvent />
-                <ProgramEvent />
+        <section class="program-list">
+            <h1 class="program-header">{ "See our best programs" }</h1>
+            <div class="program-section">
+                <Program />
+                <Program />
+                <Program />
+                <Program />
             </div>
-            <a href={ link }><h2 class="center-text">{ link_text }</h2></a>
-        </div>
+            <a href="/todo/program"><h2 class="program-link">{ "Click here to see more programs" }</h2></a>
+        </section>
     }
 }
 
-#[derive(Properties, PartialEq)]
-struct ProgramEventListProp {
-    // Program or events
-    pro_event: ProgramEventType,
-}
-
-#[derive(PartialEq)]
-enum ProgramEventType {
-    Program,
-    Event,
-}
-
-// enum ProgramEventType {
-//     Program,
-//     Event,
-// }
-//
-// #[derive(Properties, PartialEq)]
-// struct ProgramEventProp {
-//     pe_type: ProgramEventType
-// }
-
-#[function_component(ProgramEvent)]
-fn program_events() -> Html {
+#[function_component(EventList)]
+fn event_list() -> Html {
     html! {
-        <div class="grid hor-split-aaa width-1-5 min-width-200 center-vert">
+        <section class="event-list">
+            <h1 class="event-header">{ "See our latest events" }</h1>
+            <div class="event-section">
+                <Event />
+                <Event />
+                <Event />
+                <Event />
+            </div>
+            <a href="/todo/event"><h2 class="event-link">{ "Click here to see more events" }</h2></a>
+        </section>
+    }
+}
+
+
+#[function_component(Event)]
+fn event() -> Html {
+    html! {
+        <article class="event">
             <div>
-                <h1 class="font-large center-text">{ "Lorem ipsum" }</h1>
+                <h1 class="event-title">{ "Lorem ipsum" }</h1>
             </div>
-            <div class="height-100">
-                <img src="data/program.jpeg" class="height-100" />
+            <div class="event-image-container">
+                <img src="data/program.jpeg" class="event-image" />
             </div>
-            <div class="height-100">
+            <div class="rating-container">
                 <Rating />
             </div>
-        </div>
+        </article>
     }
 }
 
+#[function_component(Program)]
+fn program() -> Html {
+    html! {
+        <article class="program">
+            <div>
+                <h1 class="program-title">{ "Lorem ipsum" }</h1>
+            </div>
+            <div class="program-image-container">
+                <img src="data/program.jpeg" class="program-image" />
+            </div>
+            <div class="rating">
+                <Rating />
+            </div>
+        </article>
+    }
+}
 // #[derive(Properties)]
 // struct RatingProp {
 //     rating: u8
@@ -310,12 +294,12 @@ fn program_events() -> Html {
 #[function_component(Rating)]
 fn rating() -> Html {
     html! {
-        <div class="flex rating">
-            <img src="data/star.png" />
-            <img src="data/star.png" />
-            <img src="data/star.png" />
-            <img src="data/star.png" />
-            <img src="data/star.png" />
+        <div class="rating-list">
+            <img src="data/star.png" class="rating-img"/>
+            <img src="data/star.png" class="rating-img"/>
+            <img src="data/star.png" class="rating-img"/>
+            <img src="data/star.png" class="rating-img"/>
+            <img src="data/star.png" class="rating-img"/>
         </div>
     }
 }
@@ -323,9 +307,9 @@ fn rating() -> Html {
 #[function_component(ContactList)]
 fn contact_list() -> Html {
     html! {
-        <div class="margin-base">
-            <h2 class="center-text font-xl">{ "Contacts" }</h2>
-            <div class="flex wrap space-around gap-50 align-base">
+        <div class="contact">
+            <h2 class="contact-header">{ "Contacts" }</h2>
+            <div class="contact-list">
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
@@ -338,8 +322,8 @@ fn contact_list() -> Html {
 #[function_component(Contact)]
 fn contact(props: &ContactProp) -> Html {
     html! {
-        <div class="flex max-width-fit height-150px">
-            <img src={ props.image.clone() } class="width-auto"/>
+        <div class="contact-item">
+            <img src={ props.image.clone() } class="contact-img"/>
             <h2>
                 { props.name.clone() }
             </h2>

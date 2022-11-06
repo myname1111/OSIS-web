@@ -1,16 +1,11 @@
 use yew::prelude::*;
 
 #[function_component(NavBar)]
-pub fn nav_bar(props: &NavBarProp) -> Html {
-    let pos = match props.pos {
-        NavBarPos::Fixed => "fixed",
-        NavBarPos::Static => "static",
-    };
-
+pub fn nav_bar() -> Html {
     html! {
-        <nav style={format!("position: {}", pos)}>
+        <nav class="nav">
             <a href="/">
-                <img src="/data/OSIS.png" class="width-auto height-100" />
+                <img src="/data/OSIS.png" class="nav-img" />
             </a>
             <h2>{ "Why" }</h2>
             <h2>{ "About" }</h2>
@@ -21,15 +16,3 @@ pub fn nav_bar(props: &NavBarProp) -> Html {
         </nav>
     }
 }
-
-#[derive(Properties, PartialEq, Eq)]
-pub struct NavBarProp {
-    pub pos: NavBarPos,
-}
-
-#[derive(PartialEq, Eq)]
-pub enum NavBarPos {
-    Fixed,
-    Static,
-}
-
