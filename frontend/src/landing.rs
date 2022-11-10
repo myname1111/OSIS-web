@@ -5,6 +5,8 @@
 use wasm_bindgen::JsCast;
 use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
+use crate::utilities::*;
+
 #[function_component(Landing)]
 pub fn landing() -> Html {
     html! {
@@ -21,10 +23,10 @@ pub fn landing() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner cover-image center-vert center-horz-flex center-text height-75 flex">
-            <div class="grid center-horz row-gap-med">
+        <div class="banner banner--landing">
+            <div class="banner--container">
                 <BannerText />
-                <SignUpButton />
+                <SignUpButton modifiers="sign-up-button--banner"/>
             </div>
         </div>
     }
@@ -33,32 +35,13 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="flex list-vert margin-base banner-text">
-            <h1 class="white font-large">
-                <span>{"Empowerment"}</span>
-                {", "}
-                <span>{"team work"}</span>
-                {", and "}
-                <span>{"experience"}</span>
+        <div class="banner-landing--text-container">
+            <h1 class="banner--text">
+                {"Empowerment, team work, and experience"}
             </h1>
-            <h2 class="white font-medium">
-                { "Make you more " }
-                <span class="font-medium">{ "confident" }</span>
-                {", give you "}
-                <span class="font-medium">{ "control" }</span>
-                {". And your "}
-                <span class="font-medium">{ "friends" } </span>
-                { " will help you along the way" }
+            <h2 class="banner-landing--sub">
+                {"Make you more confident, give you control. And your friends will help you along the way"}
             </h2>
-        </div>
-    }
-}
-
-#[function_component(SignUpButton)]
-fn sign_up_button() -> Html {
-    html! {
-        <div class="hover back-white width-15 flex center-vert center-horz">
-            <h1 class="font-medium width-100">{ "Sign up for a better future" }</h1>
         </div>
     }
 }
@@ -66,26 +49,26 @@ fn sign_up_button() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="margin-large margin-hor-0">
-            <h1 class="font-xl center-text">{ "Why should I join OSIS?" }</h1>
-            <div class="flex wrap center-horz list-vert gap-150 center-vert">
+        <div class="why-osis why-osis--landing">
+            <h1 class="header">{ "Why should I join OSIS?" }</h1>
+            <div class="why-osis-container-landing">
                 <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126" link="/about/0">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
                 <WhyOsisSection image_path="data/banner.jpeg" header="Give you control" align={WhyOsisAlign::Right} color="267ed9" link="/about/1">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
                 <WhyOsisSection image_path="data/banner.jpeg" header="Dream big with team work" align={WhyOsisAlign::Left} color="d98126" link="/about/2">
-                    <p class="font-medium">{ "
+                    { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Eros donec ac odio tempor orci dapibus ultrices.
-                    "}</p>
+                    "}
                 </WhyOsisSection>
             </div>
         </div>
@@ -94,19 +77,17 @@ fn why_osis() -> Html {
 
 #[function_component(WhyOsisSection)]
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
-    let alignment = match props.align {
-        WhyOsisAlign::Left => "align-right ver-split-2-1",
-        WhyOsisAlign::Right => "align-left ver-split-1-2",
+    let alignment = match props.align { // alignment of text
+        WhyOsisAlign::Left => "why-osis-section-landing--left",
+        WhyOsisAlign::Right => "why-osis-section-landing--right",
     };
 
     html! {
-        <div class={format!("grid {} center-vert why-osis-section", alignment)}>
-            <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={props.image_path.clone()} />
-            <div class="area-text flex list-vert">
-                <div>
-                    { for props.children.iter() }
-                </div>
+        <div class={format!("why-osis-section-landing {}", alignment)}>
+            <h1 class="why-osis-section-landing--title">{ props.header.clone() }</h1>
+            <img src={props.image_path.clone()} class="why-osis-section-landing--img"/>
+            <div class="why-osis-section-landing--par-container">
+                <p class="why-osis-section-landing--par">{ for props.children.iter() }</p>
             </div>
         </div>
     }
@@ -131,36 +112,36 @@ enum WhyOsisAlign {
 #[function_component(Testimonies)]
 fn testimonies() -> Html {
     html! {
-        <div class="margin-base">
-            <h1 class="font-xl center-text">{ "Our proof" }</h1>
-            <div class="flex wrap space-around gap-50">
+        <section class="testimonies">
+            <h1 class="header">{ "Our proof" }</h1>
+            <div class="testimonies--testimony-list">
                 <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                    { "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }
                 </Testimony>
                 <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                    { "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }
                 </Testimony>
                 <Testimony header="Lorem ipsum" image_path="data/person.png">
-                    <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
+                    { "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }
                 </Testimony>
             </div>
-        </div>
+        </section>
     }
 }
 
 #[function_component(Testimony)]
 fn testimony(props: &TestimonyProp) -> Html {
     html! {
-        <div class="grid width-1-5 min-width-400 center-vert ver-split-1-3 testimony">
-            <h1 class="font-large center-text">{ props.header.clone() }</h1>
-            <img src={ props.image_path.clone() } class="" />
-            <div class="area-text">
-                { for props.children.iter() }
+        <article class="testimony">
+            <h2 class="testimony--from">{ props.header.clone() }</h2>
+            <img src={ props.image_path.clone() } class="testimony--img" />
+            <div class="testimony--text-container">
+                <p class="testimony--par">{ for props.children.iter() }</p>
             </div>
-        </div>
+        </article>
     }
 }
 
@@ -174,29 +155,29 @@ struct TestimonyProp {
 #[function_component(WhatIsOsis)]
 fn what_is_osis() -> Html {
     html! {
-        <div>
-            <h1 class="font-xl center-text">{ "What is osis" }</h1>
+        <section class="what-osis">
+            <h1 class="header">{ "What is osis" }</h1>
             <OsisInfo />
-        </div>
+        </section>
     }
 }
 
 #[function_component(OsisInfo)]
 fn osis_info() -> Html {
     html! {
-        <div class="grid hor-split-3-1 vert-split-3-4 margin-base column-gap-med osis-info">
+        <article class="what-osis--info">
             <img src="data/banner.jpeg" class="img"/>
-            <p class="font-medium par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <p class="what-osis--par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
-        </div>
+        </article>
     }
 }
 
 #[function_component(SignUpToday)]
 fn sign_up_today() -> Html {
     html! {
-        <div class="flex center-vert center-horz list-vert">
-            <h1 class="font-xl">{ "Sign up for a better future" }</h1>
+        <div class="sign-up-today">
+            <h1 class="header">{ "Sign up for a better future" }</h1>
             <SignUp />
         </div>
     }
@@ -249,15 +230,14 @@ impl Component for SignUp {
         });
 
         html! {
-            <form class="margin-base white grid back-base center-horz center-text height-20 width-50">
-                <label for="usern" class="font-medium">{ "Username" }</label>
-                <textarea type="text" id="usern" name="usern" class="width-50 font-medium" onchange={set_name}/>
-                <label for="reason" class="font-medium">{ "Password" }</label>
-                <textarea type="text" id="reason" name="reason" class="width-50 font-medium" onchange={set_reason}/><div class="height-50px"/>
-                <div class="sign-up-button flex center-horz-flex width-100">
-                    <SignUpButton />
+            <form class="sign-up-form">
+                <label for="usern" class="sign-up-form--field-name">{ "Username" }</label>
+                <textarea type="text" id="usern" name="usern" class="sign-up-form--field" onchange={set_name}/>
+                <label for="reason" class="sign-up-form--field-name">{ "Password" }</label>
+                <textarea type="text" id="reason" name="reason" class="sign-up-form--field" onchange={set_reason}/><div class="height-50px"/>
+                <div class="sign-up-form--sign-up-button-container">
+                    <SignUpButton class="sign-up-button--today sign-up-button--hovere"/>
                 </div>
-                <div class="height-50px"/>
             </form>
         }
     }

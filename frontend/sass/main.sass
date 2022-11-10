@@ -1,10 +1,10 @@
 /* TODO: switch to semantic css, hopefully in next commit
 
 @use "sass:math"
+@use "globals/globals"
+@use "landing/landing"
+@use "home/home"
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap')
-
-$accent-color: #dd6c22
-$base-color: #1f7be0
 
 body
     margin: 0px
@@ -19,31 +19,6 @@ p
     font-size: 20px
     font-weight: 500
 
-nav
-  gap: 20px
-  background-color: $base-color
-  display: flex
-  height: 10%
-  width: 100%
-  top: 0%
-  align-items: center
-
-nav > h2
-  font-size: 35px
-  font-weight: 500
-  color: white
-  margin: 0
-
-.nav
-  position: fixed
-
-.nav-img
-  height: 100%
-
-.nav-sign-up
-  margin-left: auto
-  margin-right: 30px
-
 html
   font-family: 'Raleway', sans-serif
 
@@ -51,119 +26,16 @@ img
     width: 100%
     height: auto
 
-.banner
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/data/banner.jpeg)
-  height: 100%
-  background-size: cover
-  align-items: center
-  text-align: center
-
-.banner-container
-  display: grid
-  justify-items: center
-  height: 100%
-  row-gap: 75px
-
-.banner-text-container
-  height: 100%
-  align-items: end
-  display: flex
-
-.banner-text
-  color: white
-  font-size: 50px
-
-.sign-up-button
-  background-color: white
-  width: 30%
-  height: 30%
-  display: flex
-  justify-items: center
-  align-items: center
-
-.sign-up-button-text
-  font-size: 30px
-  width: 100%
-
-.sign-up-button-hover:hover
-  cursor: pointer
-
-.osis-info
-    grid-template-areas: "img par" "img but"
-
-.info-button a
-    display: flex
-    width: 100%
-    height: 20%
-    align-content: center
-    justify-content: center
-
-.testimony
-    grid-template-areas: "title title" "img text"
-    width: 100%
-    column-gap: 20px
-
-.why-osis
-  margin: 100px
-
-.why-osis-title
-  font-size: 100px
-  text-align: center
-
-.why-osis-container
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-around
-
-.why-osis-section
-  display: flex
-  flex-direction: column
-  width: 20%
-  min-width: 400px
-
-.why-osis-section-header
-  font-size: 50px
-  text-align: center
-
-.why-osis-par
-  font-size: 30px
-
-.learn-more-button
-  background-color: $accent-color
-  text-align: center
-  margin: auto
-  width: 50%
-
-.learn-more-button:link
-    color: inherit
-    text-decoration: none
-
-.learn-more-button:visited
-    color: inherit
-    text-decoration: none
-
-.learn-more-button:hover
-    color: inherit
-    text-decoration: none
-
-.learn-more-button:active
-    color: inherit
-    text-decoration: none
-
-.learn-more-button-text
-  font-size: 30px
-  color: white
-
-.member-properties
+.member--properties
   display: flex,
   flex-direction: column
 
-.member-properties > h2
+.member--properties > h2
   font-size: 50px
   margin: 0px
   font-weight: 400
 
-.member-container
+.member--container
   justify-content: space-around
   flex-wrap: wrap
   display: flex
@@ -182,115 +54,12 @@ img
   h2
     margin: 0px
 
-.member-name
+.member--name
   align-self: end
   font-size: 45px
 
-.member-role
+.member--role
   align-self: start
   font-size: 30px
   font-weight: 400
 
-.what-osis-header
-  font-size: 100px
-  text-align: center
-
-.what-osis-info
-  display: grid
-  grid-template-rows: 3fr 1fr
-  grid-template-columns: 3fr 4fr
-  margin: 100px
-  column-gap: 75px
-  grid-template-areas: "img par" "img but"
-
-.what-osis-img
-  grid-area: img
-
-.what-osis-par
-  grid-area: par
-
-.faq-header
-  font-size: 100px
-  text-align: center
-
-.faq-container
-  display: flex
-  flex-direction: column
-  margin: 100px
-  gap: 50px
-
-.faq-section
-  display: flex
-  align-items: center
-  flex-direction: column
-
-.faq-content
-  font-size: 50px
-  width: fit
-
-.faq-content-hover:hover
-  cursor: pointer
-
-.program-list, .event-list
-  margin: 100px
-  display: flex
-  justify-items: center
-  flex-direction: column
-
-.program-header, .event-header
-  font-size: 100px
-  text-align: center
-
-.program-section, .event-section
-  display: flex
-  justify-content: space-around
-  flex-wrap: wrap
-
-.program-link, .event-link
-  text-align: center
-
-.program, .event
-  display: grid
-  grid-template-rows: repeat(auto, 3)
-  width: 20%
-  align-items: center
-  min-width: 200px
-
-.program-title, .event-title
-  font-size: 50px
-
-.program-image-container, .event-image-container
-  height: 100%
-
-.program-image, .event-image
-  height: 100%
-
-.rating
-  height: 100%
-
-.rating-list
-  display: flex
-
-.rating-img
-  height: 100%
-  width: 20%
-
-.contact
-  margin: 100px
-
-.contact-header
-  text-align: center
-  font-size: 100px
-
-.contact-list
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-around
-  gap: 50px
-
-.contact-item
-  display: flex
-  height: 150px
-
-.contact-img
-  width: auto

@@ -1,0 +1,29 @@
+.why-osis-section-landing
+  display: grid
+  align-content: center
+  width: 60%
+  column-gap: 100px
+
+.why-osis-section-landing--right
+  grid-template-areas: "title title" "img text"
+  grid-template-columns: 1fr 2fr
+
+.why-osis-section-landing--left
+  grid-template-areas: "title title" "text img"
+  grid-template-columns: 2fr 1fr
+
+.why-osis-section-landing--title
+  font-size: 50px
+  text-align: center
+  grid-area: title
+
+.why-osis-section-landing--img
+  grid-area: img
+
+.why-osis-section-landing--par-container
+  grid-area: text
+  display: flex
+  flex-direction: column
+
+.why-osis-section-landing--par
+  font-size: 25px

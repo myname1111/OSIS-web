@@ -20,10 +20,10 @@ pub fn home() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner">
-            <div class="banner-container">
+        <div class="banner banner--home">
+            <div class="banner--container">
                 <BannerText />
-                <SignUpButton />
+                <SignUpButton modifiers="sign-up-button--banner"/>
             </div>
         </div>
     }
@@ -32,19 +32,10 @@ fn banner() -> Html {
 #[function_component(BannerText)]
 fn banner_text() -> Html {
     html! {
-        <div class="banner-text-container">
-            <h1 class="banner-text">
+        <div class="banner-home--text-container">
+            <h1 class="banner--text">
                 {"Empowerment, team work, and experience"}
             </h1>
-        </div>
-    }
-}
-
-#[function_component(SignUpButton)]
-fn sign_up_button() -> Html {
-    html! {
-        <div class="sign-up-button sign-up-button-hover">
-            <h1 class="sign-up-button-text">{ "Sign up for a better future" }</h1>
         </div>
     }
 }
@@ -52,9 +43,9 @@ fn sign_up_button() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="why-osis">
-            <h1 class="why-osis-title">{ "Why osis" }</h1>
-            <div class="why-osis-container">
+        <section class="why-osis">
+            <h1 class="header">{ "Why osis" }</h1>
+            <div class="why-osis--container why-osis--container--home">
                 <WhyOsisSection image_path="data/banner.jpeg" header="Experience" link="/about/0">
                     { "
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -74,7 +65,7 @@ fn why_osis() -> Html {
                     "}
                 </WhyOsisSection>
             </div>
-        </div>
+        </section>
     }
 }
 
@@ -89,20 +80,20 @@ struct WhyOsisSectionProp {
 #[function_component(WhyOsisSection)]
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
     html! {
-        <div class="why-osis-section">
-            <h1 class="why-osis-section-header">{ props.header.clone() }</h1>
+        <article class="why-osis-section-home">
+            <h1 class="why-osis-section-home--header">{ props.header.clone() }</h1>
             <img src={props.image_path.clone()} />
-            <p class="why-osis-par">{ for props.children.iter() }</p>
+            <p class="why-osis-section-home--par">{ for props.children.iter() }</p>
             <LearnMoreButton link={ props.link.clone() }/>
-        </div>
+        </article>
     }
 }
 
 #[function_component(WhatIsOsis)]
 fn what_is_osis() -> Html {
     html! {
-        <section>
-            <h1 class="what-osis-header">{ "What is osis" }</h1>
+        <section class="what-osis">
+            <h1 class="header">{ "What is osis" }</h1>
             <OsisInfo />
         </section>
     }
@@ -111,9 +102,9 @@ fn what_is_osis() -> Html {
 #[function_component(OsisInfo)]
 fn osis_info() -> Html {
     html! {
-        <article class="what-osis-info">
-            <img src="data/banner.jpeg" class="what-osis-img"/>
-            <p class="what-osis-par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        <article class="what-osis--info">
+            <img src="data/banner.jpeg" class="what-osis--img"/>
+            <p class="what-osis--par">{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ipsum suspendisse ultrices gravida dictum fusce ut. Nibh tellus molestie nunc non blandit massa enim nec. In arcu cursus euismod quis viverra." }</p>
             <LearnMoreButton link="/about/3"/>
         </article>
@@ -129,7 +120,7 @@ struct LearnMoreButtonProp {
 fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     html! {
         <a href={props.link.clone()} class="learn-more-button">
-            <h1 class="learn-more-button-text">{ "Learn more" }</h1>
+            <h1 class="learn-more-button--text">{ "Learn more" }</h1>
         </a>
     }
 }
@@ -138,8 +129,8 @@ fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
 fn faq() -> Html {
     html! {
         <section class="faq">
-            <h1 class="faq-header">{ "FAQ" }</h1>
-            <div class="faq-container">
+            <h1 class="header">{ "FAQ" }</h1>
+            <div class="faq--container">
                 <FaqSection question="lorem ipsum">
                     {"
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -181,7 +172,7 @@ fn faq_section(props: &FaqSectionProp) -> Html {
             ""
         },
         Dropdown::Expanded => html! {
-            <p class="center-text font-medium">{ for props.children.iter() }</p>
+            <p class="faq-section--content">{ for props.children.iter() }</p>
         },
     };
 
@@ -193,7 +184,7 @@ fn faq_section(props: &FaqSectionProp) -> Html {
 
     html! {
         <div class="faq-section">
-            <h1 class="faq-content faq-content-hover" {onclick}>{ header() }{ props.question.clone() }</h1>
+            <h1 class="faq-section--question faq-section--hover" {onclick}>{ header() }{ props.question.clone() }</h1>
             { paragraph() }
         </div>
     }
@@ -223,15 +214,15 @@ impl Dropdown {
 #[function_component(ProgramList)]
 fn program_list() -> Html {
     html! {
-        <section class="program-list">
-            <h1 class="program-header">{ "See our best programs" }</h1>
-            <div class="program-section">
+        <section class="item-list">
+            <h1 class="header">{ "See our best programs" }</h1>
+            <div class="item-list--section">
                 <Program />
                 <Program />
                 <Program />
                 <Program />
             </div>
-            <a href="/todo/program"><h2 class="program-link">{ "Click here to see more programs" }</h2></a>
+            <a href="/todo/program"><h2 class="item-list--link">{ "Click here to see more programs" }</h2></a>
         </section>
     }
 }
@@ -239,15 +230,15 @@ fn program_list() -> Html {
 #[function_component(EventList)]
 fn event_list() -> Html {
     html! {
-        <section class="event-list">
-            <h1 class="event-header">{ "See our latest events" }</h1>
-            <div class="event-section">
+        <section class="item-list">
+            <h1 class="item-list--header">{ "See our latest events" }</h1>
+            <div class="item-list--section">
                 <Event />
                 <Event />
                 <Event />
                 <Event />
             </div>
-            <a href="/todo/event"><h2 class="event-link">{ "Click here to see more events" }</h2></a>
+            <a href="/todo/event"><h2 class="item-list--link">{ "Click here to see more events" }</h2></a>
         </section>
     }
 }
@@ -256,14 +247,12 @@ fn event_list() -> Html {
 #[function_component(Event)]
 fn event() -> Html {
     html! {
-        <article class="event">
+        <article class="item">
             <div>
-                <h1 class="event-title">{ "Lorem ipsum" }</h1>
+                <h1 class="item--title">{ "Lorem ipsum" }</h1>
             </div>
-            <div class="event-image-container">
-                <img src="data/program.jpeg" class="event-image" />
-            </div>
-            <div class="rating-container">
+            <img src="data/program.jpeg" class="item--image" />
+            <div class="rating--container">
                 <Rating />
             </div>
         </article>
@@ -273,14 +262,12 @@ fn event() -> Html {
 #[function_component(Program)]
 fn program() -> Html {
     html! {
-        <article class="program">
+        <article class="item">
             <div>
-                <h1 class="program-title">{ "Lorem ipsum" }</h1>
+                <h1 class="item--title">{ "Lorem ipsum" }</h1>
             </div>
-            <div class="program-image-container">
-                <img src="data/program.jpeg" class="program-image" />
-            </div>
-            <div class="rating">
+            <img src="data/program.jpeg" class="item--image" />
+            <div class="rating--container">
                 <Rating />
             </div>
         </article>
@@ -294,12 +281,11 @@ fn program() -> Html {
 #[function_component(Rating)]
 fn rating() -> Html {
     html! {
-        <div class="rating-list">
-            <img src="data/star.png" class="rating-img"/>
-            <img src="data/star.png" class="rating-img"/>
-            <img src="data/star.png" class="rating-img"/>
-            <img src="data/star.png" class="rating-img"/>
-            <img src="data/star.png" class="rating-img"/>
+        <div class="rating">
+            { (0..6)
+                .into_iter()
+                .map(|_| html!{ <img src="data/star.png" class="rating--img"/> })
+                .collect::<Html>() }
         </div>
     }
 }
@@ -308,8 +294,8 @@ fn rating() -> Html {
 fn contact_list() -> Html {
     html! {
         <div class="contact">
-            <h2 class="contact-header">{ "Contacts" }</h2>
-            <div class="contact-list">
+            <h2 class="header">{ "Contacts" }</h2>
+            <div class="contact--list">
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
@@ -322,8 +308,8 @@ fn contact_list() -> Html {
 #[function_component(Contact)]
 fn contact(props: &ContactProp) -> Html {
     html! {
-        <div class="contact-item">
-            <img src={ props.image.clone() } class="contact-img"/>
+        <div class="contact--item">
+            <img src={ props.image.clone() } class="contact--img"/>
             <h2>
                 { props.name.clone() }
             </h2>
