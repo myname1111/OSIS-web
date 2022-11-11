@@ -23,12 +23,12 @@ pub fn landing() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner banner--landing">
+        <header class="banner banner--landing">
             <div class="banner--container">
                 <BannerText />
                 <SignUpButton modifiers="sign-up-button--banner"/>
             </div>
-        </div>
+        </header>
     }
 }
 
@@ -49,8 +49,8 @@ fn banner_text() -> Html {
 #[function_component(WhyOsis)]
 fn why_osis() -> Html {
     html! {
-        <div class="why-osis why-osis--landing">
-            <h1 class="header">{ "Why should I join OSIS?" }</h1>
+        <section class="why-osis why-osis--landing">
+            <h2 class="header">{ "Why should I join OSIS?" }</h2>
             <div class="why-osis-container-landing">
                 <WhyOsisSection image_path="data/banner.jpeg" header="A brighter future" align={WhyOsisAlign::Left} color="d98126" link="/about/0">
                     { "
@@ -71,7 +71,7 @@ fn why_osis() -> Html {
                     "}
                 </WhyOsisSection>
             </div>
-        </div>
+        </section>
     }
 }
 
@@ -83,13 +83,13 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
     };
 
     html! {
-        <div class={format!("why-osis-section-landing {}", alignment)}>
-            <h1 class="why-osis-section-landing--title">{ props.header.clone() }</h1>
+        <article class={format!("why-osis-section-landing {}", alignment)}>
+            <h3 class="why-osis-section-landing--title">{ props.header.clone() }</h3>
             <img src={props.image_path.clone()} class="why-osis-section-landing--img"/>
             <div class="why-osis-section-landing--par-container">
                 <p class="why-osis-section-landing--par">{ for props.children.iter() }</p>
             </div>
-        </div>
+        </article>
     }
 }
 
@@ -113,7 +113,7 @@ enum WhyOsisAlign {
 fn testimonies() -> Html {
     html! {
         <section class="testimonies">
-            <h1 class="header">{ "Our proof" }</h1>
+            <h2 class="header">{ "Our proof" }</h2>
             <div class="testimonies--testimony-list">
                 <Testimony header="Lorem ipsum" image_path="data/person.png">
                     { "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -136,7 +136,7 @@ fn testimonies() -> Html {
 fn testimony(props: &TestimonyProp) -> Html {
     html! {
         <article class="testimony">
-            <h2 class="testimony--from">{ props.header.clone() }</h2>
+            <h3 class="testimony--from">{ props.header.clone() }</h3>
             <img src={ props.image_path.clone() } class="testimony--img" />
             <div class="testimony--text-container">
                 <p class="testimony--par">{ for props.children.iter() }</p>
@@ -177,7 +177,7 @@ fn osis_info() -> Html {
 fn sign_up_today() -> Html {
     html! {
         <div class="sign-up-today">
-            <h1 class="header">{ "Sign up for a better future" }</h1>
+            <h2 class="header">{ "Sign up for a better future" }</h2>
             <SignUp />
         </div>
     }
@@ -236,7 +236,7 @@ impl Component for SignUp {
                 <label for="reason" class="sign-up-form--field-name">{ "Password" }</label>
                 <textarea type="text" id="reason" name="reason" class="sign-up-form--field" onchange={set_reason}/><div class="height-50px"/>
                 <div class="sign-up-form--sign-up-button-container">
-                    <SignUpButton class="sign-up-button--today sign-up-button--hovere"/>
+                    <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
                 </div>
             </form>
         }

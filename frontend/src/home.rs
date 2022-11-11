@@ -20,12 +20,12 @@ pub fn home() -> Html {
 #[function_component(Banner)]
 fn banner() -> Html {
     html! {
-        <div class="banner banner--home">
+        <header class="banner banner--home">
             <div class="banner--container">
                 <BannerText />
                 <SignUpButton modifiers="sign-up-button--banner"/>
             </div>
-        </div>
+        </header>
     }
 }
 
@@ -44,7 +44,7 @@ fn banner_text() -> Html {
 fn why_osis() -> Html {
     html! {
         <section class="why-osis">
-            <h1 class="header">{ "Why osis" }</h1>
+            <h2 class="header">{ "Why osis" }</h2>
             <div class="why-osis--container why-osis--container--home">
                 <WhyOsisSection image_path="data/banner.jpeg" header="Experience" link="/about/0">
                     { "
@@ -81,7 +81,7 @@ struct WhyOsisSectionProp {
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
     html! {
         <article class="why-osis-section-home">
-            <h1 class="why-osis-section-home--header">{ props.header.clone() }</h1>
+            <h3 class="why-osis-section-home--header">{ props.header.clone() }</h3>
             <img src={props.image_path.clone()} />
             <p class="why-osis-section-home--par">{ for props.children.iter() }</p>
             <LearnMoreButton link={ props.link.clone() }/>
@@ -93,7 +93,7 @@ fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
 fn what_is_osis() -> Html {
     html! {
         <section class="what-osis">
-            <h1 class="header">{ "What is osis" }</h1>
+            <h2 class="header">{ "What is osis" }</h2>
             <OsisInfo />
         </section>
     }
@@ -120,7 +120,7 @@ struct LearnMoreButtonProp {
 fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
     html! {
         <a href={props.link.clone()} class="learn-more-button">
-            <h1 class="learn-more-button--text">{ "Learn more" }</h1>
+            <p class="learn-more-button--text">{ "Learn more" }</p>
         </a>
     }
 }
@@ -129,7 +129,7 @@ fn learn_more_button(props: &LearnMoreButtonProp) -> Html {
 fn faq() -> Html {
     html! {
         <section class="faq">
-            <h1 class="header">{ "FAQ" }</h1>
+            <h2 class="header">{ "FAQ" }</h2>
             <div class="faq--container">
                 <FaqSection question="lorem ipsum">
                     {"
@@ -184,7 +184,7 @@ fn faq_section(props: &FaqSectionProp) -> Html {
 
     html! {
         <div class="faq-section">
-            <h1 class="faq-section--question faq-section--hover" {onclick}>{ header() }{ props.question.clone() }</h1>
+            <h3 class="faq-section--question faq-section--hover" {onclick}>{ header() }{ props.question.clone() }</h3>
             { paragraph() }
         </div>
     }
@@ -215,7 +215,7 @@ impl Dropdown {
 fn program_list() -> Html {
     html! {
         <section class="item-list">
-            <h1 class="header">{ "See our best programs" }</h1>
+            <h2 class="header">{ "See our best programs" }</h2>
             <div class="item-list--section">
                 <Program />
                 <Program />
@@ -231,7 +231,7 @@ fn program_list() -> Html {
 fn event_list() -> Html {
     html! {
         <section class="item-list">
-            <h1 class="item-list--header">{ "See our latest events" }</h1>
+            <h2 class="header">{ "See our latest events" }</h2>
             <div class="item-list--section">
                 <Event />
                 <Event />
@@ -293,7 +293,7 @@ fn rating() -> Html {
 #[function_component(ContactList)]
 fn contact_list() -> Html {
     html! {
-        <div class="contact">
+        <footer class="contact">
             <h2 class="header">{ "Contacts" }</h2>
             <div class="contact--list">
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
@@ -301,7 +301,7 @@ fn contact_list() -> Html {
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
                 <Contact image="data/whatsapp.webp" name="XXXX-XXXX-XXXX" />
             </div>
-        </div>
+        </footer>
     }
 }
 

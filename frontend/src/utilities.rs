@@ -21,7 +21,7 @@ pub fn nav_bar() -> Html {
 pub fn sign_up_button(props: &SignUpButtonProps) -> Html {
     html! {
         <div class={format!("{} {}", props.class.clone(), props.modifiers.clone())}>
-            <h1 class="sign-up-button--text">{ "Sign up for a better future" }</h1>
+            <p class="sign-up-button--text">{ "Sign up for a better future" }</p>
         </div>
     }
 }
