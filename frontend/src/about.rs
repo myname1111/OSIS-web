@@ -6,13 +6,13 @@ pub fn about(props: &AboutProp) -> Html {
     html! {
         <>
         <NavBar/>
-        <div class="grid margin-base ver-split-15p-1 column-gap-large">
-                <Sidebar> // TODO: replace with json
-                    <Bar header="Lorem ipsum" content={0}/>
-                    <Bar header="Dolor sit amet" content={1}/>
-                    <Bar header="Consectetur" content={2}/>
-                    <Bar header="Adipiscing elit" content={3}/>
-                </Sidebar>
+        <div class="main-content">
+                <ArticleList> // TODO: replace with json
+                    <ArticleListItem header="Lorem ipsum" content={0}/>
+                    <ArticleListItem header="Dolor sit amet" content={1}/>
+                    <ArticleListItem header="Consectetur" content={2}/>
+                    <ArticleListItem header="Adipiscing elit" content={3}/>
+                </ArticleList>
                 <ContentList content={props.content_id}>
                     <Content>
                         <h1>{ "Lorem ipsum" }</h1>
@@ -214,30 +214,30 @@ pub struct AboutProp {
 }
 
 #[derive(Properties, PartialEq)]
-struct SideBarProp {
-    children: ChildrenWithProps<Bar>,
+struct ArticleListProp {
+    children: ChildrenWithProps<ArticleListItem>,
 }
 
-#[function_component(Sidebar)]
-fn sidebar(props: &SideBarProp) -> Html {
+#[function_component(ArticleList)]
+fn article_list(props: &ArticleListProp) -> Html {
     html! {
-        <div class="flex list-vert row-gap-xs">
+        <aside class="article-list">
             { for props.children.iter() }
-        </div>
+        </aside>
     }
 }
 
 #[derive(Properties, PartialEq)]
-struct BarProp {
+struct ArticleListItemProp {
     header: String,
     content: usize,
 }
 
-#[function_component(Bar)]
-fn bar(props: &BarProp) -> Html {
+#[function_component(ArticleListItem)]
+fn article_list_item(props: &ArticleListItemProp) -> Html {
     html! {
-        <a href={format!("/about/{}", props.content)} class="back-lightgrey grid center-horz round-border-25 link-nochange">
-            <p class="font-medium">{ props.header.clone() }</p>
+        <a href={format!("/about/{}", props.content)} class="article-list-item">
+            <p class="article-list-item--text">{ props.header.clone() }</p>
         </a>
     }
 }
@@ -252,8 +252,8 @@ struct ContentListProp {
 fn content_list(props: &ContentListProp) -> Html {
     let content = props.children.iter().nth(props.content.into()).unwrap();
     html! {
-        <div class="grid ver-split-1-3-1 hor-split-1-100px content-list">
-            <div class="content font-small">
+        <div class="content-list">
+            <div class="content">
                 { content }
             </div>
         </div>
@@ -268,8 +268,8 @@ struct ContentProp {
 #[function_component(Content)]
 fn content(props: &ContentProp) -> Html {
     html! {
-        <div>
+        <main>
             { for props.children.iter() }
-        </div>
+        </main>
     }
 }
