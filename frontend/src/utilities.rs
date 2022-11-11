@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
 
 #[function_component(NavBar)]
 pub fn nav_bar() -> Html {
@@ -33,3 +34,18 @@ pub struct SignUpButtonProps {
     #[prop_or("sign-up-button sign-up-button--hover".to_string())]
     pub class: String
 }
+
+#[derive(Clone, Routable, PartialEq)]
+pub enum Route { // TODO: create 404
+    #[at("/")]
+    Home,
+    #[at("/about/:id")]
+    About { id: u8 },
+    #[at("/landing")]
+    Landing,
+    #[at("/member/:id")]
+    Member { id: u32 },
+    #[at("/member")]
+    MemberList
+}
+
