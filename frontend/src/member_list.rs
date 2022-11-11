@@ -107,7 +107,7 @@ pub fn member_list() -> Html {
     html! {
         <>
             <NavBar />
-            <div class="member-container">
+            <div class="member-list">
                 {
                     if let (Some(images), Some(division), Some(member_list)) = (&*images, &*division, &*member_list) {
                         log::debug!("images: {:?}", images);
@@ -142,12 +142,12 @@ pub fn member_list() -> Html {
 fn member(props: &MemberProp) -> Html {
     log::info!("rendering preview with data {:?}", props.member);
     html! {
-        <div class="member">
-            <h2 class="member-name">{ props.member.name.clone() }</h2>
+        <div class="member-list-item">
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
                 .unwrap_or_else(|| "person.png".to_string()))} /> 
-            <h2 class="member-role">{ capitalize_first_letter( {
+            <h2 class="member-list-item--name">{ props.member.name.clone() }</h2>
+            <h2 class="member-list-item--role">{ capitalize_first_letter( {
                 let division_msg = props.division.as_ref()
                     .map(|division| format!(" of the division of {}", division.name))
                     .unwrap_or_else(|| "".to_string());

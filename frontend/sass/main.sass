@@ -5,6 +5,7 @@
 @use "landing/landing"
 @use "home/home"
 @use "about/about"
+@use "member_list/member_list"
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap')
 
 body
@@ -35,32 +36,3 @@ img
   font-size: 50px
   margin: 0px
   font-weight: 400
-
-.member--container
-  justify-content: space-around
-  flex-wrap: wrap
-  display: flex
-  column-gap: 200px
-  row-gap: 100px
-  margin: 100px
-
-.member
-  display: grid
-  grid-template-rows: 3.5fr 5fr 2fr
-  width: 20%
-  min-width: 300px
-  flex-direction: column
-  gap: 10px
-
-  h2
-    margin: 0px
-
-.member--name
-  align-self: end
-  font-size: 45px
-
-.member--role
-  align-self: start
-  font-size: 30px
-  font-weight: 400
-
