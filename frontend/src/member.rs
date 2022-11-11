@@ -65,20 +65,18 @@ fn member_info(props: &MemberInfoProp) -> Html {
 
 
     html! {
-        <div class="flex margin-vert-80">
-            <div class="width-40 flex center-horz space-around center-horz">
-                <div class="width-80">
-                    <img src={
-                        if let Some(image) = &*image {
-                            format!("http://localhost/data/{}", image.path)
-                        } else {
-                            "http://localhost/data/person.png".to_string()
-                        }
+        <div class="member-info">
+            <div class="member-info--img-container">
+                <img src={
+                    if let Some(image) = &*image {
+                        format!("http://localhost/data/{}", image.path)
+                    } else {
+                        "http://localhost/data/person.png".to_string()
                     }
-                        alt="member profile"/> // Replace alt with {member.name}
-                </div>
+                }
+                    alt="member profile"/> // Replace alt with {member.name}
             </div> 
-            <div class="member-properties">
+            <div class="member-info--properties">
                 <h2>
                     {format!("name: {}", props.name.clone())}
                 </h2>
@@ -114,8 +112,8 @@ struct MemberInfoProp {
 #[function_component(MemberDesc)]
 fn member_desc(props: &MemberDescProp) -> Html { 
     html! {
-        <div class="flex list-vert margin-small">
-            <p>{ props.bio.clone() }</p>
+        <div class="member-desc">
+            <p>{ props.bio.clone() }</p> // TODO: add member images
         </div>
     }
 }
