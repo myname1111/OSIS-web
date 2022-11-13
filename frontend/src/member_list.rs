@@ -1,5 +1,6 @@
 use common::{Image, Role::*, Division};
 use yew::prelude::*;
+use yew_router::prelude::*;
 use crate::backend::*;
 use crate::utilities::*;
 
@@ -143,9 +144,12 @@ fn member(props: &MemberProp) -> Html {
     log::info!("rendering preview with data {:?}", props.member);
     html! {
         <div class="member-list-item">
+            <Link<Route> to={Route::Member {id: props.member.id.try_into().unwrap()}} 
+                classes="member-list-item--link">
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
-                .unwrap_or_else(|| "person.png".to_string()))} /> 
+                .unwrap_or_else(|| "person.png".to_string()))} />
+            <h2>{ props.member.name.clone() }</h2>
             <h2 class="member-list-item--role">{ capitalize_first_letter( {
                 let division_msg = props.division.as_ref()
                     .map(|division| format!(" of the division of {}", division.name))
@@ -157,6 +161,7 @@ fn member(props: &MemberProp) -> Html {
                     role => String::from(role)
                 }
             }) }</h2>
+            </ Link<Route>>
         </div>
     }
 }
@@ -167,4 +172,3 @@ struct MemberProp {
     image: Option<Image>,
     division: Option<Division>
 }
-

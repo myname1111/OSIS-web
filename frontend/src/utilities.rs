@@ -35,7 +35,7 @@ pub struct SignUpButtonProps {
     pub class: String
 }
 
-#[derive(Clone, Routable, PartialEq)]
+#[derive(Clone, Routable, PartialEq, Eq)]
 pub enum Route { // TODO: create 404
     #[at("/")]
     Home,
