@@ -170,16 +170,18 @@ pub struct MemberPreview {
     pub profile: Option<i32>,
     pub role: Role,
     pub name: String,
-    pub division: Option<i32>
+    pub division: Option<i32>,
+    pub id: i32
 }
 
-impl From<(Option<i32>, String, String, Option<i32>)> for MemberPreview {
-    fn from(other: (Option<i32>, String, String, Option<i32>)) -> Self {
+impl From<(Option<i32>, String, String, Option<i32>, i32)> for MemberPreview {
+    fn from(other: (Option<i32>, String, String, Option<i32>, i32)) -> Self {
         Self {
             profile: other.0,
             role: other.1.try_into().unwrap(),
             name: other.2,
-            division: other.3
+            division: other.3,
+            id: other.4
         }
     }
 }
