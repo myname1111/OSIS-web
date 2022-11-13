@@ -5,7 +5,7 @@ use diesel::prelude::*;
 use diesel::result::Error;
 
 pub type MemberId = i32;
-type MemberPreviewSql = (Option<i32>, String, String, Option<i32>);
+type MemberPreviewSql = (Option<i32>, String, String, Option<i32>, i32);
 
 pub(crate) fn get_member_by_id(
     conn: &mut DbConnection,
@@ -19,8 +19,8 @@ pub(crate) fn get_all_member_id(conn: &mut DbConnection) -> Result<Vec<MemberId>
 }
 
 pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> Result<Vec<MemberPreview>, Error> {
-    let out: std::result::Result<Vec<MemberPreviewSql>, _> = member
-        .select((profile_id, role, m_name, division_id))
+    let out = member
+        .select((profile_id, role, m_name, division_id, id))
         .load::<MemberPreviewSql>(conn);
 
     Ok(out?
