@@ -3,26 +3,18 @@ mod home;
 mod landing;
 mod member;
 mod backend;
+mod member_list;
+mod utilities;
 
 use about::About;
 use member::MemberComp;
 use home::Home;
 use landing::Landing;
+use member_list::MemberList;
+use utilities::*;
 
 use yew::prelude::*;
 use yew_router::prelude::*;
-
-#[derive(Clone, Routable, PartialEq)]
-enum Route {
-    #[at("/")]
-    Home,
-    #[at("/about/:id")]
-    About { id: u8 },
-    #[at("/landing")]
-    Landing,
-    #[at("/member/:id")]
-    Member { id: u32 },
-}
 
 fn switch(route: &Route) -> Html {
     match route {
@@ -38,6 +30,9 @@ fn switch(route: &Route) -> Html {
         Route::Member { id } => html! {
             <MemberComp member_id={ *id } />
         },
+        Route::MemberList => html! {
+            <MemberList />
+        }
     }
 }
 

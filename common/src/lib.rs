@@ -14,7 +14,7 @@ pub struct BlogPost {
     pub blog: Option<i32>,
 }
 
-#[derive(Queryable, Serialize, Deserialize)]
+#[derive(Queryable, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Division {
     pub id: i32,
     pub name: String
@@ -56,7 +56,7 @@ pub struct Forums {
     pub member: i32,
 }
 
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Image {
     pub id: i32,
     pub path: String,
@@ -114,6 +114,12 @@ pub enum Role {
     Secretary = 3
 }
 
+impl fmt::Display for Role {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", String::from(*self)) 
+    }
+}
+
 impl TryFrom<String> for Role {
     type Error = String; // TODO: Replace this with custom error handling
 
@@ -145,7 +151,7 @@ impl From<Role> for String {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Member {
     pub id: i32,
     pub name: String,
@@ -157,6 +163,25 @@ pub struct Member {
     pub class: String,
     pub division: Option<DivisionId>,
     // add pub profile Vec<image> or Vec<Vec<u8>>
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
+pub struct MemberPreview {
+    pub profile: Option<i32>,
+    pub role: Role,
+    pub name: String,
+    pub division: Option<i32>
+}
+
+impl From<(Option<i32>, String, String, Option<i32>)> for MemberPreview {
+    fn from(other: (Option<i32>, String, String, Option<i32>)) -> Self {
+        Self {
+            profile: other.0,
+            role: other.1.try_into().unwrap(),
+            name: other.2,
+            division: other.3
+        }
+    }
 }
 
 impl From<MemberSql> for Member {

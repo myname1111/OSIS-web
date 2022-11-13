@@ -1,6 +1,6 @@
 /target
 /frontend/dist
 /backend/.env
-/backend/data
 Cargo.lock
+/backend/data
 /backend/database.txt
