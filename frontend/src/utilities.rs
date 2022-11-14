@@ -8,11 +8,11 @@ pub fn nav_bar() -> Html {
             <a href="/">
                 <img src="/data/OSIS.png" class="nav--img" />
             </a>
-            <h2>{ "Why" }</h2>
-            <h2>{ "About" }</h2>
-            <h2>{ "Members" }</h2>
-            <h2>{ "Programs" }</h2>
-            <h2>{ "Events" }</h2>
+            <a href="#"><h2>{ "Blog" }</h2></a>
+            <a href="http://localhost/about/0"><h2>{ "About" }</h2></a>
+            <a href="http://localhost/member"><h2>{ "Members" }</h2></a>
+            <a href="#"><h2>{ "Programs" }</h2></a>
+            <a href="#"><h2>{ "Events" }</h2></a>
             <h2 class="nav--sign-up"> { "Sign in" }</h2>
         </nav>
     }
