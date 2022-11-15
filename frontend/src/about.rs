@@ -253,9 +253,7 @@ fn content_list(props: &ContentListProp) -> Html {
     let content = props.children.iter().nth(props.content.into()).unwrap();
     html! {
         <div class="content-list">
-            <div class="content">
-                { content }
-            </div>
+            { content }
         </div>
     }
 }
@@ -268,7 +266,7 @@ struct ContentProp {
 #[function_component(Content)]
 fn content(props: &ContentProp) -> Html {
     html! {
-        <main>
+        <main class="content">
             { for props.children.iter() }
         </main>
     }
