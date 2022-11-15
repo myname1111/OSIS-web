@@ -1,4 +1,4 @@
-use diesel::{data_types::PgInterval, Queryable};
+use diesel::{data_types::PgInterval, Queryable, AsChangeset};
 use serde::*;
 use std::fmt;
 
@@ -232,6 +232,13 @@ impl TryFrom<Member> for MemberSql {
             division: other.division,
         })
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct NewMember {
+    pub name: String,
+    pub joined: Date,
+    pub class: String
 }
 
 #[derive(Queryable)]
