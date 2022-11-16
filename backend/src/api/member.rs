@@ -1,4 +1,8 @@
-use crate::db::{get_conn_from_pool, member::{self, MemberId}, DbPool};
+use crate::db::{
+    get_conn_from_pool,
+    member::{self, MemberId},
+    DbPool,
+};
 use actix_web::*;
 use common::{Member, MemberPreview, NewMember, UpdatedMember};
 use web::{Data, Json, Path};
@@ -35,9 +39,11 @@ async fn get_member_preview(pool: Data<DbPool>) -> Result<Json<Vec<MemberPreview
 async fn new_member(member: Json<NewMember>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
 
-    let member_id = web::block(move || 
-            member::insert_member(&mut conn, member.into_inner().try_into().unwrap()).unwrap()
-        ).await?.id;
+    let member_id = web::block(move || {
+        member::insert_member(&mut conn, member.into_inner().try_into().unwrap()).unwrap()
+    })
+    .await?
+    .id;
 
     Ok(Json(member_id))
 }
@@ -46,9 +52,10 @@ async fn new_member(member: Json<NewMember>, pool: Data<DbPool>) -> Result<Json<
 async fn report_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
 
-    let member_id = web::block(move || 
-            member::report_member(&mut conn, path.into_inner()).unwrap()
-        ).await?.id;
+    let member_id =
+        web::block(move || member::report_member(&mut conn, path.into_inner()).unwrap())
+            .await?
+            .id;
 
     Ok(Json(member_id))
 }
@@ -57,21 +64,28 @@ async fn report_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<Membe
 async fn delete_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
 
-    let member_id = web::block(move || 
-            member::delete_member(&mut conn, path.into_inner()).unwrap()
-        ).await?.id;
+    let member_id =
+        web::block(move || member::delete_member(&mut conn, path.into_inner()).unwrap())
+            .await?
+            .id;
 
     Ok(Json(member_id))
 }
 
 #[put("/{id}")]
-async fn update_member(path: Path<i32>, update_member: Json<UpdatedMember>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
+async fn update_member(
+    path: Path<i32>,
+    update_member: Json<UpdatedMember>,
+    pool: Data<DbPool>,
+) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
     let member_id = path.into_inner();
 
-    let member_id = web::block(move || 
+    let member_id = web::block(move || {
         member::update_member(&mut conn, member_id, update_member.into_inner().into()).unwrap()
-    ).await?.id;
+    })
+    .await?
+    .id;
 
     Ok(Json(member_id))
 }

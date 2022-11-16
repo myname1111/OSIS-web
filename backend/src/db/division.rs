@@ -1,7 +1,7 @@
-use common::Division;
-use diesel::prelude::*;
 use super::schema::division::dsl::*;
 use super::DbConnection;
+use common::Division;
+use diesel::prelude::*;
 use diesel::result::Error;
 
 pub type DivisionId = i32;

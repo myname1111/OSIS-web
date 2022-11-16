@@ -1,15 +1,15 @@
 use super::schema::member::dsl::*;
 use super::DbConnection;
-use common::{MemberSql, MemberPreview};
+use common::{MemberPreview, MemberSql};
 use diesel::prelude::*;
 use diesel::result::Error;
 
 pub type MemberId = i32;
 
 mod models {
+    use crate::db::schema::member;
     use common::{NewMember, UpdatedMember};
     use diesel::prelude::*;
-    use crate::db::schema::member;
 
     pub type MemberPreviewSql = (Option<i32>, String, String, Option<i32>, i32);
 
@@ -18,17 +18,17 @@ mod models {
     pub struct NewMemberSql {
         m_name: String,
         joined: time::Date,
-        class: String
+        class: String,
     }
 
     impl TryFrom<NewMember> for NewMemberSql {
         type Error = time::error::ComponentRange;
 
         fn try_from(rhs: NewMember) -> Result<NewMemberSql, time::error::ComponentRange> {
-            Ok(NewMemberSql { 
-                m_name: rhs.name, 
+            Ok(NewMemberSql {
+                m_name: rhs.name,
                 joined: rhs.joined.try_into()?,
-                class: rhs.class
+                class: rhs.class,
             })
         }
     }
@@ -41,9 +41,9 @@ mod models {
         pub role: String,
         pub bio: String,
         pub class: String,
-        pub division_id: Option<i32>
+        pub division_id: Option<i32>,
     }
-    
+
     impl From<UpdatedMember> for UpdatedMemberSql {
         fn from(rhs: UpdatedMember) -> UpdatedMemberSql {
             UpdatedMemberSql {
@@ -52,7 +52,7 @@ mod models {
                 role: rhs.role,
                 bio: rhs.bio.clone(),
                 class: rhs.class.clone(),
-                division_id: rhs.division
+                division_id: rhs.division,
             }
         }
     }
@@ -65,7 +65,7 @@ mod models {
                 role: rhs.role,
                 bio: rhs.bio.clone(),
                 class: rhs.class.clone(),
-                division: rhs.division_id
+                division: rhs.division_id,
             }
         }
     }
@@ -98,7 +98,10 @@ pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> DResult<Vec<Mem
         .collect::<Vec<MemberPreview>>())
 }
 
-pub(crate) fn insert_member(conn: &mut DbConnection, new_member: NewMemberSql)  -> DResult<MemberSql> {
+pub(crate) fn insert_member(
+    conn: &mut DbConnection,
+    new_member: NewMemberSql,
+) -> DResult<MemberSql> {
     diesel::insert_into(member)
         .values(&new_member)
         .get_result(conn)
@@ -111,11 +114,14 @@ pub(crate) fn report_member(conn: &mut DbConnection, member_id: MemberId) -> DRe
 }
 
 pub(crate) fn delete_member(conn: &mut DbConnection, member_id: MemberId) -> DResult<MemberSql> {
-    diesel::delete(member.find(member_id))
-        .get_result(conn)
+    diesel::delete(member.find(member_id)).get_result(conn)
 }
 
-pub(crate) fn update_member(conn: &mut DbConnection, member_id: MemberId, updated_member: UpdatedMemberSql) -> DResult<MemberSql> {
+pub(crate) fn update_member(
+    conn: &mut DbConnection,
+    member_id: MemberId,
+    updated_member: UpdatedMemberSql,
+) -> DResult<MemberSql> {
     diesel::update(member.find(member_id))
         .set(updated_member)
         .get_result(conn)

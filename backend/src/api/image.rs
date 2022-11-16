@@ -1,5 +1,8 @@
-use actix_web::{*, web::{Data, Path, Json}};
-use crate::db::{image, get_conn_from_pool, DbPool};
+use crate::db::{get_conn_from_pool, image, DbPool};
+use actix_web::{
+    web::{Data, Json, Path},
+    *,
+};
 use common::Image;
 
 #[get("/{id}")]
@@ -12,7 +15,5 @@ async fn get_image(id: Path<i32>, pool: Data<DbPool>) -> Result<Json<Image>, Err
 }
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(
-        web::scope("/image").service(get_image)
-    ); 
-} 
+    cfg.service(web::scope("/image").service(get_image));
+}

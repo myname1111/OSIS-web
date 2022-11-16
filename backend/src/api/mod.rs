@@ -6,17 +6,22 @@ mod division;
 mod event;
 /// Forum post and forum plus visits
 mod forum;
+/// Images
+mod image;
 /// Member and president
 mod member;
 /// Program, reviews and improvemens
 mod program;
-/// Images
-mod image;
 
 use actix_web::*;
 
 // TODO: make custom error response
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/api").configure(member::config).configure(image::config).configure(division::cofig));
+    cfg.service(
+        web::scope("/api")
+            .configure(member::config)
+            .configure(image::config)
+            .configure(division::cofig),
+    );
 }
