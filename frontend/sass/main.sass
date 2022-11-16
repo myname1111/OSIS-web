@@ -1,225 +1,30 @@
-/* Atomic css. Do not forget
+/* TODO: switch to semantic css, hopefully in next commit
 
 @use "sass:math"
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap')
-
-$accent: #1f7be0
+@use "globals/globals"
+@use "landing/landing"
+@use "home/home"
+@use "about/about"
+@use "member_list/member_list"
+@use "member/member"
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500&display=swap')
 
 body
     margin: 0px
 
 h1
-    grid-area: title
-
-.white
-    color: white
-
-.inline-block
-    display: inline-block
-
-.banner
-    background-image: (linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url("/data/banner.jpeg"))
-
-.width-100
-    width: 100%
-
-.height-100
-    height: 100%
-
-.height-75
-    height: 75%
-
-.height-20
-    height: 20%
-
-.height-50px
-    height: 50px
-
-.list-vert
-    flex-direction: column
-
-.width-15
-    width: 15%
-
-.width-fit
-    width: fit-content
-
-.cover-image
-    background-size: cover
-
-.grid
-    display: grid
-
-.vert-split-4-3
-    grid-template-columns: 4fr 3fr
-
-.vert-split-3-4
-    grid-template-columns: 3fr 4fr
-
-.hor-split-3-1
-    grid-template-rows: 3fr 1fr
-
-.hor-split-1-1-auto
-    grid-template-rows: 1fr 1fr auto
-
-.ver-split-5x1
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
-
-.ver-split-1-3
-    grid-template-columns: 1fr 3fr
-
-.ver-split-1-2
-    grid-template-columns: 1fr 3fr
-
-.ver-split-2-1
-    grid-template-columns: 3fr 1fr
-
-.center-vert
-    align-items: center
-
-.center-horz
-    justify-items: center
-
-.center-horz-flex
-    justify-content: center
-
-.center-text
-    text-align: center
-
-.bottom-vert
-    align-items: end
-
-.margin-base
-    margin: 100px
-
-.margin-large
-    margin: 150px
-
-.margin-hor-0
-    margin-left: 0px
-    margin-right: 0px
-
-.margin-hor-large
-    margin-left: 150px
-    margin-right: 150px
-
-html
-    font-family: Roboto
-
-.font-large
-    font-size: 50px
-
-.font-xl
     font-size: 100px
 
-.font-medium
-    font-size: 30px
+h2
+    font-size: 50px
+
+p
+    font-size: 20px
+    font-weight: 500
+
+html
+  font-family: 'Raleway', sans-serif
 
 img
     width: 100%
     height: auto
-    grid-area: img
-
-.column-gap-med
-    column-gap: 75px
-
-.row-gap-xl
-    row-gap: 200px
-
-.row-gap-med
-    row-gap: 75px
-
-.flex
-    display: flex
-
-.wrap
-    flex-wrap: wrap
-
-.space-around
-    justify-content: space-around
-
-.max-width-fit
-    max-width: fit-content
-
-.hover:hover
-    cursor: pointer
-
-.back-accent
-    background-color: #1f7be0
-
-.back-base
-    background-color: #dd6c22
-
-.back-white
-    background-color: white
-
-.osis-info
-    grid-template-areas: "img par" "img but"
-
-.img
-    grid-area: img
-
-.par
-    grid-area: par
-
-.but
-    grid-area: but
-
-.margin-smallest
-    margin: auto
-
-.width-50
-    width: 50%
-
-.min-width-300
-    min-width: 300px
-
-.min-width-400
-    min-width: 400px
-
-.min-width-200
-    min-width: 200px
-
-.width-1-5
-    width: math.div(100%, 5)
-
-.area-text
-    grid-area: text
-
-.gap-50
-    gap: 50px
-
-.gap-150
-    gap: 150px
-
-.align-start
-    align-self: flex-start
-
-.banner-text
-    margin-bottom: 0px
-
-.info-button div
-    display: flex
-    width: 100%
-    height: 20%
-    align-content: center
-    justify-content: center
-
-.testimony
-    grid-template-areas: "title title" "img text"
-    width: 100%
-    column-gap: 20px
-
-.why-osis-section
-    width: 60%
-    column-gap: 100px
-
-.why-osis-section.align-right
-    grid-template-areas: "title title" "text img"
-
-.why-osis-section.align-left
-    grid-template-areas: "title title" "img text"
-
-.sign-up-button > div
-    background-color: $accent
-    width: 75%

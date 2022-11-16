@@ -1,28 +1,38 @@
 mod about;
 mod home;
+mod landing;
+mod member;
+mod backend;
+mod member_list;
+mod utilities;
 
 use about::About;
+use member::MemberComp;
 use home::Home;
+use landing::Landing;
+use member_list::MemberList;
+use utilities::*;
 
 use yew::prelude::*;
 use yew_router::prelude::*;
-
-#[derive(Clone, Routable, PartialEq)]
-enum Route {
-    #[at("/")]
-    Home,
-    #[at("/about")]
-    About,
-}
 
 fn switch(route: &Route) -> Html {
     match route {
         Route::Home => html! {
             <Home />
         },
-        Route::About => html! {
-            <About />
+        Route::About { id } => html! {
+            <About content_id={ *id }/>
         },
+        Route::Landing => html! {
+            <Landing />
+        },
+        Route::Member { id } => html! {
+            <MemberComp member_id={ *id } />
+        },
+        Route::MemberList => html! {
+            <MemberList />
+        }
     }
 }
 
@@ -36,5 +46,6 @@ fn app() -> Html {
 }
 
 fn main() {
+    wasm_logger::init(wasm_logger::Config::default());
     yew::start_app::<App>();
 }
