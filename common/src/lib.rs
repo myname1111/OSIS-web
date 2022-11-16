@@ -1,4 +1,4 @@
-use diesel::{data_types::PgInterval, Queryable, AsChangeset};
+use diesel::{data_types::PgInterval, Queryable};
 use serde::*;
 use std::fmt;
 
@@ -239,6 +239,16 @@ pub struct NewMember {
     pub name: String,
     pub joined: Date,
     pub class: String
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UpdatedMember {
+    pub name: String,
+    pub profile: Option<i32>,
+    pub role: String,
+    pub bio: String,
+    pub class: String,
+    pub division: Option<i32>
 }
 
 #[derive(Queryable)]

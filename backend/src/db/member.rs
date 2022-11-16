@@ -7,7 +7,7 @@ use diesel::result::Error;
 pub type MemberId = i32;
 
 mod models {
-    use common::NewMember;
+    use common::{NewMember, UpdatedMember};
     use diesel::prelude::*;
     use crate::db::schema::member;
 
@@ -35,13 +35,39 @@ mod models {
 
     #[derive(AsChangeset)]
     #[diesel(table_name = member)]
-    pub struct UpdatedMember {
+    pub struct UpdatedMemberSql {
         pub m_name: String,
         pub profile_id: Option<i32>,
         pub role: String,
         pub bio: String,
         pub class: String,
         pub division_id: Option<i32>
+    }
+    
+    impl From<UpdatedMember> for UpdatedMemberSql {
+        fn from(rhs: UpdatedMember) -> UpdatedMemberSql {
+            UpdatedMemberSql {
+                m_name: rhs.name.clone(),
+                profile_id: rhs.profile,
+                role: rhs.role,
+                bio: rhs.bio.clone(),
+                class: rhs.class.clone(),
+                division_id: rhs.division
+            }
+        }
+    }
+
+    impl From<UpdatedMemberSql> for UpdatedMember {
+        fn from(rhs: UpdatedMemberSql) -> UpdatedMember {
+            UpdatedMember {
+                name: rhs.m_name.clone(),
+                profile: rhs.profile_id,
+                role: rhs.role,
+                bio: rhs.bio.clone(),
+                class: rhs.class.clone(),
+                division: rhs.division_id
+            }
+        }
     }
 }
 
@@ -72,25 +98,25 @@ pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> DResult<Vec<Mem
         .collect::<Vec<MemberPreview>>())
 }
 
-pub(crate) fn insert_member(conn: &mut DbConnection, new_member: NewMemberSql)  -> DResult<usize> {
+pub(crate) fn insert_member(conn: &mut DbConnection, new_member: NewMemberSql)  -> DResult<MemberSql> {
     diesel::insert_into(member)
         .values(&new_member)
-        .execute(conn)
+        .get_result(conn)
 }
 
-pub(crate) fn report_member(conn: &mut DbConnection, member_id: MemberId) -> DResult<usize> {
+pub(crate) fn report_member(conn: &mut DbConnection, member_id: MemberId) -> DResult<MemberSql> {
     diesel::update(member.find(member_id))
         .set(reported.eq(reported + 1))
-        .execute(conn)
+        .get_result(conn)
 }
 
-pub(crate) fn delete_member(conn: &mut DbConnection, member_id: MemberId) -> DResult<usize> {
+pub(crate) fn delete_member(conn: &mut DbConnection, member_id: MemberId) -> DResult<MemberSql> {
     diesel::delete(member.find(member_id))
-        .execute(conn)
+        .get_result(conn)
 }
 
-pub(crate) fn update_member(conn: &mut DbConnection, member_id: MemberId, updated_member: UpdatedMember) -> DResult<usize> {
+pub(crate) fn update_member(conn: &mut DbConnection, member_id: MemberId, updated_member: UpdatedMemberSql) -> DResult<MemberSql> {
     diesel::update(member.find(member_id))
         .set(updated_member)
-        .execute(conn)
+        .get_result(conn)
 }
