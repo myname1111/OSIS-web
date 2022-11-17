@@ -1,15 +1,15 @@
 mod about;
+mod backend;
 mod home;
 mod landing;
 mod member;
-mod backend;
 mod member_list;
 mod utilities;
 
 use about::About;
-use member::MemberComp;
 use home::Home;
 use landing::Landing;
+use member::MemberComp;
 use member_list::MemberList;
 use utilities::*;
 
@@ -32,7 +32,7 @@ fn switch(route: &Route) -> Html {
         },
         Route::MemberList => html! {
             <MemberList />
-        }
+        },
     }
 }
 

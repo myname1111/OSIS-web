@@ -1,6 +1,6 @@
+use crate::backend::*;
 use common::Date;
 use yew::prelude::*;
-use crate::backend::*;
 
 #[function_component(MemberComp)]
 pub fn member_comp(props: &MemberProp) -> Html {
@@ -9,29 +9,32 @@ pub fn member_comp(props: &MemberProp) -> Html {
 
     {
         let member = member.clone();
-        use_effect_with_deps( move |_| {
-            let member = member.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_member = get_member(member_id).await;
-                member.set(Some(fetched_member));
-            });
-            || ()
-        }, ())
+        use_effect_with_deps(
+            move |_| {
+                let member = member.clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    let fetched_member = get_member(member_id).await;
+                    member.set(Some(fetched_member));
+                });
+                || ()
+            },
+            (),
+        )
     }
 
-    let member_profile: Option<u32> = member.as_ref().and_then(|member |
-        member.profile.map(|id| id.try_into().unwrap())
-    );
+    let member_profile: Option<u32> = member
+        .as_ref()
+        .and_then(|member| member.profile.map(|id| id.try_into().unwrap()));
 
     if let Some(member) = &*member {
-       html! {
+        html! {
             <div>
-                <MemberInfo name={ member.name.clone() } 
+                <MemberInfo name={ member.name.clone() }
                     division={ member.division } joined={ member.joined }
                     class={ member.class.clone() } profile={ member_profile }/>
                 <MemberDesc bio={ member.bio.clone() } />
             </div>
-        } 
+        }
     } else {
         html! {
             <>
@@ -52,17 +55,19 @@ fn member_info(props: &MemberInfoProp) -> Html {
 
     if let Some(id) = props.profile {
         let image = image.clone();
-        use_effect_with_deps(move |_| {
-            let image = image.clone();
-            wasm_bindgen_futures::spawn_local(async move {
-                let fetched_image = get_image(id).await;
+        use_effect_with_deps(
+            move |_| {
+                let image = image.clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    let fetched_image = get_image(id).await;
 
-                image.set(Some(fetched_image))
-            });
-            || ()
-        }, ())
+                    image.set(Some(fetched_image))
+                });
+                || ()
+            },
+            (),
+        )
     };
-
 
     html! {
         <div class="member-info">
@@ -75,7 +80,7 @@ fn member_info(props: &MemberInfoProp) -> Html {
                     }
                 }
                     alt="member profile"/> // Replace alt with {member.name}
-            </div> 
+            </div>
             <div class="member-info--properties">
                 <h2>
                     {format!("name: {}", props.name.clone())}
@@ -106,11 +111,11 @@ struct MemberInfoProp {
     division: Option<i32>,
     joined: Date,
     class: String,
-    profile: Option<u32>
+    profile: Option<u32>,
 }
-  
+
 #[function_component(MemberDesc)]
-fn member_desc(props: &MemberDescProp) -> Html { 
+fn member_desc(props: &MemberDescProp) -> Html {
     html! {
         <div class="member-desc">
             <p>{ props.bio.clone() }</p> // TODO: add member images

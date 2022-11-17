@@ -1,5 +1,5 @@
-use yew::prelude::*;
 use crate::utilities::*;
+use yew::prelude::*;
 
 #[function_component(About)]
 pub fn about(props: &AboutProp) -> Html {

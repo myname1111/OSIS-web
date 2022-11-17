@@ -1,11 +1,5 @@
-// Base color is #dd6c22
-// Accent is #1f7be0
-// Background is white
-
-use wasm_bindgen::JsCast;
-use web_sys::HtmlTextAreaElement;
-use yew::prelude::*;
 use crate::utilities::*;
+use yew::prelude::*;
 
 #[function_component(Landing)]
 pub fn landing() -> Html {
@@ -77,7 +71,8 @@ fn why_osis() -> Html {
 
 #[function_component(WhyOsisSection)]
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
-    let alignment = match props.align { // alignment of text
+    let alignment = match props.align {
+        // alignment of text
         WhyOsisAlign::Left => "why-osis-section-landing--left",
         WhyOsisAlign::Right => "why-osis-section-landing--right",
     };
@@ -178,73 +173,67 @@ fn sign_up_today() -> Html {
     html! {
         <div class="sign-up-today">
             <h2 class="header">{ "Sign up for a better future" }</h2>
-            <SignUp />
+            <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
         </div>
     }
 }
 
-struct SignUp {
-    username: String,
-    password: String,
-}
-
-impl Component for SignUp {
-    type Message = SignUpMsg;
-    type Properties = ();
-
-    fn create(_: &Context<Self>) -> Self {
-        Self {
-            username: "".to_string(),
-            password: "".to_string(),
-        }
-    }
-
-    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            SignUpMsg::SetUsername(x) => {
-                self.username = x;
-                true
-            }
-            SignUpMsg::SetPassword(x) => {
-                self.password = x;
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let set_name = ctx.link().batch_callback(|event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
-
-            input.map(|input| SignUpMsg::SetUsername(input.value()))
-        });
-
-        let set_reason = ctx.link().batch_callback(|event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
-
-            input.map(|input| SignUpMsg::SetPassword(input.value()))
-        });
-
-        html! {
-            <form class="sign-up-form">
-                <label for="usern" class="sign-up-form--field-name">{ "Username" }</label>
-                <textarea type="text" id="usern" name="usern" class="sign-up-form--field" onchange={set_name}/>
-                <label for="reason" class="sign-up-form--field-name">{ "Password" }</label>
-                <textarea type="text" id="reason" name="reason" class="sign-up-form--field" onchange={set_reason}/><div class="height-50px"/>
-                <div class="sign-up-form--sign-up-button-container">
-                    <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
-                </div>
-            </form>
-        }
-    }
-}
-
-enum SignUpMsg {
-    SetUsername(String),
-    SetPassword(String),
-    // Submit; todo
-}
+// struct SignUp {
+//     username: String,
+//     password: String,
+// }
+//
+// impl Component for SignUp {
+//     type Message = SignUpMsg;
+//     type Properties = ();
+//
+//     fn create(_: &Context<Self>) -> Self {
+//         Self {
+//             username: "".to_string(),
+//             password: "".to_string(),
+//         }
+//     }
+//
+//     fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
+//         match msg {
+//             SignUpMsg::SetUsername(x) => {
+//                 self.username = x;
+//                 true
+//             }
+//             SignUpMsg::SetPassword(x) => {
+//                 self.password = x;
+//                 true
+//             }
+//         }
+//     }
+//
+//     fn view(&self, ctx: &Context<Self>) -> Html {
+//         let set_name = ctx.link().batch_callback(|event: Event| {
+//             let target = event.target();
+//
+//             let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
+//
+//             input.map(|input| SignUpMsg::SetUsername(input.value()))
+//         });
+//
+//         let set_reason = ctx.link().batch_callback(|event: Event| {
+//             let target = event.target();
+//
+//             let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
+//
+//             input.map(|input| SignUpMsg::SetPassword(input.value()))
+//         });
+//
+//         html! {
+//             <div class="sign-up-form--sign-up-button-container">
+//                 <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
+//             </div>
+//         }
+//     }
+// }
+//
+// enum SignUpMsg {
+//     SetUsername(String),
+//     SetPassword(String),
+//     // Submit; todo
+// }

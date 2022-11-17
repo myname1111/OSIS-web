@@ -1,5 +1,5 @@
-use reqwasm::http::Request;
 use common::*;
+use reqwasm::http::Request;
 
 // TODO: delete get_* for better error handling
 
@@ -17,7 +17,14 @@ pub async fn try_get_member(id: u32) -> Option<Member> {
         .json()
         .await
         .unwrap();
-    log::info!("{}", if member.is_some() { "Success!" } else { "No member found" });
+    log::info!(
+        "{}",
+        if member.is_some() {
+            "Success!"
+        } else {
+            "No member found"
+        }
+    );
     log::debug!("{:?}", member);
     member
 }
@@ -29,7 +36,7 @@ pub async fn get_image(id: u32) -> Image {
 pub async fn try_get_image(id: u32) -> Option<Image> {
     log::info!("Getting img with id {}", id);
     let url = format!("http://localhost/api/image/{}", id);
-    
+
     let image: Option<Image> = Request::get(url.as_str())
         .send()
         .await
@@ -37,14 +44,23 @@ pub async fn try_get_image(id: u32) -> Option<Image> {
         .json()
         .await
         .unwrap();
-    
-    log::info!("{}", if image.is_some() { "Success!" } else { "No image found" });
+
+    log::info!(
+        "{}",
+        if image.is_some() {
+            "Success!"
+        } else {
+            "No image found"
+        }
+    );
     log::debug!("{:?}", image);
     image
 }
 
 pub async fn get_member_list() -> Vec<MemberPreview> {
-    try_get_member_list().await.expect("There was a problem in getting the member preview")
+    try_get_member_list()
+        .await
+        .expect("There was a problem in getting the member preview")
 }
 
 pub async fn try_get_member_list() -> Option<Vec<MemberPreview>> {
@@ -58,13 +74,13 @@ pub async fn try_get_member_list() -> Option<Vec<MemberPreview>> {
         .json()
         .await
         .unwrap();
-    
+
     if preview.is_some() {
         log::info!("Success")
     } else {
         log::warn!("Unable to get member preview")
     };
-    
+
     log::debug!("{:?}", preview);
 
     preview
