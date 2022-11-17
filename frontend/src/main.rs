@@ -5,12 +5,14 @@ mod landing;
 mod member;
 mod member_list;
 mod utilities;
+mod sign_up_form;
 
 use about::About;
 use home::Home;
 use landing::Landing;
 use member::MemberComp;
 use member_list::MemberList;
+use sign_up_form::SignUpForm;
 use utilities::*;
 
 use yew::prelude::*;
@@ -33,6 +35,9 @@ fn switch(route: &Route) -> Html {
         Route::MemberList => html! {
             <MemberList />
         },
+        Route::SignUp => html! {
+            <SignUpForm />
+        }
     }
 }
 

@@ -22,7 +22,7 @@ pub fn nav_bar() -> Html {
 pub fn sign_up_button(props: &SignUpButtonProps) -> Html {
     html! {
         <div class={format!("{} {}", props.class.clone(), props.modifiers.clone())}>
-            <p class="sign-up-button--text">{ "Sign up for a better future" }</p>
+            <p class="sign-up-button--text">{ "Sign up today" }</p>
         </div>
     }
 }
@@ -48,4 +48,6 @@ pub enum Route {
     Member { id: u32 },
     #[at("/member")]
     MemberList,
+    #[at("/sign_up")]
+    SignUp
 }
