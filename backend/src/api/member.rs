@@ -95,6 +95,10 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("/member")
             .service(get_all_members)
             .service(get_member_preview)
-            .service(get_member),
+            .service(get_member)
+            .service(new_member)
+            .service(report_member)
+            .service(delete_member)
+            .service(update_member),
     );
 }
