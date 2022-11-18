@@ -4,8 +4,8 @@ mod home;
 mod landing;
 mod member;
 mod member_list;
-mod utilities;
 mod sign_up_form;
+mod utilities;
 
 use about::About;
 use home::Home;
@@ -37,7 +37,7 @@ fn switch(route: &Route) -> Html {
         },
         Route::SignUp => html! {
             <SignUpForm />
-        }
+        },
     }
 }
 

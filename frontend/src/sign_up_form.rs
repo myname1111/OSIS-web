@@ -1,7 +1,7 @@
-use yew::prelude::*;
-use web_sys::HtmlTextAreaElement;
-use wasm_bindgen::JsCast;
 use crate::utilities::*;
+use wasm_bindgen::JsCast;
+use web_sys::HtmlTextAreaElement;
+use yew::prelude::*;
 
 pub struct SignUpForm {
     username: String,
@@ -52,15 +52,28 @@ impl Component for SignUpForm {
         });
 
         html! {
-            <form class="sign-up-form">
-                <label for="usern" class="sign-up-form--field-name">{ "Username" }</label>
-                <textarea type="text" id="usern" name="usern" class="sign-up-form--field" onchange={set_name}/>
-                <label for="reason" class="sign-up-form--field-name">{ "Password" }</label>
-                <textarea type="text" id="reason" name="reason" class="sign-up-form--field" onchange={set_reason}/><div class="height-50px"/>
-                <div class="sign-up-form--sign-up-button-container">
-                    <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
-                </div>
-            </form>
+            <>
+                <NavBar />
+                <form class="sign-up-form">
+                    <div class="sign-up-form--form">
+                        <div class="sign-up-form--info">
+                            <div class="sign-up-form--field">
+                                <label for="usern" class="sign-up-form--field-name">{ "Username" }</label>
+                                <textarea type="text" id="usern" name="usern" class="sign-up-form--field-input"
+                                    onchange={set_name}/>
+                            </div>
+                            <div class="sign-up-form--field">
+                                <label for="reason" class="sign-up-form--field-name">{ "Password" }</label>
+                                <textarea type="text" id="reason" name="reason" class="sign-up-form--field-input"
+                                    onchange={set_reason}/><div class="height-50px"/>
+                            </div>
+                        </div>
+                        <div class="sign-up-form--sign-up-button-container">
+                            <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
+                        </div>
+                    </div>
+                </form>
+            </>
         }
     }
 }

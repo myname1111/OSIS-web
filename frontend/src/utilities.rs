@@ -49,5 +49,5 @@ pub enum Route {
     #[at("/member")]
     MemberList,
     #[at("/sign_up")]
-    SignUp
+    SignUp,
 }

@@ -177,4 +177,3 @@ fn sign_up_today() -> Html {
         </div>
     }
 }
-
