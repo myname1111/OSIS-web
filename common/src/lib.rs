@@ -157,14 +157,16 @@ impl From<Role> for String {
 pub struct Member {
     pub id: i32,
     pub name: String,
-    pub profile: Option<i32>, // Replace this with Option<Image>
+    pub profile: Option<i32>,
     pub role: Role,
     pub bio: String,
     pub joined: Date,
     pub reported: i32,
     pub class: String,
     pub division: Option<DivisionId>,
-    // add pub profile Vec<image> or Vec<Vec<u8>>
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
@@ -201,6 +203,9 @@ impl From<MemberSql> for Member {
             reported: other.reported,
             class: other.class,
             division: other.division,
+            email: other.email,
+            password: other.password,
+            phone_number: other.phone_number
         }
     }
 }
@@ -216,6 +221,9 @@ pub struct MemberSql {
     pub reported: i32,
     pub class: String,
     pub division: Option<i32>,
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>
 }
 
 impl TryFrom<Member> for MemberSql {
@@ -232,6 +240,9 @@ impl TryFrom<Member> for MemberSql {
             reported: other.reported,
             class: other.class,
             division: other.division,
+            email: other.email,
+            password: other.password,
+            phone_number: other.phone_number
         })
     }
 }
@@ -241,6 +252,9 @@ pub struct NewMember {
     pub name: String,
     pub joined: Date,
     pub class: String,
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>
 }
 
 #[derive(Serialize, Deserialize)]

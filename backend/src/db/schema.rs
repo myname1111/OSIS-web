@@ -87,6 +87,9 @@ diesel::table! {
         reported -> Int4,
         class -> Varchar,
         division_id -> Nullable<Int4>,
+        email -> Varchar,
+        password -> Varchar,
+        phone_number -> Nullable<Varchar>,
     }
 }
 

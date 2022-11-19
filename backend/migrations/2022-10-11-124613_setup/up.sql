@@ -18,7 +18,10 @@ CREATE TABLE member (
     joined DATE NOT NULL,
     reported INTEGER NOT NULL DEFAULT 0,
     class VARCHAR NOT NULL,
-    division_id INTEGER REFERENCES division
+    division_id INTEGER REFERENCES division,
+    email VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    phone_num VARCHAR NOT NULL
 );
 
 CREATE TABLE president (
