@@ -1,9 +1,9 @@
-use actix_web::*;
-use common::Division;
 use crate::db::division;
 use crate::db::{get_conn_from_pool, DbPool};
-use web::{Path, Json, Data};
+use actix_web::*;
+use common::Division;
 use division::DivisionId;
+use web::{Data, Json, Path};
 
 #[get("/{id}")]
 async fn get_division(pool: Data<DbPool>, id: Path<DivisionId>) -> Result<Json<Division>, Error> {
@@ -15,8 +15,5 @@ async fn get_division(pool: Data<DbPool>, id: Path<DivisionId>) -> Result<Json<D
 }
 
 pub fn cofig(cfg: &mut web::ServiceConfig) {
-    cfg.service(
-        web::scope("/division")
-            .service(get_division)
-    );
+    cfg.service(web::scope("/division").service(get_division));
 }

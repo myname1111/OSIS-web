@@ -4,3 +4,4 @@
 Cargo.lock
 /backend/data
 /backend/database.txt
+/backend/db_dump

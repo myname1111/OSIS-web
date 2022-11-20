@@ -17,9 +17,8 @@ pub struct BlogPost {
 #[derive(Queryable, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Division {
     pub id: i32,
-    pub name: String
+    pub name: String,
 }
-
 
 #[derive(Queryable)]
 pub struct Event {
@@ -111,12 +110,12 @@ pub enum Role {
     VicePresident = 4,
     President = 5,
     Exchequer = 2,
-    Secretary = 3
+    Secretary = 3,
 }
 
 impl fmt::Display for Role {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", String::from(*self)) 
+        write!(f, "{}", String::from(*self))
     }
 }
 
@@ -131,9 +130,11 @@ impl TryFrom<String> for Role {
             "president" => Ok(Self::President),
             "exchequer" => Ok(Self::Exchequer),
             "secretary" => Ok(Self::Secretary),
-            unintended => Err(format!("
+            unintended => Err(format!(
+                "
                             expected either member, head, VP president, exchequer or secretary. 
-                            got {unintended}"))
+                            got {unintended}"
+            )),
         }
     }
 }
@@ -146,8 +147,9 @@ impl From<Role> for String {
             Role::VicePresident => "VP",
             Role::President => "president",
             Role::Exchequer => "exchequer",
-            Role::Secretary => "secretary"
-        }.to_string()
+            Role::Secretary => "secretary",
+        }
+        .to_string()
     }
 }
 
@@ -155,14 +157,16 @@ impl From<Role> for String {
 pub struct Member {
     pub id: i32,
     pub name: String,
-    pub profile: Option<i32>, // Replace this with Option<Image>
+    pub profile: Option<i32>,
     pub role: Role,
     pub bio: String,
     pub joined: Date,
     pub reported: i32,
     pub class: String,
     pub division: Option<DivisionId>,
-    // add pub profile Vec<image> or Vec<Vec<u8>>
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
@@ -171,7 +175,7 @@ pub struct MemberPreview {
     pub role: Role,
     pub name: String,
     pub division: Option<i32>,
-    pub id: i32
+    pub id: i32,
 }
 
 impl From<(Option<i32>, String, String, Option<i32>, i32)> for MemberPreview {
@@ -181,7 +185,7 @@ impl From<(Option<i32>, String, String, Option<i32>, i32)> for MemberPreview {
             role: other.1.try_into().unwrap(),
             name: other.2,
             division: other.3,
-            id: other.4
+            id: other.4,
         }
     }
 }
@@ -193,12 +197,15 @@ impl From<MemberSql> for Member {
             name: other.name,
             profile: other.profile,
             role: other.role.try_into().unwrap(), // TODO: make better error handiling by making
-                                                  // this try from after cretaing error struct/enum
+            // this try from after cretaing error struct/enum
             bio: other.bio,
             joined: other.joined.into(),
             reported: other.reported,
             class: other.class,
             division: other.division,
+            email: other.email,
+            password: other.password,
+            phone_number: other.phone_number
         }
     }
 }
@@ -214,6 +221,9 @@ pub struct MemberSql {
     pub reported: i32,
     pub class: String,
     pub division: Option<i32>,
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>
 }
 
 impl TryFrom<Member> for MemberSql {
@@ -230,8 +240,31 @@ impl TryFrom<Member> for MemberSql {
             reported: other.reported,
             class: other.class,
             division: other.division,
+            email: other.email,
+            password: other.password,
+            phone_number: other.phone_number
         })
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct NewMember {
+    pub name: String,
+    pub joined: Date,
+    pub class: String,
+    pub email: String,
+    pub password: String,
+    pub phone_number: Option<String>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct UpdatedMember {
+    pub name: String,
+    pub profile: Option<i32>,
+    pub role: String,
+    pub bio: String,
+    pub class: String,
+    pub division: Option<i32>,
 }
 
 #[derive(Queryable)]

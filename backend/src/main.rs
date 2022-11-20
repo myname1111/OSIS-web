@@ -1,6 +1,6 @@
+use actix_files::Files;
 use actix_web::*;
 use actix_web_lab::web::spa;
-use actix_files::Files;
 
 mod api;
 mod db;
