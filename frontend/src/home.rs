@@ -34,7 +34,7 @@ fn banner_text() -> Html {
     html! {
         <div class="banner-home--text-container">
             <h1 class="banner--text">
-                {"Empowerment, team work, and experience"}
+                {"OSIS"}
             </h1>
         </div>
     }

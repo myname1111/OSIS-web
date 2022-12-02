@@ -205,7 +205,7 @@ impl From<MemberSql> for Member {
             division: other.division,
             email: other.email,
             password: other.password,
-            phone_number: other.phone_number
+            phone_number: other.phone_number,
         }
     }
 }
@@ -223,7 +223,7 @@ pub struct MemberSql {
     pub division: Option<i32>,
     pub email: String,
     pub password: String,
-    pub phone_number: Option<String>
+    pub phone_number: Option<String>,
 }
 
 impl TryFrom<Member> for MemberSql {
@@ -242,7 +242,7 @@ impl TryFrom<Member> for MemberSql {
             division: other.division,
             email: other.email,
             password: other.password,
-            phone_number: other.phone_number
+            phone_number: other.phone_number,
         })
     }
 }
@@ -254,7 +254,7 @@ pub struct NewMember {
     pub class: String,
     pub email: String,
     pub password: String,
-    pub phone_number: Option<String>
+    pub phone_number: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]
