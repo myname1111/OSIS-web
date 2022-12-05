@@ -5,6 +5,12 @@ use yew::prelude::*;
 
 pub struct SignUpForm {
     email: String,
+    status: SubmissionStatus,
+}
+
+enum SubmissionStatus {
+    Submitted,
+    NotSubmitted,
 }
 
 impl Component for SignUpForm {
@@ -14,6 +20,7 @@ impl Component for SignUpForm {
     fn create(_: &Context<Self>) -> Self {
         Self {
             email: "".to_string(),
+            status: SubmissionStatus::NotSubmitted,
         }
     }
 
@@ -21,6 +28,12 @@ impl Component for SignUpForm {
         match msg {
             SignUpFormMsg::SetEmail(x) => {
                 self.email = x;
+                true
+            }
+            SignUpFormMsg::Submit => {
+                self.status = SubmissionStatus::Submitted;
+                log::info!("Email is {}", self.email); // TODO: Turn this into logic
+
                 true
             }
         }
@@ -35,6 +48,8 @@ impl Component for SignUpForm {
             input.map(|input| SignUpFormMsg::SetEmail(input.value()))
         });
 
+        let submit = ctx.link().callback(|_| SignUpFormMsg::Submit);
+
         html! {
             <>
                 <NavBar />
@@ -42,11 +57,11 @@ impl Component for SignUpForm {
                     <div class="sign-up-form--form">
                         <div class="sign-up-form--info">
                             <label for="usern" class="sign-up-form--field-name">{ "Email" }</label>
-                            <textarea type="text" id="usern" name="usern" class="sign-up-form--field-input"
+                            <input type="text" id="usern" name="usern" class="sign-up-form--field-input"
                                 onchange={set_email}/>
                         </div>
                         <div class="sign-up-form--sign-up-button-container">
-                            <SignUpButton class="sign-up-button-today sign-up-button--hover"/>
+                            <input type="submit" value="Sign up" onclick={submit}/>
                         </div>
                     </div>
                 </form>
@@ -57,5 +72,5 @@ impl Component for SignUpForm {
 
 pub enum SignUpFormMsg {
     SetEmail(String),
-    // Submit; todo
+    Submit,
 }
