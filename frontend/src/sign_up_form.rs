@@ -8,38 +8,8 @@ pub struct SignUpForm {
     status: SubmissionStatus,
 }
 
-enum SubmissionStatus {
-    Submitted,
-    NotSubmitted,
-}
-
-impl Component for SignUpForm {
-    type Message = SignUpFormMsg;
-    type Properties = ();
-
-    fn create(_: &Context<Self>) -> Self {
-        Self {
-            email: "".to_string(),
-            status: SubmissionStatus::NotSubmitted,
-        }
-    }
-
-    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            SignUpFormMsg::SetEmail(x) => {
-                self.email = x;
-                true
-            }
-            SignUpFormMsg::Submit => {
-                self.status = SubmissionStatus::Submitted;
-                log::info!("Email is {}", self.email); // TODO: Turn this into logic
-
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
+impl SignUpForm {
+    fn view_get_email(&self, ctx: &Context<Self>) -> Html {
         let set_email = ctx.link().batch_callback(move |event: Event| {
             let target = event.target();
 
@@ -68,6 +38,50 @@ impl Component for SignUpForm {
             </>
         }
     }
+
+    fn view_enter_code(&self, _ctx: &Context<Self>) -> Html {
+        html! {
+            "todo" // TODO: implement enter_code
+        }
+    }
+}
+
+impl Component for SignUpForm {
+    type Message = SignUpFormMsg;
+    type Properties = ();
+
+    fn create(_: &Context<Self>) -> Self {
+        Self {
+            email: "".to_string(),
+            status: SubmissionStatus::NotSubmitted,
+        }
+    }
+
+    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool {
+        match msg {
+            SignUpFormMsg::SetEmail(x) => {
+                self.email = x;
+                true
+            }
+            SignUpFormMsg::Submit => {
+                self.status = SubmissionStatus::Submitted;
+
+                true
+            }
+        }
+    }
+
+    fn view(&self, ctx: &Context<Self>) -> Html {
+        match self.status {
+            SubmissionStatus::Submitted => self.view_enter_code(ctx),
+            SubmissionStatus::NotSubmitted => self.view_get_email(ctx),
+        }
+    }
+}
+
+enum SubmissionStatus {
+    Submitted,
+    NotSubmitted,
 }
 
 pub enum SignUpFormMsg {
