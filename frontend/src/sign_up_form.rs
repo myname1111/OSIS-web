@@ -1,6 +1,6 @@
 use crate::utilities::*;
 use wasm_bindgen::JsCast;
-use web_sys::HtmlTextAreaElement;
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
 pub struct SignUpForm {
@@ -43,7 +43,7 @@ impl Component for SignUpForm {
         let set_email = ctx.link().batch_callback(move |event: Event| {
             let target = event.target();
 
-            let input = target.and_then(|t| t.dyn_into::<HtmlTextAreaElement>().ok());
+            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
 
             input.map(|input| SignUpFormMsg::SetEmail(input.value()))
         });
@@ -53,11 +53,11 @@ impl Component for SignUpForm {
         html! {
             <>
                 <NavBar />
-                <form class="sign-up-form">
+                <form class="sign-up-form" action="javascript: void 0">
                     <div class="sign-up-form--form">
                         <div class="sign-up-form--info">
-                            <label for="usern" class="sign-up-form--field-name">{ "Email" }</label>
-                            <input type="text" id="usern" name="usern" class="sign-up-form--field-input"
+                            <label for="email" class="sign-up-form--field-name">{ "Email" }</label>
+                            <input type="text" id="email" name="email" class="sign-up-form--field-input"
                                 onchange={set_email}/>
                         </div>
                         <div class="sign-up-form--sign-up-button-container">
