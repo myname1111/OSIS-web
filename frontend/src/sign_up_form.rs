@@ -7,6 +7,8 @@ use yew::prelude::*;
 pub struct SignUpForm {
     email: String,
     status: SubmissionStatus,
+    code: Option<u32>,
+    code_entered: Option<u32>,
 }
 
 impl SignUpForm {
@@ -40,9 +42,40 @@ impl SignUpForm {
         }
     }
 
-    fn view_enter_code(&self, _ctx: &Context<Self>, code: u32) -> Html {
+    fn view_enter_code(&self, ctx: &Context<Self>) -> Html {
+        let code = self.code;
+        let code_entered = self.code_entered;
+
+        log::info!("code = {}", code.unwrap());
+
+        let set_code = ctx.link().batch_callback(move |event: Event| {
+            let target = event.target();
+
+            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
+            let input: Option<u32> =
+                input.map(|input| input.value().parse().expect("Please enter a number")); // TODO: Better error handling
+
+            input.map(SignUpFormMsg::SetCode)
+        });
+
+        let on_submit = move |_| {
+            if code_entered == code {
+                log::info!("Code matched")
+            } else {
+                log::info!("Code does not match")
+            };
+        };
+
         html! {
-            { code }
+            <>
+                <h1>{ "Please enter the code we have sent via gmail" }</h1>
+                <p>{ format!("We have sent you a code through your email address {}. Please enter the code we gave you to continue your sign up", self.email) }</p>
+                <form action="javascript: void 0">
+                    <label for="code">{ "Code" }</label>
+                    <input type="text" id="code" name="code" onchange={set_code} />
+                    <input type="submit" value="Enter" onclick={on_submit} />
+                </form>
+            </>
         }
     }
 }
@@ -55,6 +88,8 @@ impl Component for SignUpForm {
         Self {
             email: "".to_string(),
             status: SubmissionStatus::NotSubmitted,
+            code: None,
+            code_entered: None,
         }
     }
 
@@ -64,9 +99,13 @@ impl Component for SignUpForm {
                 self.email = x;
                 true
             }
+            SignUpFormMsg::SetCode(code) => {
+                self.code_entered = Some(code);
+                true
+            }
             SignUpFormMsg::Submit => {
                 self.status = SubmissionStatus::Submitted;
-
+                self.code = Some(random::<u32>());
                 true
             }
         }
@@ -74,7 +113,7 @@ impl Component for SignUpForm {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         match self.status {
-            SubmissionStatus::Submitted => self.view_enter_code(ctx, random::<u32>()),
+            SubmissionStatus::Submitted => self.view_enter_code(ctx),
             SubmissionStatus::NotSubmitted => self.view_get_email(ctx),
         }
     }
@@ -87,5 +126,6 @@ enum SubmissionStatus {
 
 pub enum SignUpFormMsg {
     SetEmail(String),
+    SetCode(u32),
     Submit,
 }
