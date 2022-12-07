@@ -1,4 +1,5 @@
 use crate::utilities::*;
+use rand::random;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
@@ -39,9 +40,9 @@ impl SignUpForm {
         }
     }
 
-    fn view_enter_code(&self, _ctx: &Context<Self>) -> Html {
+    fn view_enter_code(&self, _ctx: &Context<Self>, code: u32) -> Html {
         html! {
-            "todo" // TODO: implement enter_code
+            { code }
         }
     }
 }
@@ -73,7 +74,7 @@ impl Component for SignUpForm {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         match self.status {
-            SubmissionStatus::Submitted => self.view_enter_code(ctx),
+            SubmissionStatus::Submitted => self.view_enter_code(ctx, random::<u32>()),
             SubmissionStatus::NotSubmitted => self.view_get_email(ctx),
         }
     }
