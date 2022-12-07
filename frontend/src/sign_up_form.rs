@@ -33,8 +33,8 @@ impl SignUpForm {
                             <input type="text" id="email" name="email" class="sign-up-form--field-input"
                                 onchange={set_email}/>
                         </div>
-                        <div class="sign-up-form--sign-up-button-container">
-                            <input type="submit" value="Sign up" onclick={submit}/>
+                        <div class="sign-up-form--sign-up-button">
+                            <input type="submit" value="Sign up" onclick={submit} class="sign-up-button--sign-up"/>
                         </div>
                     </div>
                 </form>
