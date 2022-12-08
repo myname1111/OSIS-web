@@ -34,7 +34,7 @@ impl SignUpForm {
                                 onchange={set_email}/>
                         </div>
                         <div class="sign-up-form--sign-up-button">
-                            <input type="submit" value="Sign up" onclick={submit} class="sign-up-button--sign-up"/>
+                            <input type="submit" value="Sign up" onclick={submit} class="sign-up-today sign-up-today--hover"/>
                         </div>
                     </div>
                 </form>
@@ -67,15 +67,15 @@ impl SignUpForm {
         };
 
         html! {
-            <>
-                <h1>{ "Please enter the code we have sent via gmail" }</h1>
-                <p>{ format!("We have sent you a code through your email address {}. Please enter the code we gave you to continue your sign up", self.email) }</p>
-                <form action="javascript: void 0">
-                    <label for="code">{ "Code" }</label>
-                    <input type="text" id="code" name="code" onchange={set_code} />
-                    <input type="submit" value="Enter" onclick={on_submit} />
+            <div class="enter-code">
+                <h1 class="enter-code--title">{ "Please enter the code we have sent via gmail" }</h1>
+                <h2 class="enter-code--subtitle">{ format!("We have sent you a code through your email address {}. Please enter the code we gave you to continue your sign up", self.email) }</h2>
+                <form action="javascript: void 0" class="enter-code--form">
+                    <label class="enter-code--form-title" for="code">{ "Code" }</label>
+                    <input class="enter-code--input" type="text" id="code" name="code" onchange={set_code} />
+                    <input class="enter-code--enter" type="submit" value="Enter" onclick={on_submit} />
                 </form>
-            </>
+            </div>
         }
     }
 }

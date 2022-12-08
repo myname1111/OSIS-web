@@ -1,11 +1,17 @@
 @use "sign_up_button"
+@use "vars" as *
 
-.sign-up-button--sign-up
+.sign-up-today
   @extend .sign-up-button
   width: 175px
   height: 75%
   border-radius: 10px
-  border-color: red
+  color: white
+  background-color: $button-color-1
+  border-color: $button-color-1-border
   font-size: 25px
   display: flex
   justify-content: center
+
+.sign-up-today--hover:hover
+  cursor: pointer
