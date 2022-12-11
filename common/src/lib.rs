@@ -339,7 +339,7 @@ pub struct WorkOnProgram {
     pub division: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct EmailVer {
     pub code: u32,
     pub email: String,

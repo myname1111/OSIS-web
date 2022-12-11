@@ -1,4 +1,5 @@
-use crate::utilities::*;
+use crate::{backend::send_email_ver, utilities::*};
+use common::EmailVer;
 use rand::random;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlInputElement;
@@ -45,8 +46,6 @@ impl SignUpForm {
     fn view_enter_code(&self, ctx: &Context<Self>) -> Html {
         let code = self.code;
         let code_entered = self.code_entered;
-
-        log::info!("code = {}", code.unwrap());
 
         let set_code = ctx.link().batch_callback(move |event: Event| {
             let target = event.target();
@@ -106,6 +105,16 @@ impl Component for SignUpForm {
             SignUpFormMsg::Submit => {
                 self.status = SubmissionStatus::Submitted;
                 self.code = Some(random::<u32>());
+
+                let email_ver_data = EmailVer {
+                    email: self.email.clone(),
+                    code: self.code.unwrap(),
+                };
+
+                wasm_bindgen_futures::spawn_local(async move {
+                    send_email_ver(email_ver_data).await;
+                });
+
                 true
             }
         }

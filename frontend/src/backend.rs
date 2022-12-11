@@ -103,7 +103,7 @@ pub async fn try_get_division(id: u32) -> Option<Division> {
         .unwrap();
 
     if division.is_some() {
-        log::info!("Success i getting division with id {}", id)
+        log::info!("Success in getting division with id {}", id)
     } else {
         log::warn!("Unable to get division with id {}", id)
     };
@@ -111,4 +111,18 @@ pub async fn try_get_division(id: u32) -> Option<Division> {
     log::debug!("{:?}", division);
 
     division
+}
+
+pub async fn send_email_ver(data: EmailVer) -> String {
+    log::info!("Attempting to send email with code");
+
+    Request::put("http://localhost/api/member/email")
+        .header("Content-Type", "application/json")
+        .body(serde_json::to_string(&data).unwrap())
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap()
 }
