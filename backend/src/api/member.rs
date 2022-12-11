@@ -4,7 +4,10 @@ use crate::db::{
     DbPool,
 };
 use actix_web::*;
-use common::{Member, MemberPreview, NewMember, UpdatedMember};
+use common::{EmailVer, Member, MemberPreview, NewMember, UpdatedMember};
+use lettre::{message::MultiPart, transport::smtp::authentication::Credentials};
+use lettre::{Message, SmtpTransport, Transport};
+use std::env;
 use web::{Data, Json, Path};
 
 #[get("/")]
@@ -90,9 +93,45 @@ async fn update_member(
     Ok(Json(member_id))
 }
 
+#[put("/email")]
+async fn email_ver(data: Json<EmailVer>) -> Option<String> {
+    let email = Message::builder()
+        .from(
+            "OSIS EPISJH <data2.animationstudiocp@gmail.com>"
+                .parse()
+                .unwrap(),
+        )
+        .to(format!("you <{}>", data.email).parse().unwrap())
+        .subject("Welcome to osis, please enter the code")
+        .multipart(MultiPart::alternative_plain_html(
+            format!("Please enter the folowwing code: \n{}", data.code),
+            format!(
+                "<h2>Please enter the following code</h2>
+                    <h1>{}</h1>",
+                data.code
+            ),
+        ))
+        .unwrap();
+
+    let creds = Credentials::new(
+        env::var("SMTP_USERNAME").expect("SMTP_USERNAME not set"),
+        env::var("SMTP_PASSWORD").expect("SMTP_PASSWORD not set"),
+    );
+
+    let mailer = SmtpTransport::relay("smtp.gmail.com")
+        .unwrap()
+        .credentials(creds)
+        .build();
+
+    let result = mailer.send(&email);
+
+    result.map(|_| data.email.clone()).ok()
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/member")
+            .service(email_ver)
             .service(get_all_members)
             .service(get_member_preview)
             .service(get_member)

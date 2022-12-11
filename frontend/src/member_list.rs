@@ -155,7 +155,10 @@ fn member(props: &MemberProp) -> Html {
             <img src={format!("http://localhost/data/{}", props.image.as_ref()
                 .map(|image| image.path.clone())
                 .unwrap_or_else(|| "person.png".to_string()))} />
+<<<<<<< HEAD
             <h2>{ props.member.name.clone() }</h2>
+=======
+>>>>>>> backend
             <h2 class="member-list-item--role">{ capitalize_first_letter( {
                 let division_msg = props.division.as_ref()
                     .map(|division| format!(" of the division of {}", division.name))

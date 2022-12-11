@@ -103,6 +103,10 @@ impl Component for SignUpForm {
                 self.code_entered = Some(code);
                 true
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> backend
             SignUpFormMsg::Submit => {
                 self.status = SubmissionStatus::Submitted;
                 self.code = Some(random::<u32>());
