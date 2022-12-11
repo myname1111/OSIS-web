@@ -149,30 +149,27 @@ pub fn member_list() -> Html {
 fn member(props: &MemberProp) -> Html {
     log::info!("rendering preview with data {:?}", props.member);
     html! {
-            <div class="member-list-item">
-                <Link<Route> to={Route::Member {id: props.member.id.try_into().unwrap()}}
-                    classes="member-list-item--link">
-                <img src={format!("http://localhost/data/{}", props.image.as_ref()
-                    .map(|image| image.path.clone())
-                    .unwrap_or_else(|| "person.png".to_string()))} />
-    <<<<<<< HEAD
-                <h2>{ props.member.name.clone() }</h2>
-    =======
-    >>>>>>> backend
-                <h2 class="member-list-item--role">{ capitalize_first_letter( {
-                    let division_msg = props.division.as_ref()
-                        .map(|division| format!(" of the division of {}", division.name))
-                        .unwrap_or_else(|| "".to_string());
+        <div class="member-list-item">
+            <Link<Route> to={Route::Member {id: props.member.id.try_into().unwrap()}}
+                classes="member-list-item--link">
+            <img src={format!("http://localhost/data/{}", props.image.as_ref()
+                .map(|image| image.path.clone())
+                .unwrap_or_else(|| "person.png".to_string()))} />
+            <h2>{ props.member.name.clone() }</h2>
+            <h2 class="member-list-item--role">{ capitalize_first_letter( {
+                let division_msg = props.division.as_ref()
+                    .map(|division| format!(" of the division of {}", division.name))
+                    .unwrap_or_else(|| "".to_string());
 
-                    &match props.member.role {
-                        Member => format!("Member{}", division_msg),
-                        Head => format!("Head{}", division_msg),
-                        role => String::from(role)
-                    }
-                }) }</h2>
-                </ Link<Route>>
-            </div>
-        }
+                &match props.member.role {
+                    Member => format!("Member{}", division_msg),
+                    Head => format!("Head{}", division_msg),
+                    role => String::from(role)
+                }
+            }) }</h2>
+            </ Link<Route>>
+        </div>
+    }
 }
 
 #[derive(Properties, PartialEq, Eq)]
