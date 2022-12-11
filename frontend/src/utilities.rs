@@ -32,11 +32,12 @@ pub struct SignUpButtonProps {
     #[prop_or_default]
     pub modifiers: String,
     #[prop_or("sign-up-button sign-up-button--hover".to_string())]
-    pub class: String
+    pub class: String,
 }
 
 #[derive(Clone, Routable, PartialEq)]
-pub enum Route { // TODO: create 404
+pub enum Route {
+    // TODO: create 404
     #[at("/")]
     Home,
     #[at("/about/:id")]
@@ -46,6 +47,5 @@ pub enum Route { // TODO: create 404
     #[at("/member/:id")]
     Member { id: u32 },
     #[at("/member")]
-    MemberList
+    MemberList,
 }
-

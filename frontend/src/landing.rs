@@ -2,10 +2,10 @@
 // Accent is #1f7be0
 // Background is white
 
+use crate::utilities::*;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlTextAreaElement;
 use yew::prelude::*;
-use crate::utilities::*;
 
 #[function_component(Landing)]
 pub fn landing() -> Html {
@@ -77,7 +77,8 @@ fn why_osis() -> Html {
 
 #[function_component(WhyOsisSection)]
 fn why_osis_section(props: &WhyOsisSectionProp) -> Html {
-    let alignment = match props.align { // alignment of text
+    let alignment = match props.align {
+        // alignment of text
         WhyOsisAlign::Left => "why-osis-section-landing--left",
         WhyOsisAlign::Right => "why-osis-section-landing--right",
     };

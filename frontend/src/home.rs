@@ -1,5 +1,5 @@
-use yew::prelude::*;
 use crate::utilities::*;
+use yew::prelude::*;
 
 #[function_component(Home)]
 pub fn home() -> Html {
@@ -176,7 +176,6 @@ fn faq_section(props: &FaqSectionProp) -> Html {
         },
     };
 
-
     let onclick = {
         let dropdown = dropdown;
         Callback::from(move |_| dropdown.set((*dropdown).switch()))
@@ -242,7 +241,6 @@ fn event_list() -> Html {
         </section>
     }
 }
-
 
 #[function_component(Event)]
 fn event() -> Html {
