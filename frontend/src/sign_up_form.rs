@@ -10,6 +10,7 @@ pub struct SignUpForm {
     status: SubmissionStatus,
     code: Option<u32>,
     code_entered: Option<u32>,
+    attempt_status: AttemptStatus,
 }
 
 impl SignUpForm {
@@ -57,13 +58,13 @@ impl SignUpForm {
             input.map(SignUpFormMsg::SetCode)
         });
 
-        let on_submit = move |_| {
-            if code_entered == code {
-                log::info!("Code matched")
+        let on_submit = ctx.link().callback(move |_: MouseEvent| {
+            SignUpFormMsg::CodeEntered(AttemptStatus::Attemptted(if code == code_entered {
+                CodeCorrectness::Correct
             } else {
-                log::info!("Code does not match")
-            };
-        };
+                CodeCorrectness::Incorrect
+            }))
+        });
 
         html! {
             <div class="enter-code">
@@ -72,8 +73,26 @@ impl SignUpForm {
                 <form action="javascript: void 0" class="enter-code--form">
                     <label class="enter-code--form-title" for="code">{ "Code" }</label>
                     <input class="enter-code--input" type="text" id="code" name="code" onchange={set_code} />
-                    <input class="enter-code--enter" type="submit" value="Enter" onclick={on_submit} />
+                    <input
+                        class={
+                            format!("enter-code-button {}",
+                                match self.attempt_status {
+                                    AttemptStatus::Attemptted(CodeCorrectness::Correct) => "enter-code-button--correct",
+                                    _ => "enter-code-button--incorrect"
+                                }
+                            )
+                        }
+                        type="submit" value="Enter" onclick={on_submit} />
                 </form>
+                {
+                    match self.attempt_status {
+                        AttemptStatus::Attemptted(CodeCorrectness::Correct) => html! {},
+                        AttemptStatus::Attemptted(CodeCorrectness::Incorrect) => html! {
+                            <h2>{ "Code is not correct" }</h2>
+                        },
+                        AttemptStatus::NotAttempted => html! {}
+                    }
+                }
             </div>
         }
     }
@@ -89,6 +108,7 @@ impl Component for SignUpForm {
             status: SubmissionStatus::NotSubmitted,
             code: None,
             code_entered: None,
+            attempt_status: AttemptStatus::NotAttempted,
         }
     }
 
@@ -117,6 +137,11 @@ impl Component for SignUpForm {
 
                 true
             }
+            SignUpFormMsg::CodeEntered(status) => {
+                self.attempt_status = status;
+
+                true
+            }
         }
     }
 
@@ -133,8 +158,19 @@ enum SubmissionStatus {
     NotSubmitted,
 }
 
+pub enum CodeCorrectness {
+    Correct,
+    Incorrect,
+}
+
+pub enum AttemptStatus {
+    Attemptted(CodeCorrectness),
+    NotAttempted,
+}
+
 pub enum SignUpFormMsg {
     SetEmail(String),
     SetCode(u32),
     Submit,
+    CodeEntered(AttemptStatus),
 }
