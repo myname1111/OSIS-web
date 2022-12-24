@@ -2,7 +2,7 @@ use crate::{backend::send_email_ver, utilities::*};
 use common::EmailVer;
 use rand::random;
 use wasm_bindgen::JsCast;
-use web_sys::HtmlInputElement;
+use web_sys::{window, HtmlInputElement};
 use yew::prelude::*;
 
 pub struct SignUpForm {
@@ -60,6 +60,12 @@ impl SignUpForm {
 
         let on_submit = ctx.link().callback(move |_: MouseEvent| {
             SignUpFormMsg::CodeEntered(AttemptStatus::Attemptted(if code == code_entered {
+                let win = window().expect("UNable to get window");
+                win.open_with_url_and_target("https://forms.gle/2gMNajTRY3PBDV3w9", "_blank")
+                    .expect(
+                        "Unable to open new tab with url 'https://forms.gle/2gMNajTRY3PBDV3w9'",
+                    );
+
                 CodeCorrectness::Correct
             } else {
                 CodeCorrectness::Incorrect
@@ -82,7 +88,7 @@ impl SignUpForm {
                                 }
                             )
                         }
-                        type="submit" value="Enter" onclick={on_submit} />
+                        type="submit" value="Continue to interview" onclick={on_submit} />
                 </form>
                 {
                     match self.attempt_status {
