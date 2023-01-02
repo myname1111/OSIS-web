@@ -88,10 +88,14 @@ impl From<time::Date> for Date {
 }
 
 impl TryFrom<Date> for time::Date {
-    type Error = time::error::ComponentRange;
+    type Error = SqlConversionError;
 
-    fn try_from(other: Date) -> Result<time::Date, time::error::ComponentRange> {
-        Self::from_ordinal_date(other.year, other.ordinal)
+    fn try_from(other: Date) -> Result<time::Date, SqlConversionError> {
+        Self::from_ordinal_date(other.year, other.ordinal).map_err(|err| SqlConversionError {
+            type_name: "Date".to_string(),
+            conversion_type: SqlConversionType::ToSql,
+            message: err.to_string(),
+        })
     }
 }
 
@@ -109,7 +113,7 @@ pub enum Role {
     Head = 1,
     VicePresident = 4,
     President = 5,
-    Exchequer = 2,
+    Treasurer = 2,
     Secretary = 3,
 }
 
@@ -120,7 +124,7 @@ impl fmt::Display for Role {
 }
 
 impl TryFrom<String> for Role {
-    type Error = String; // TODO: Replace this with custom error handling
+    type Error = SqlConversionError; // TODO: Replace this with custom error handling
 
     fn try_from(value: String) -> Result<Self, Self::Error> {
         match value.as_str() {
@@ -128,13 +132,16 @@ impl TryFrom<String> for Role {
             "head" => Ok(Self::Head),
             "VP" => Ok(Self::VicePresident),
             "president" => Ok(Self::President),
-            "exchequer" => Ok(Self::Exchequer),
+            "treasurer" => Ok(Self::Treasurer),
             "secretary" => Ok(Self::Secretary),
-            unintended => Err(format!(
-                "
-                            expected either member, head, VP president, exchequer or secretary. 
-                            got {unintended}"
-            )),
+            unintended => Err(SqlConversionError {
+                type_name: "Role".to_string(),
+                conversion_type: SqlConversionType::FromSql,
+                message: format!(
+                    "expected either member, head, VP president, exchequer or secretary. got {}",
+                    unintended
+                ),
+            }),
         }
     }
 }
@@ -146,7 +153,7 @@ impl From<Role> for String {
             Role::Head => "head",
             Role::VicePresident => "VP",
             Role::President => "president",
-            Role::Exchequer => "exchequer",
+            Role::Treasurer => "treasurer",
             Role::Secretary => "secretary",
         }
         .to_string()
@@ -167,6 +174,29 @@ pub struct Member {
     pub email: String,
     pub password: String,
     pub phone_number: Option<String>,
+    pub username: String,
+}
+
+impl TryFrom<MemberSql> for Member {
+    type Error = SqlConversionError;
+
+    fn try_from(other: MemberSql) -> Result<Self, SqlConversionError> {
+        Ok(Self {
+            id: other.id,
+            name: other.name,
+            profile: other.profile,
+            role: other.role.try_into()?,
+            bio: other.bio,
+            joined: other.joined.into(),
+            reported: other.reported,
+            class: other.class,
+            division: other.division,
+            email: other.email,
+            password: other.password,
+            phone_number: other.phone_number,
+            username: other.username,
+        })
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
@@ -178,35 +208,19 @@ pub struct MemberPreview {
     pub id: i32,
 }
 
-impl From<(Option<i32>, String, String, Option<i32>, i32)> for MemberPreview {
-    fn from(other: (Option<i32>, String, String, Option<i32>, i32)) -> Self {
-        Self {
+impl TryFrom<(Option<i32>, String, String, Option<i32>, i32)> for MemberPreview {
+    type Error = SqlConversionError;
+
+    fn try_from(
+        other: (Option<i32>, String, String, Option<i32>, i32),
+    ) -> Result<Self, SqlConversionError> {
+        Ok(Self {
             profile: other.0,
-            role: other.1.try_into().unwrap(),
+            role: other.1.try_into()?,
             name: other.2,
             division: other.3,
             id: other.4,
-        }
-    }
-}
-
-impl From<MemberSql> for Member {
-    fn from(other: MemberSql) -> Self {
-        Self {
-            id: other.id,
-            name: other.name,
-            profile: other.profile,
-            role: other.role.try_into().unwrap(), // TODO: make better error handiling by making
-            // this try from after cretaing error struct/enum
-            bio: other.bio,
-            joined: other.joined.into(),
-            reported: other.reported,
-            class: other.class,
-            division: other.division,
-            email: other.email,
-            password: other.password,
-            phone_number: other.phone_number,
-        }
+        })
     }
 }
 
@@ -224,10 +238,11 @@ pub struct MemberSql {
     pub email: String,
     pub password: String,
     pub phone_number: Option<String>,
+    pub username: String,
 }
 
 impl TryFrom<Member> for MemberSql {
-    type Error = time::error::ComponentRange;
+    type Error = SqlConversionError;
 
     fn try_from(other: Member) -> Result<Self, Self::Error> {
         Ok(Self {
@@ -243,6 +258,7 @@ impl TryFrom<Member> for MemberSql {
             email: other.email,
             password: other.password,
             phone_number: other.phone_number,
+            username: other.username,
         })
     }
 }
@@ -343,4 +359,31 @@ pub struct WorkOnProgram {
 pub struct EmailVer {
     pub code: u32,
     pub email: String,
+}
+
+#[derive(Clone, Debug)]
+enum SqlConversionType {
+    ToSql,
+    FromSql,
+}
+
+#[derive(Debug, Clone)]
+pub struct SqlConversionError {
+    type_name: String,
+    conversion_type: SqlConversionType,
+    message: String,
+}
+
+impl fmt::Display for SqlConversionError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let conversion_type = match self.conversion_type {
+            SqlConversionType::ToSql => "to",
+            SqlConversionType::FromSql => "from",
+        };
+        write!(
+            f,
+            "Error coverting type {} {} sql\n{}",
+            self.type_name, conversion_type, self.message
+        )
+    }
 }

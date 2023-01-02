@@ -90,6 +90,7 @@ diesel::table! {
         email -> Varchar,
         password -> Varchar,
         phone_number -> Nullable<Varchar>,
+        username -> Varchar,
     }
 }
 

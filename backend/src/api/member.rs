@@ -26,7 +26,7 @@ async fn get_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<Member>,
     let member =
         web::block(move || member::get_member_by_id(&mut conn, path.into_inner()).unwrap()).await?;
 
-    Ok(Json(member.into()))
+    Ok(Json(member.try_into().unwrap()))
 }
 
 #[get("/preview")]

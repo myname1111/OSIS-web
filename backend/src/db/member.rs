@@ -8,7 +8,7 @@ pub type MemberId = i32;
 
 mod models {
     use crate::db::schema::member;
-    use common::{NewMember, UpdatedMember};
+    use common::{NewMember, SqlConversionError, UpdatedMember};
     use diesel::prelude::*;
 
     pub type MemberPreviewSql = (Option<i32>, String, String, Option<i32>, i32);
@@ -22,9 +22,9 @@ mod models {
     }
 
     impl TryFrom<NewMember> for NewMemberSql {
-        type Error = time::error::ComponentRange;
+        type Error = SqlConversionError;
 
-        fn try_from(rhs: NewMember) -> Result<NewMemberSql, time::error::ComponentRange> {
+        fn try_from(rhs: NewMember) -> Result<NewMemberSql, SqlConversionError> {
             Ok(NewMemberSql {
                 m_name: rhs.name,
                 joined: rhs.joined.try_into()?,
@@ -94,7 +94,7 @@ pub(crate) fn get_all_member_preview(conn: &mut DbConnection) -> DResult<Vec<Mem
 
     Ok(out?
         .into_iter()
-        .map(|out| out.into())
+        .map(|out| out.try_into().unwrap())
         .collect::<Vec<MemberPreview>>())
 }
 
