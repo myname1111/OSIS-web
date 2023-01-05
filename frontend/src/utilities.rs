@@ -1,32 +1,93 @@
+use wasm_bindgen::JsCast;
+use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
 #[function_component(NavBar)]
 pub fn nav_bar() -> Html {
+    let has_sign_in = use_state(|| false);
+
+    let sign_in = {
+        let has_sign_in = has_sign_in.clone();
+        move |_| has_sign_in.set(true)
+    };
+
     html! {
-        <nav class="nav">
-            <a href="/">
-                <img src="/data/OSIS.png" class="nav--img" />
-            </a>
-            <a href="#">
-                <h2 class="nav--item">{ "BLOG" }</h2>
-            </a>
-            <a href="http://localhost/about/0">
-                <h2 class="nav--item">{ "ABOUT" }</h2>
-            </a>
-            <a href="http://localhost/member">
-                <h2 class="nav--item">{ "MEMBERS" }</h2>
-            </a>
-            <a href="#">
-                <h2 class="nav--item">{ "PROGRAMS" }</h2>
-            </a>
-            <a href="#">
-                <h2 class="nav--item">{ "EVENTS" }</h2>
-            </a>
-            <a href="#" class="nav--sign-up">
-                <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
-            </a>
-        </nav>
+        <>
+            <nav class="nav">
+                <a href="/">
+                    <img src="/data/OSIS.png" class="nav--img" />
+                </a>
+                <a href="#">
+                    <h2 class="nav--item">{ "BLOG" }</h2>
+                </a>
+                <a href="http://localhost/about/0">
+                    <h2 class="nav--item">{ "ABOUT" }</h2>
+                </a>
+                <a href="http://localhost/member">
+                    <h2 class="nav--item">{ "MEMBERS" }</h2>
+                </a>
+                <a href="#">
+                    <h2 class="nav--item">{ "PROGRAMS" }</h2>
+                </a>
+                <a href="#">
+                    <h2 class="nav--item">{ "EVENTS" }</h2>
+                </a>
+                <div class="nav--sign-up" onclick={sign_in}>
+                    <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
+                </div>
+            </nav>
+            {
+                if *has_sign_in {
+                    html! {
+                        <SignInPopup />
+                    }
+                } else {
+                    html!()
+                }
+            }
+        </>
+    }
+}
+
+#[function_component(SignInPopup)]
+fn sign_in_popup() -> Html {
+    let username = use_state(|| "".to_string());
+    let password = use_state(|| "".to_string());
+
+    let set_username = {
+        let username = username.clone();
+        move |event: Event| {
+            let target = event.target();
+
+            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
+
+            input.map(|input| username.set(input.value()));
+        }
+    };
+
+    let set_password = {
+        let password = password.clone();
+        move |event: Event| {
+            let target = event.target();
+
+            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
+
+            input.map(|input| password.set(input.value()));
+        }
+    };
+
+    html! {
+        <div class="sign-in-popup">
+            <h1 class="sign-in-popup--title">{ "Please sign in" }</h1>
+            <form class="sign-in-popup--form" action="javascript: void 0">
+                <label class="sign-in-popup--label" for="username">{ "Username" }</label>
+                <input class="sign-in-popup--input" type="text" id="username" name="username" onchange={set_username} />
+                <label class="sign-in-popup--label" for="password">{ "Password" }</label>
+                <input class="sign-in-popup--input" type="text" id="password" name="password" onchange={set_password} />
+                <input class="sign-in-popup--button" type="submit" value="Sign up"/>
+            </form>
+        </div>
     }
 }
 
