@@ -21,7 +21,8 @@ CREATE TABLE member (
     division_id INTEGER REFERENCES division,
     email VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
-    phone_num VARCHAR NOT NULL
+    phone_num VARCHAR NOT NULL,
+    username VARCHAR NOT NULL,
 );
 
 CREATE TABLE president (

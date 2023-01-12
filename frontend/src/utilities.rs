@@ -1,5 +1,3 @@
-use wasm_bindgen::JsCast;
-use web_sys::HtmlInputElement;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -52,39 +50,14 @@ pub fn nav_bar() -> Html {
 
 #[function_component(SignInPopup)]
 fn sign_in_popup() -> Html {
-    let username = use_state(|| "".to_string());
-    let password = use_state(|| "".to_string());
-
-    let set_username = {
-        let username = username.clone();
-        move |event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
-
-            input.map(|input| username.set(input.value()));
-        }
-    };
-
-    let set_password = {
-        let password = password.clone();
-        move |event: Event| {
-            let target = event.target();
-
-            let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
-
-            input.map(|input| password.set(input.value()));
-        }
-    };
-
     html! {
         <div class="sign-in-popup">
             <h1 class="sign-in-popup--title">{ "Please sign in" }</h1>
-            <form class="sign-in-popup--form" action="javascript: void 0">
+            <form class="sign-in-popup--form" action="http://localhost/api/member/sign_in" method="post">
                 <label class="sign-in-popup--label" for="username">{ "Username" }</label>
-                <input class="sign-in-popup--input" type="text" id="username" name="username" onchange={set_username} />
+                <input class="sign-in-popup--input" type="text" id="username" name="username"/>
                 <label class="sign-in-popup--label" for="password">{ "Password" }</label>
-                <input class="sign-in-popup--input" type="text" id="password" name="password" onchange={set_password} />
+                <input class="sign-in-popup--input" type="text" id="password" name="password"/>
                 <input class="sign-in-popup--button" type="submit" value="Sign up"/>
             </form>
         </div>

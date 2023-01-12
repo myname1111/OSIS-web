@@ -83,6 +83,10 @@ pub(crate) fn get_member_by_id(
     member.find(member_id).first(conn)
 }
 
+pub(crate) fn get_member_by_name(conn: &mut DbConnection, name: String) -> DResult<MemberSql> {
+    member.filter(username.eq(name)).first(conn)
+}
+
 pub(crate) fn get_all_member_id(conn: &mut DbConnection) -> DResult<Vec<MemberId>> {
     member.select(id).load::<i32>(conn)
 }

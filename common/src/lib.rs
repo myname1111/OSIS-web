@@ -387,3 +387,29 @@ impl fmt::Display for SqlConversionError {
         )
     }
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum SignInError {
+    InccorrectPassword(String),
+    MemberWithUsernameDoesntExist(String),
+    DatabaseError(String),
+}
+
+impl fmt::Display for SignInError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                SignInError::InccorrectPassword(member) =>
+                    format!("Password for '{}' is incorrect", member),
+                SignInError::MemberWithUsernameDoesntExist(member) =>
+                    format!("Member with username '{}' doesn't exist", member),
+                SignInError::DatabaseError(member) => format!("An error occurred when trying to retrive member with username '{}'\n Note: this is does not mean that '{0}' doesn't exist, there was simply an error in the database", member)
+            }
+        )
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SignInResponse(pub Result<Member, SignInError>);

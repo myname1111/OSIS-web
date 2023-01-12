@@ -4,12 +4,20 @@ use crate::db::{
     DbPool,
 };
 use actix_web::*;
-use common::{EmailVer, Member, MemberPreview, NewMember, UpdatedMember};
+use common::{
+    EmailVer, Member, MemberPreview, NewMember, SignInError, SignInResponse, UpdatedMember,
+};
 use lettre::{message::MultiPart, transport::smtp::authentication::Credentials};
 use lettre::{Message, SmtpTransport, Transport};
+use serde::{Deserialize, Serialize};
 use std::env;
 use web::{Data, Json, Path};
 
+#[derive(Serialize, Deserialize, Debug)]
+struct SignInData {
+    username: String,
+    password: String,
+}
 #[get("/")]
 async fn get_all_members(pool: Data<DbPool>) -> Result<Json<Vec<MemberId>>, Error> {
     let mut conn = get_conn_from_pool(pool);
@@ -51,7 +59,7 @@ async fn new_member(member: Json<NewMember>, pool: Data<DbPool>) -> Result<Json<
     Ok(Json(member_id))
 }
 
-#[put("/{id}/report")]
+#[post("/{id}/report")]
 async fn report_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
 
@@ -63,7 +71,7 @@ async fn report_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<Membe
     Ok(Json(member_id))
 }
 
-#[put("/{id}/delete")]
+#[post("/{id}/delete")]
 async fn delete_member(path: Path<i32>, pool: Data<DbPool>) -> Result<Json<MemberId>, Error> {
     let mut conn = get_conn_from_pool(pool);
 
@@ -128,9 +136,41 @@ async fn email_ver(data: Json<EmailVer>) -> Option<String> {
     result.map(|_| data.email.clone()).ok()
 }
 
+#[post("/sign_in")]
+async fn sign_in(
+    data: web::Form<SignInData>,
+    pool: Data<DbPool>,
+) -> Result<Json<SignInResponse>, Error> {
+    let mut conn = get_conn_from_pool(pool);
+
+    let member = {
+        let username = data.username.clone();
+        web::block(move || member::get_member_by_name(&mut conn, username)).await?
+    };
+
+    let out = match member {
+        Err(err) => match err {
+            diesel::result::Error::NotFound => SignInResponse(Err(
+                SignInError::MemberWithUsernameDoesntExist(data.username.clone()),
+            )),
+            _ => SignInResponse(Err(SignInError::DatabaseError(data.username.clone()))),
+        },
+        Ok(member) => {
+            if argon2::verify_encoded(member.password.as_str(), data.password.as_bytes()).unwrap() {
+                SignInResponse(Ok(member.try_into().unwrap()))
+            } else {
+                SignInResponse(Err(SignInError::InccorrectPassword(data.username.clone())))
+            }
+        }
+    };
+
+    Ok(Json(out))
+}
+
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/member")
+            .service(sign_in)
             .service(email_ver)
             .service(get_all_members)
             .service(get_member_preview)
