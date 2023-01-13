@@ -126,3 +126,23 @@ pub async fn send_email_ver(data: EmailVer) -> String {
         .await
         .unwrap()
 }
+
+pub async fn send_sign_in_creds(data: SignInData) -> SignInResponse {
+    try_send_sign_in_creds(data)
+        .await
+        .expect("Unable to sign in")
+}
+
+pub async fn try_send_sign_in_creds(data: SignInData) -> Option<SignInResponse> {
+    log::info!("Attempting to send sign in creds");
+
+    Request::put("http://localhost/api/member/sign_in")
+        .header("Content-Type", "application/json")
+        .body(serde_json::to_string(&data).unwrap())
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap()
+}

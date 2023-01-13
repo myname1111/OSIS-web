@@ -5,19 +5,14 @@ use crate::db::{
 };
 use actix_web::*;
 use common::{
-    EmailVer, Member, MemberPreview, NewMember, SignInError, SignInResponse, UpdatedMember,
+    EmailVer, Member, MemberPreview, NewMember, SignInData, SignInError, SignInResponse,
+    UpdatedMember,
 };
 use lettre::{message::MultiPart, transport::smtp::authentication::Credentials};
 use lettre::{Message, SmtpTransport, Transport};
-use serde::{Deserialize, Serialize};
 use std::env;
 use web::{Data, Json, Path};
 
-#[derive(Serialize, Deserialize, Debug)]
-struct SignInData {
-    username: String,
-    password: String,
-}
 #[get("/")]
 async fn get_all_members(pool: Data<DbPool>) -> Result<Json<Vec<MemberId>>, Error> {
     let mut conn = get_conn_from_pool(pool);
@@ -136,9 +131,9 @@ async fn email_ver(data: Json<EmailVer>) -> Option<String> {
     result.map(|_| data.email.clone()).ok()
 }
 
-#[post("/sign_in")]
+#[put("/sign_in")]
 async fn sign_in(
-    data: web::Form<SignInData>,
+    data: Json<SignInData>,
     pool: Data<DbPool>,
 ) -> Result<Json<SignInResponse>, Error> {
     let mut conn = get_conn_from_pool(pool);

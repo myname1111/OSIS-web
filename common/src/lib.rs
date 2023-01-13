@@ -389,6 +389,12 @@ impl fmt::Display for SqlConversionError {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct SignInData {
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub enum SignInError {
     InccorrectPassword(String),
     MemberWithUsernameDoesntExist(String),
