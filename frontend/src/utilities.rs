@@ -1,6 +1,6 @@
-use common::SignInData;
+use common::{SignInData, SignInResponse};
 use wasm_bindgen::JsCast;
-use web_sys::HtmlInputElement;
+use web_sys::{window, HtmlInputElement};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -100,29 +100,47 @@ fn sign_in_popup() -> Html {
         })
     };
 
-    let sign_in_html = html! {
-        <div class="sign-in-popup">
-            <h1 class="sign-in-popup--title">{ "Please sign in" }</h1>
-            <form class="sign-in-popup--form">
-                <label class="sign-in-popup--label" for="username">{ "Username" }</label>
-                <input class="sign-in-popup--input" type="text" id="username" name="username" onchange={set_username} />
-                <label class="sign-in-popup--label" for="password">{ "Password" }</label>
-                <input class="sign-in-popup--input" type="text" id="password" name="password" onchange={set_password} />
-                <input class="sign-in-popup--button" type="button" value="Sign up" {onclick}/>
-            </form>
-        </div>
+    {
+        let response = response.clone();
+        use_effect(move || {
+            if let Some(SignInResponse(Ok(_))) = &*response {
+                let window = window().unwrap();
+                // TODO: Implement storage logic
+                window.location().reload().expect("Unable to reload page")
+            }
+            || ()
+        })
+    };
+
+    let error_message = html! {
+        {
+            if let Some(SignInResponse(Err(err))) = &*response {
+                html! {
+                    <div class="sign-in-popup--error">
+                        <p class="sign-in-popup--error-text">{ err }</p>
+                    </div>
+                }
+            } else {
+                html!()
+            }
+        }
     };
 
     html! {
-        {
-            match &*response {
-                None => sign_in_html,
-                Some(response) => {
-                    log::info!("{:?}", response); // TODO: Implement response
-                    html! ()
-                }
-            }
-        }
+        <>
+            <div class="dim-page"/>
+            <div class="sign-in-popup">
+                <h1 class="sign-in-popup--title">{ "Please sign in" }</h1>
+                <form class="sign-in-popup--form">
+                    { error_message }
+                    <label class="sign-in-popup--label" for="username">{ "Username" }</label>
+                    <input class="sign-in-popup--input" type="text" id="username" name="username" onchange={set_username} />
+                    <label class="sign-in-popup--label" for="password">{ "Password" }</label>
+                    <input class="sign-in-popup--input" type="text" id="password" name="password" onchange={set_password} />
+                    <input class="sign-in-popup--button" type="button" value="Sign up" {onclick}/>
+                </form>
+            </div>
+        </>
     }
 }
 
