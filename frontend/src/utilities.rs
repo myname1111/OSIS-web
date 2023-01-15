@@ -15,6 +15,8 @@ pub fn nav_bar() -> Html {
         move |_| has_sign_in.set(true)
     };
 
+    // TODO: Make sign in turn into member profile after sign in
+
     html! {
         <>
             <nav class="nav">
@@ -103,9 +105,16 @@ fn sign_in_popup() -> Html {
     {
         let response = response.clone();
         use_effect(move || {
-            if let Some(SignInResponse(Ok(_))) = &*response {
-                let window = window().unwrap();
-                // TODO: Implement storage logic
+            if let Some(SignInResponse(Ok(member))) = &*response {
+                let window = window().expect("Unable to get window");
+                let storage = window
+                    .session_storage()
+                    .unwrap()
+                    .expect("Unable to get the session storage");
+
+                storage.set_item("username", &member.username);
+                storage.set_item("password", &member.password);
+
                 window.location().reload().expect("Unable to reload page")
             }
             || ()
