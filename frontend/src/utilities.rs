@@ -32,6 +32,28 @@ pub fn nav_bar() -> Html {
         move |_| has_clicked.set(true)
     };
 
+    let user_or_sign_in = move || -> Html {
+        if *has_sign_in {
+            html!() // TODO: Create member profile
+        } else {
+            html! {
+                <div class="nav--sign-up" onclick={sign_in}>
+                    <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
+                </div>
+            }
+        }
+    };
+
+    let popup = move || -> Html {
+        if *has_clicked {
+            html! {
+                <SignInPopup />
+            }
+        } else {
+            html!()
+        }
+    };
+
     html! {
         <>
             <nav class="nav">
@@ -53,27 +75,9 @@ pub fn nav_bar() -> Html {
                 <a href="#">
                     <h2 class="nav--item">{ "EVENTS" }</h2>
                 </a>
-                {
-                    if *has_sign_in {
-                        html!() // TODO: Create member profile
-                    } else {
-                        html! {
-                            <div class="nav--sign-up" onclick={sign_in}>
-                                <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
-                            </div>
-                        }
-                    }
-                }
+                { user_or_sign_in() }
             </nav>
-            {
-                if *has_clicked {
-                    html! {
-                        <SignInPopup />
-                    }
-                } else {
-                    html!()
-                }
-            }
+            { popup() }
         </>
     }
 }
@@ -148,17 +152,15 @@ fn sign_in_popup() -> Html {
         })
     };
 
-    let error_message = html! {
-        {
-            if let Some(SignInResponse(Err(err))) = &*response {
-                html! {
-                    <div class="sign-in-popup--error">
-                        <p class="sign-in-popup--error-text">{ err }</p>
-                    </div>
-                }
-            } else {
-                html!()
+    let error_message = move || -> Html {
+        if let Some(SignInResponse(Err(err))) = &*response {
+            html! {
+                <div class="sign-in-popup--error">
+                    <p class="sign-in-popup--error-text">{ err }</p>
+                </div>
             }
+        } else {
+            html!()
         }
     };
 
@@ -168,7 +170,7 @@ fn sign_in_popup() -> Html {
             <div class="sign-in-popup">
                 <h1 class="sign-in-popup--title">{ "Please sign in" }</h1>
                 <form class="sign-in-popup--form">
-                    { error_message }
+                    { error_message() }
                     <label class="sign-in-popup--label" for="username">{ "Username" }</label>
                     <input class="sign-in-popup--input" type="text" id="username" name="username" onchange={set_username} />
                     <label class="sign-in-popup--label" for="password">{ "Password" }</label>
