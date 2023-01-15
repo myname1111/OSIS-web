@@ -8,6 +8,7 @@ use common::{
     EmailVer, Member, MemberPreview, NewMember, SignInData, SignInError, SignInResponse,
     UpdatedMember,
 };
+use dotenvy::dotenv;
 use lettre::{message::MultiPart, transport::smtp::authentication::Credentials};
 use lettre::{Message, SmtpTransport, Transport};
 use std::env;
@@ -98,6 +99,8 @@ async fn update_member(
 
 #[put("/email")]
 async fn email_ver(data: Json<EmailVer>) -> Option<String> {
+    dotenv().ok();
+
     let email = Message::builder()
         .from(
             "OSIS EPISJH <data2.animationstudiocp@gmail.com>"
