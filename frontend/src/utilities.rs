@@ -112,12 +112,8 @@ fn sign_in_popup() -> Html {
                     .unwrap()
                     .expect("Unable to get the session storage");
 
-                storage
-                    .set_item("username", &member.username)
-                    .expect("Unable to set username");
-                storage
-                    .set_item("password", &member.password)
-                    .expect("Unable to set passowrd");
+                storage.set_item("username", &member.username);
+                storage.set_item("password", &member.password);
 
                 window.location().reload().expect("Unable to reload page")
             }
@@ -189,5 +185,4 @@ pub enum Route {
     MemberList,
     #[at("/sign_up")]
     SignUp,
-}
 }
