@@ -8,14 +8,29 @@ use crate::backend::send_sign_in_creds;
 
 #[function_component(NavBar)]
 pub fn nav_bar() -> Html {
-    let has_sign_in = use_state(|| false);
+    let has_sign_in = use_state(|| {
+        let window = window().expect("Unable to get window");
+        let storage = window
+            .session_storage()
+            .unwrap()
+            .expect("Unable to get storage");
+
+        storage
+            .get_item("username")
+            .expect("Unable to get possibly defined username")
+            .is_some()
+            & storage
+                .get_item("password")
+                .expect("Unable to get possibly defined password")
+                .is_some()
+    });
+
+    let has_clicked = use_state(|| false);
 
     let sign_in = {
-        let has_sign_in = has_sign_in.clone();
-        move |_| has_sign_in.set(true)
+        let has_clicked = has_clicked.clone();
+        move |_| has_clicked.set(true)
     };
-
-    // TODO: Make sign in turn into member profile after sign in
 
     html! {
         <>
@@ -38,12 +53,20 @@ pub fn nav_bar() -> Html {
                 <a href="#">
                     <h2 class="nav--item">{ "EVENTS" }</h2>
                 </a>
-                <div class="nav--sign-up" onclick={sign_in}>
-                    <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
-                </div>
+                {
+                    if *has_sign_in {
+                        html!() // TODO: Create member profile
+                    } else {
+                        html! {
+                            <div class="nav--sign-up" onclick={sign_in}>
+                                <h2 class="nav--sign-up-text"> { "SIGN IN" }</h2>
+                            </div>
+                        }
+                    }
+                }
             </nav>
             {
-                if *has_sign_in {
+                if *has_clicked {
                     html! {
                         <SignInPopup />
                     }
@@ -117,7 +140,7 @@ fn sign_in_popup() -> Html {
                     .expect("Unable to set username");
                 storage
                     .set_item("password", &member.password)
-                    .expect("Unable to set passowrd");
+                    .expect("Unable to set password");
 
                 window.location().reload().expect("Unable to reload page")
             }
